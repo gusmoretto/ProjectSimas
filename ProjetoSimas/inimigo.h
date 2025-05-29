@@ -5,11 +5,11 @@
 
 class Inimigo: public Personagem{
 private:
-	int vida;
-	int ataque;
 	static int cont_inimigo;
 	int id_inimigo;
 protected:
+	int vida;
+	int ataque;
 	int nivel_maldade;
 public:
 	Inimigo();
@@ -22,5 +22,6 @@ public:
 	//void salvarDataBuffer();
 	virtual void executar() = 0;
 	virtual void danificar(Jogador* p) = 0;
+	virtual void mover() = 0;
 	//virtual void salva() = 0;
 };
