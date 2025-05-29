@@ -1,5 +1,6 @@
 #include <iostream>
 #include "personagem.h"
+#include "entidade.h"
 #include <SFML/Graphics.hpp>
 
 int Personagem::cont_personagem = 0;
@@ -18,26 +19,6 @@ void Personagem::executar() {
 //void Personagem::salvarDataBuffer() {
 //	std::cout << "Salvando dados do personagem com " << num_vidas << " vidas." << std::endl;
 //}
-void Personagem::mover() {
-	sf::Vector2f movimento(0.f, 0.f);
-	if (id_personagem == 0) {
-		// Jogador 1: setas
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) movimento.x += velocidade;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  movimento.x -= velocidade;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    movimento.y -= velocidade;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))  movimento.y += velocidade;
-	}
-	else if (id_personagem == 1) {
-		// Jogador 2: WASD
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) movimento.x += velocidade;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) movimento.x -= velocidade;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) movimento.y -= velocidade;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) movimento.y += velocidade;
-	}
-		
-	retangulo.move(movimento);
-	
-}
 void Personagem::desenhar(sf::RenderWindow& window) {
 	window.draw(retangulo);
 }
@@ -47,7 +28,7 @@ void Personagem::carregarTextura(const std::string& caminho) {
 	}
 	retangulo.setTexture(&textura);
 }
-void Personagem::setPosicao(float x, float y, float janelax, float janelay) {
+void Personagem::setPosicao(float janelax, float janelay) {
 	sf::Vector2f posicao = retangulo.getPosition();
 	if (posicao.x < 0) posicao.x = 0;
 	if (posicao.y < 0) posicao.y = 0;
@@ -60,4 +41,7 @@ sf::Vector2f Personagem::getPosicao() const {
 }
 int Personagem::getIdPersonagem() const {
 	return id_personagem;
+}
+const sf::RectangleShape& Personagem::getRetangulo() const {
+	return retangulo;
 }

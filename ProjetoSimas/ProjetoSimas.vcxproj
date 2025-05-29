@@ -136,6 +136,7 @@
     <ClCompile Include="ente.cpp" />
     <ClCompile Include="entidade.cpp" />
     <ClCompile Include="inimigo.cpp" />
+    <ClCompile Include="inim_facil.cpp" />
     <ClCompile Include="jogador.cpp" />
     <ClCompile Include="personagem.cpp" />
     <ClCompile Include="projetil.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="ente.h" />
     <ClInclude Include="entidade.h" />
     <ClInclude Include="inimigo.h" />
+    <ClInclude Include="inim_facil.h" />
     <ClInclude Include="jogador.h" />
     <ClInclude Include="personagem.h" />
     <ClInclude Include="projetil.h" />

@@ -36,6 +36,9 @@
     <ClCompile Include="personagem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="inim_facil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jogador.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="personagem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inim_facil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15,11 +15,12 @@ public:
 	Personagem();
 	~Personagem();
 	//void salvarDataBuffer();
-	virtual void mover();
+	virtual void mover() = 0;
 	virtual void executar() = 0;
 	void desenhar(sf::RenderWindow& window);
 	void carregarTextura(const std::string& caminho);
-	void setPosicao(float x, float y, float janelax, float janelay);
+	void setPosicao(float janelax, float janelay);
 	sf::Vector2f getPosicao() const;
 	int getIdPersonagem() const;
+	const sf::RectangleShape& getRetangulo() const;
 };
