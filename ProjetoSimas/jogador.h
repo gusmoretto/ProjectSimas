@@ -7,6 +7,8 @@ private:
 	int vida;
 	int ataque;
 	int pontos;
+	static int cont_jogador;
+	int id_jogador;
 
 public:
 	Jogador();
@@ -16,4 +18,7 @@ public:
 	void setVida(int vida);
 	void setAtaque(int ataque);
 	void executar();
+	virtual void mover();
+	int getIdJogador() const;
+	
 };
