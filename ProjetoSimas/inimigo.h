@@ -1,26 +1,26 @@
 #pragma once
+#include "personagem.h"
+#include "jogador.h"
 #include <SFML/Graphics.hpp>
 
-class Inimigo {
+class Inimigo: public Personagem{
 private:
-	sf::RectangleShape retangulo;
-	sf::Texture textura;
-	float velocidade;
 	int vida;
 	int ataque;
 	static int cont_inimigo;
 	int id_inimigo;
+protected:
+	int nivel_maldade;
 public:
 	Inimigo();
 	~Inimigo();
-	void perseguir(float dx, float dy);
-	void desenhar(sf::RenderWindow& window);
-	void carregarTextura(const std::string& caminho);
-	void setPosicao(float x, float y, float janelax, float janelay);
-	sf::Vector2f getPosicao() const;
 	int getVida() const;
 	int getAtaque() const;
 	void setVida(int vida);
 	void setAtaque(int ataque);
 	int getIdInimigo() const;
+	//void salvarDataBuffer();
+	virtual void executar() = 0;
+	virtual void danificar(Jogador* p) = 0;
+	//virtual void salva() = 0;
 };
