@@ -23,7 +23,7 @@ void InimFacil::executar() {
 
 void InimFacil::mover() {
     sf::Vector2f posicao = getPosicao();
-    posicao.x += direcaoX * velocidade;
+    posicao.x += direcaoX * (velocidade-0.15);
 
     if (posicao.x <= 0 || posicao.x + retangulo.getSize().x >= 1000) {
         direcaoX = -direcaoX;
