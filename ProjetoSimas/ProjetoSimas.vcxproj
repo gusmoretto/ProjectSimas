@@ -133,21 +133,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="chefao.cpp" />
     <ClCompile Include="ente.cpp" />
     <ClCompile Include="entidade.cpp" />
     <ClCompile Include="inimigo.cpp" />
     <ClCompile Include="inim_facil.cpp" />
+    <ClCompile Include="inim_medio.cpp" />
     <ClCompile Include="jogador.cpp" />
+    <ClCompile Include="obstaculo.cpp" />
     <ClCompile Include="personagem.cpp" />
     <ClCompile Include="projetil.cpp" />
     <ClCompile Include="ProjetoSimas.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chefao.h" />
     <ClInclude Include="ente.h" />
     <ClInclude Include="entidade.h" />
     <ClInclude Include="inimigo.h" />
     <ClInclude Include="inim_facil.h" />
+    <ClInclude Include="inim_medio.h" />
     <ClInclude Include="jogador.h" />
+    <ClInclude Include="obstaculo.h" />
     <ClInclude Include="personagem.h" />
     <ClInclude Include="projetil.h" />
   </ItemGroup>

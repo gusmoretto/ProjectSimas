@@ -39,6 +39,15 @@
     <ClCompile Include="inim_facil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="inim_medio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chefao.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="obstaculo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jogador.h">
@@ -60,6 +69,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inim_facil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inim_medio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chefao.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obstaculo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
