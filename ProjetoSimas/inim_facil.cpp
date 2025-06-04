@@ -19,10 +19,17 @@ void InimFacil::danificar(Jogador* p) {
 }
 
 void InimFacil::executar() {
-	Personagem::carregarTextura("inimigo.png");
+    retangulo.setSize(sf::Vector2f(100.f, 100.f));
+    retangulo.setPosition(0, 0);
+   
+    if (!textura.loadFromFile("inimigo.png")) {
+        std::cout << "Erro ao carregar jogador1.png" << std::endl;
+    }
+    retangulo.setTexture(&textura);  
 }
 
 void InimFacil::mover() {
+    // readaptar pos add do gerenciador grafico
     sf::Vector2f posicao = getPosicao();
     posicao.x += direcaoX * (velocidade-0.15);
 
@@ -30,8 +37,13 @@ void InimFacil::mover() {
         direcaoX = -direcaoX;
         posicao.x += direcaoX * velocidade; 
     }
-
+    posicao.y+=aplicarGravidade(0.016f);
     retangulo.setPosition(posicao);
+    if (retangulo.getPosition().y >= 600.f) {
+        sf::Vector2f pos = retangulo.getPosition();
+        pos.y = 600.f;
+        retangulo.setPosition(pos);
+    }
 }
 int InimFacil::getVida() const {
 	return vida;

@@ -1,5 +1,4 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "personagem.h"
 
 class Jogador: public Personagem{
@@ -9,6 +8,10 @@ private:
 	int pontos;
 	static int cont_jogador;
 	int id_jogador;
+	bool noChao;
+	float velocidadeVertical;
+	const float impulsoPulo = -400.f; 
+
 
 public:
 	Jogador();
@@ -20,5 +23,4 @@ public:
 	void executar();
 	virtual void mover();
 	int getIdJogador() const;
-	
 };

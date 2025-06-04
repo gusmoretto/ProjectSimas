@@ -16,7 +16,7 @@ void Chefao::danificar(Jogador* p) {
 	}
 }
 void Chefao::executar() {
-	Personagem::carregarTextura("chefao.png");
+	//a fazer
 }
 void Chefao::mover() {
 	//ainda pensando como fazer a movimentacao do chefao, a principio ele seria lento

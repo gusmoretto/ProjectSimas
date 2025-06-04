@@ -1,14 +1,13 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "gerenciador_grafico.h"
 
 class Ente {
 protected:
 	int id;
-	//static Gerenciador_Grafico* pGG;
+	static Gerenciadores::GerenciadorGrafico *pGG;
 	//Figura* pFig;
 public:
 	Ente();
 	virtual ~Ente();
-	//virtual void desenhar(sf::RenderWindow& window) = 0;
 	virtual void executar() = 0;
 };

@@ -16,7 +16,7 @@ void InimMedio::danificar(Jogador* p) {
 	}
 }
 void InimMedio::executar() {
-	Personagem::carregarTextura("inimigo_medio.png");
+	//a fazer
 }
 void InimMedio::mover() {
 	//Ideia de movimento do Inimigo medio: Apenas surgir em plataformas e atacar o jogador, elee seria responsavel

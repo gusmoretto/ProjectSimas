@@ -1,6 +1,5 @@
 #include "inimigo.h"
 #include <iostream>
-#include <SFML/Graphics.hpp>
 
 int Inimigo::cont_inimigo = 0;
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "personagem.h"
 #include "jogador.h"
-#include <SFML/Graphics.hpp>
 
 class Inimigo: public Personagem{
 private:
@@ -18,4 +17,5 @@ public:
 	virtual void danificar(Jogador* p) = 0;
 	virtual void mover() = 0;
 	//virtual void salva() = 0;
+
 };
