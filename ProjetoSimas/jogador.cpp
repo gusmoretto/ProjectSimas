@@ -9,7 +9,7 @@ Jogador::Jogador(): Personagem(), impulsoPulo(-400.f) {
 	ataque = 10;
 	pontos = 0;
 	id_jogador = cont_jogador++;
-	noChao = true;
+    noChao = true;
     velocidadeVertical = 0.f;
 }
 Jogador::~Jogador() {
@@ -42,7 +42,6 @@ void Jogador::executar() {
     retangulo.setTexture(&textura);
 }
 void Jogador::mover() {
-    
     sf::Vector2f movimento(0.f, 0.f);
 
     // Movimento horizontal
@@ -62,23 +61,46 @@ void Jogador::mover() {
     }
 
     // Gravidade
-    velocidadeVertical += gravidade * 0.016f; // deltaTime ~16ms
+    velocidadeVertical += gravidade * 0.016f;
     movimento.y += velocidadeVertical * 0.016f;
 
     retangulo.move(movimento);
 
-    // Checagem simples de chão (exemplo: y >= 600)
-    if (retangulo.getPosition().y >= 600.f) {
-        sf::Vector2f pos = retangulo.getPosition();
+    // Limites da janela
+    sf::Vector2f pos = retangulo.getPosition();
+    sf::Vector2f size = retangulo.getSize();
+
+    // Limite chão
+    if (pos.y >= 600.f) {
         pos.y = 600.f;
-        retangulo.setPosition(pos);
         velocidadeVertical = 0.f;
         noChao = true;
     }
+    // Limite topo
+    if (pos.y < 0.f) {
+        pos.y = 0.f;
+        velocidadeVertical = 0.f;
+    }
+    // Limite esquerda
+    if (pos.x < 0.f) {
+        pos.x = 0.f;
+    }
+    // Limite direita (ajuste 1200.f para a largura da sua janela)
+    if (pos.x + size.x > 2400.f) {
+        pos.x = 2400.f - size.x;
+    }
+
+    retangulo.setPosition(pos);
 }
+
 
 int Jogador::getIdJogador() const {
 	return id_jogador;
+}
+void Jogador::desenhar() {
+	if (pGG) {
+		pGG->desenha(retangulo);
+	}
 }
 
 

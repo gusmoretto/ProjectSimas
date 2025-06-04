@@ -18,6 +18,6 @@ public:
 	int getAtaque();	
 	void setVida(int v);
 	void setAtaque(int a);
-
+	void desenhar();
 };
 

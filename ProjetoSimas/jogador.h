@@ -23,4 +23,6 @@ public:
 	void executar();
 	virtual void mover();
 	int getIdJogador() const;
+	void desenhar();
+	
 };

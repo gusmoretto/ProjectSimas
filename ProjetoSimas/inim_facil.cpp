@@ -57,3 +57,8 @@ void InimFacil::setVida(int v) {
 void InimFacil::setAtaque(int a) {
 	ataque = a;
 }
+void InimFacil::desenhar() {
+    if (pGG) {
+        pGG->desenha(retangulo);
+    }
+}

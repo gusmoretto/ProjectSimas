@@ -1,7 +1,9 @@
 #include <iostream>
 #include "ente.h"
 
-Ente::Ente(){ id++;}
+Gerenciadores::GerenciadorGrafico* Ente::pGG = nullptr;
+
+Ente::Ente() { id++;  }
 
 Ente::~Ente() {
 	std::cout << "Destrutor de Ente chamado." << std::endl;

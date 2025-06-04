@@ -9,6 +9,7 @@ namespace Gerenciadores {
 		RenderWindow window;
 		sf::Texture texturaFundo;
 		sf::Sprite spriteFundo;
+		sf::View camera;
 
 	public:
 		GerenciadorGrafico();
@@ -26,6 +27,7 @@ namespace Gerenciadores {
 		float getTamanhoJanelay() const {
 			return window.getSize().y;
 		}
+		void centralizarCamera(const sf::Vector2f& centro, float bgWidth, float bgHeight);
 	};
 }
 

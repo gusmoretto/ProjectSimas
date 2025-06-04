@@ -10,4 +10,5 @@ public:
 	Ente();
 	virtual ~Ente();
 	virtual void executar() = 0;
+	void setGerenciadorGrafico(Gerenciadores::GerenciadorGrafico* p) { pGG = p; }
 };
