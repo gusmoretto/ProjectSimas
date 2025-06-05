@@ -86,8 +86,8 @@ void Jogador::mover() {
         pos.x = 0.f;
     }
     // Limite direita (ajuste 1200.f para a largura da sua janela)
-    if (pos.x + size.x > 2400.f) {
-        pos.x = 2400.f - size.x;
+    if (pos.x + size.x > 3840.f) {
+        pos.x = 3840.f - size.x;
     }
 
     retangulo.setPosition(pos);

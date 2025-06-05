@@ -39,7 +39,7 @@ int main()
 
         gerenciadorGrafico.centralizarCamera(
             jogador1.getRetangulo().getPosition() + 0.5f * jogador1.getRetangulo().getSize(),
-            2400.f, 700.f);
+            3840.f, 700.f);
         inimigo1.mover();
 
 		gerenciadorGrafico.clear();
