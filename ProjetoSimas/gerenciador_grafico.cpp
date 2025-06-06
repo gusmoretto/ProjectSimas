@@ -53,5 +53,18 @@ void GerenciadorGrafico::centralizarCamera(const sf::Vector2f& centro, float bgW
     camera.setCenter(novoCentro);
     window.setView(camera);
 }
+void GerenciadorGrafico::iniciaChao(const std::string& caminho, float larguraMapa, float alturaChao) {
+	if (!texturaChao.loadFromFile(caminho)) {
+		std::cerr << "Erro ao carregar textura do chão." << std::endl;
+	}
+	texturaChao.setRepeated(true);
+	chao.setTexture(&texturaChao);
+	chao.setSize(sf::Vector2f(larguraMapa, alturaChao));
+	chao.setTextureRect(sf::IntRect(0, 0, static_cast<int>(larguraMapa), static_cast<int>(alturaChao)));
+	chao.setPosition(0.f, 700.f - alturaChao); // Ajuste a posição conforme necessário
+}
+void GerenciadorGrafico::desenhaChao() {
+	window.draw(chao);
+}
 
 

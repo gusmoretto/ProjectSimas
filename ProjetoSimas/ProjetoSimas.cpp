@@ -19,7 +19,8 @@ int main()
 	jogador1.setGerenciadorGrafico(&gerenciadorGrafico);
 	InimFacil inimigo1;
 	inimigo1.executar();
-	inimigo1.setGerenciadorGrafico(&gerenciadorGrafico);
+    inimigo1.setGerenciadorGrafico(&gerenciadorGrafico);
+	gerenciadorGrafico.iniciaChao("chao.png", 3840.f, 300.f);
 
     while (gerenciadorGrafico.estaAberta())
     {
@@ -38,12 +39,12 @@ int main()
 		jogador1.mover();
 
         gerenciadorGrafico.centralizarCamera(
-            jogador1.getRetangulo().getPosition() + 0.5f * jogador1.getRetangulo().getSize(),
-            3840.f, 700.f);
+        jogador1.getRetangulo().getPosition() + 0.5f * jogador1.getRetangulo().getSize(), 3840.f, 700.f);
         inimigo1.mover();
 
 		gerenciadorGrafico.clear();
         gerenciadorGrafico.desenhaFundo();
+		gerenciadorGrafico.desenhaChao();
 		jogador1.desenhar();
         inimigo1.desenhar();
 		gerenciadorGrafico.mostrar();

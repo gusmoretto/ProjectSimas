@@ -136,6 +136,7 @@
     <ClCompile Include="chefao.cpp" />
     <ClCompile Include="ente.cpp" />
     <ClCompile Include="entidade.cpp" />
+    <ClCompile Include="gerenciador_colisoes.cpp" />
     <ClCompile Include="gerenciador_grafico.cpp" />
     <ClCompile Include="inimigo.cpp" />
     <ClCompile Include="inim_facil.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="chefao.h" />
     <ClInclude Include="ente.h" />
     <ClInclude Include="entidade.h" />
+    <ClInclude Include="gerenciador_colisoes.h" />
     <ClInclude Include="gerenciador_grafico.h" />
     <ClInclude Include="inimigo.h" />
     <ClInclude Include="inim_facil.h" />

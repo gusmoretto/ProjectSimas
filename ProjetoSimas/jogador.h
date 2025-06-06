@@ -10,8 +10,8 @@ private:
 	int id_jogador;
 	bool noChao;
 	float velocidadeVertical;
-	const float impulsoPulo = -400.f; 
-
+	const float impulsoPulo;
+	bool olhandoDireita;
 
 public:
 	Jogador();

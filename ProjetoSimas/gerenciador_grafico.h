@@ -7,9 +7,11 @@ namespace Gerenciadores {
 	private:
 		Sprite sprite;
 		RenderWindow window;
-		sf::Texture texturaFundo;
-		sf::Sprite spriteFundo;
-		sf::View camera;
+		Texture texturaFundo;
+		Sprite spriteFundo;
+		View camera;
+		Texture texturaChao;
+		RectangleShape chao;
 
 	public:
 		GerenciadorGrafico();
@@ -28,6 +30,8 @@ namespace Gerenciadores {
 			return window.getSize().y;
 		}
 		void centralizarCamera(const sf::Vector2f& centro, float bgWidth, float bgHeight);
+		void iniciaChao(const std::string& caminho, float larguraMapa, float alturaChao);
+		void desenhaChao();
 	};
 }
 

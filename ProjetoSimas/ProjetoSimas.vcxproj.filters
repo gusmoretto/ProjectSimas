@@ -51,6 +51,9 @@
     <ClCompile Include="gerenciador_grafico.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gerenciador_colisoes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jogador.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gerenciador_grafico.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gerenciador_colisoes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
