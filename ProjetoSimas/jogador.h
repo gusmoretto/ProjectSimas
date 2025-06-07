@@ -24,5 +24,8 @@ public:
 	virtual void mover();
 	int getIdJogador() const;
 	void desenhar();
-	
+	void setId(int novoId);
+	int getId() const;
+	void setVelocidade(float nvVelocidade);
+	float getVelocidade();
 };

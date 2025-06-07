@@ -30,6 +30,10 @@ void Jogador::setAtaque(int novoAtaque) {
 	ataque = novoAtaque;
 }
 void Jogador::executar() {
+    if (cont_jogador)
+        setId(1);
+    else
+        setId(2);
 	retangulo.setSize(sf::Vector2f(128.f, 128.f));
     retangulo.setOrigin(64.f, 64.f);
 	retangulo.setPosition(64.f, 64.f);
@@ -118,8 +122,6 @@ void Jogador::mover() {
 
     retangulo.setPosition(pos);
 }
-
-
 int Jogador::getIdJogador() const {
 	return id_jogador;
 }
@@ -127,6 +129,18 @@ void Jogador::desenhar() {
 	if (pGG) {
 		pGG->desenha(retangulo);
 	}
+}
+void Jogador::setId(int novoId) {
+    id = novoId;
+}
+int Jogador::getId() const {
+    return id;
+}
+void Jogador::setVelocidade(float nvVelocidade) {
+	velocidade = nvVelocidade;
+}
+float Jogador::getVelocidade() {
+	return velocidade;
 }
 
 
