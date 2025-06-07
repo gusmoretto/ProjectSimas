@@ -17,5 +17,6 @@ public:
 	virtual void danificar(Jogador* p) = 0;
 	virtual void mover() = 0;
 	//virtual void salva() = 0;
-
+	virtual void setVelocidade(float nvVelocidade) = 0;
+	virtual float getVelocidade() = 0;
 };
