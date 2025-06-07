@@ -10,5 +10,14 @@ Projetil::~Projetil() {
 void Projetil::update(float deltaTime) {
 	
 }
+void Projetil::executar() {
+	setId(6);
+}
+void Projetil::setId(int novoId) {
+	id = novoId;
+}
+int Projetil::getId() const {
+	return id;
+}
 
 
