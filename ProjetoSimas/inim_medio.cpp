@@ -16,6 +16,7 @@ void InimMedio::danificar(Jogador* p) {
 	}
 }
 void InimMedio::executar() {
+	setId(4);
 	//a fazer
 }
 void InimMedio::mover() {
@@ -33,4 +34,16 @@ void InimMedio::setVida(int v) {
 }
 void InimMedio::setAtaque(int a) {
 	ataque = a;
+}
+void InimMedio::setId(int novoId) {
+	id = novoId;
+}
+int InimMedio::getId() const {
+	return id;
+}
+void InimMedio::setVelocidade(float nvVelocidade) {
+	velocidade = nvVelocidade;
+}
+float InimMedio::getVelocidade() {
+	return velocidade;
 }
