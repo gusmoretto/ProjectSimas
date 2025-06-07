@@ -19,24 +19,21 @@ namespace Gerenciadores {
 	public:
 		GerenciadorColisoes();
 		~GerenciadorColisoes();
-		void setJogador1(Jogador* j1, Jogador* j2);
-		int verificarColisao(Entidade* pe1, Entidade* pe2) const;
-		void tratarColisoesJogsObstaculos();
-		void tratarColisoesJogsInimigos();
-		void tratarColisoesJogsProjeteis();
-		void incluirInimigo(Inimigo* inimigo) {
-			lInimigos.push_back(inimigo);
-		};
-		void incluirObstaculo(Obstaculo* obstaculo) {
-			lObstaculos.push_back(obstaculo);
-		};
-		void incluirProjetil(Projetil* projetil) {
-			lProjetis.insert(projetil);
-		};
+		void setJogadores(Jogador* j1, Jogador* j2);
+		void inclueEntidade(Entidade* ent);
+		void removeEntidade(Entidade* ent);
+		int verificarColisao(Entidade* pe1, Entidade* pe2);
+		void verificaObs();
+		void verificaInim();
+		void verificaProjetil();
+		void verificaObsInim();
+		void verificaObsProjetil();
 		void executar() {
-			tratarColisoesJogsObstaculos();
-			tratarColisoesJogsInimigos();
-			tratarColisoesJogsProjeteis();
+			void verificaObs();
+			void verificaInim();
+			void verificaProjetil();
+			void verificaObsInim();
+			void verificaObsProjetil();
 		};
 	};
 }
