@@ -19,5 +19,9 @@ public:
 	void setVida(int v);
 	void setAtaque(int a);
 	void desenhar();
+	void setId(int novoId);
+	int getId() const;
+	void setVelocidade(float nvVelocidade);
+	float getVelocidade();
 };
 

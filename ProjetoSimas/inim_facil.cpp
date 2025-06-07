@@ -19,10 +19,11 @@ void InimFacil::danificar(Jogador* p) {
 }
 
 void InimFacil::executar() {
+    setId(3);
     retangulo.setSize(sf::Vector2f(100.f, 100.f));
     retangulo.setPosition(0, 0);
    
-    if (!textura.loadFromFile("inimigo.png")) {
+    if (!textura.loadFromFile("inim_facil.png")) {
         std::cout << "Erro ao carregar jogador1.png" << std::endl;
     }
     retangulo.setTexture(&textura);  
@@ -33,7 +34,7 @@ void InimFacil::mover() {
     sf::Vector2f posicao = getPosicao();
     posicao.x += direcaoX * (velocidade-0.15);
 
-    if (posicao.x <= 0 || posicao.x + retangulo.getSize().x >= 1000) {
+    if (posicao.x <= 0 || posicao.x + retangulo.getSize().x >= 3840) {
         direcaoX = -direcaoX;
         posicao.x += direcaoX * velocidade; 
     }
@@ -61,4 +62,16 @@ void InimFacil::desenhar() {
     if (pGG) {
         pGG->desenha(retangulo);
     }
+}
+void InimFacil::setId(int novoId) {
+    id = novoId;
+}
+int InimFacil::getId() const {
+    return id;
+}
+void InimFacil::setVelocidade(float nvVelocidade) {
+	velocidade = nvVelocidade;
+}
+float InimFacil::getVelocidade() {
+	return velocidade;
 }
