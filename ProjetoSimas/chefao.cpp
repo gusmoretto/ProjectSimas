@@ -16,6 +16,7 @@ void Chefao::danificar(Jogador* p) {
 	}
 }
 void Chefao::executar() {
+	setId(5);
 	//a fazer
 }
 void Chefao::mover() {
@@ -38,5 +39,17 @@ void Chefao::setVida(int v) {
 }
 void Chefao::setAtaque(int a) {
 	ataque = a;
+}
+void Chefao::setId(int novoId) {
+	id = novoId;
+}
+int Chefao::getId() const {
+	return id;
+}
+void Chefao::setVelocidade(float nvVelocidade) {
+	velocidade = nvVelocidade;
+}
+float Chefao::getVelocidade() {
+	return velocidade;
 }
 

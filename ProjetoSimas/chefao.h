@@ -19,5 +19,9 @@ public:
 	void setForca(short int f);
 	void setVida(int v);
 	void setAtaque(int a);
+	void setId(int novoId);
+	int getId() const;
+	void setVelocidade(float nvVelocidade);
+	float getVelocidade();
 };
 	
