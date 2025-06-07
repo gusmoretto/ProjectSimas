@@ -2,12 +2,9 @@
 #include "personagem.h"
 #include "entidade.h"
 
-int Personagem::cont_personagem = 0;
-
 Personagem::Personagem() : Entidade(), num_vidas(3) { 
 	// a criar o retangulo com tamanho e posicao
 	velocidade = 1.7f; 
-	id_personagem = cont_personagem++;
 }
 Personagem::~Personagem() {
 	std::cout << "Destrutor de Personagem chamado." << std::endl;
