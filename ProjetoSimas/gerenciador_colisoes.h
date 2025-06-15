@@ -22,18 +22,15 @@ namespace Gerenciadores {
 		void setJogadores(Jogador* j1, Jogador* j2);
 		void inclueEntidade(Entidade* ent);
 		void removeEntidade(Entidade* ent);
-		int verificarColisao(Entidade* pe1, Entidade* pe2);
+		const int verificarColisao(Entidade* pe1, Entidade* pe2) const;
 		void verificaObs();
 		void verificaInim();
 		void verificaProjetil();
 		void verificaObsInim();
 		void verificaObsProjetil();
-		void executar() {
-			void verificaObs();
-			void verificaInim();
-			void verificaProjetil();
-			void verificaObsInim();
-			void verificaObsProjetil();
-		};
+		void executar();
+		const std::vector<Inimigo*>& getInimigos() const { return lInimigos; }
+		bool projetilExiste(const Projetil* p) const;
+
 	};
 }

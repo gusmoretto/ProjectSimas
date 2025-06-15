@@ -1,15 +1,94 @@
 #include "plataforma.h"
 
-Plataforma::Plataforma() {
-	//A fazer
+Plataforma::Plataforma(): Obstaculo(), altura(650), velocidadeVertical(0.f) {
+	danoso = false;
+	gravidadeAtiva = true;
+	forcaMitico = 0.f; 
+    setId(7);
 }
 Plataforma::~Plataforma() {
-	//A fazer
 }
 void Plataforma::executar() {
-	setId(7);
+    retangulo.setSize(sf::Vector2f(64.f, 64.f));
+    if (!textura.loadFromFile("plataforma2.png")) {
+        std::cout << "Erro ao carregar plataforma.png" << std::endl;
+    }
+    retangulo.setTexture(&textura);
 }
+
 void Plataforma::obstacular(Jogador* p) {
-	// Implementar lógica de plataforma
-	std::cout << "Plataforma obstaculando." << std::endl;
+    sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
+    sf::FloatRect areaPlataforma = this->getRetangulo().getGlobalBounds();
+
+    float tolerancia = 8.f; // Ajuste conforme necessário
+
+    // Colisão por cima
+    bool colisaoPorCima =
+        (areaJogador.top + areaJogador.height > areaPlataforma.top) &&
+        (areaJogador.top + areaJogador.height < areaPlataforma.top + tolerancia) &&
+        (p->getVelocidadeVertical() >= 0) &&
+        (areaJogador.left + areaJogador.width > areaPlataforma.left + 5.f) &&
+        (areaJogador.left < areaPlataforma.left + areaPlataforma.width - 5.f);
+
+    if (colisaoPorCima) {
+        p->setPosicao(areaJogador.left, areaPlataforma.top - areaJogador.height);
+        p->setVelocidadeVertical(0.f);
+        p->setNoChao(true);
+        return;
+    }
+
+    // Colisão lateral esquerda
+    bool colisaoEsquerda =
+        (areaJogador.left + areaJogador.width > areaPlataforma.left) &&
+        (areaJogador.left < areaPlataforma.left) &&
+        (areaJogador.top < areaPlataforma.top + areaPlataforma.height - tolerancia) &&
+        (areaJogador.top + areaJogador.height > areaPlataforma.top + tolerancia);
+
+    if (colisaoEsquerda) {
+        p->setPosicao(areaPlataforma.left - areaJogador.width, areaJogador.top);
+        return;
+    }
+
+    // Colisão lateral direita
+    bool colisaoDireita =
+        (areaJogador.left < areaPlataforma.left + areaPlataforma.width) &&
+        (areaJogador.left > areaPlataforma.left) &&
+        (areaJogador.top < areaPlataforma.top + areaPlataforma.height - tolerancia) &&
+        (areaJogador.top + areaJogador.height > areaPlataforma.top + tolerancia);
+
+    if (colisaoDireita) {
+        p->setPosicao(areaPlataforma.left + areaPlataforma.width, areaJogador.top);
+        return;
+    }
 }
+
+
+void Plataforma::desenhar() {
+	if (pGG) {
+		pGG->desenha(retangulo);
+	}
+}
+int Plataforma::getId() const {
+	return id;
+}
+void Plataforma::setId(int novoId) {
+	id = novoId;
+}
+void Plataforma::setForcaMitico(float forca) {
+	forcaMitico = forca;
+}
+float Plataforma::getForcaMitico() const {
+	return forcaMitico;
+}
+void Plataforma::atualizarFisica(float dt) {
+    aplicarGravidade(dt, getForcaMitico());
+
+    // Limite do chão (opcional)
+    sf::Vector2f pos = retangulo.getPosition();
+    if (pos.y + retangulo.getSize().y > 670.f) {
+        pos.y = 670.f - retangulo.getSize().y;
+        velocidadeVertical = 0.f;
+        retangulo.setPosition(pos);
+    }
+}
+

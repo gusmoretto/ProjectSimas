@@ -1,16 +1,25 @@
 #pragma once
-#include "personagem.h"
+#include "entidade.h"
+#include "jogador.h"
 
-class Projetil: public Personagem {
+class Projetil: public Entidade {
 private:
-	const float raio;
-	//a fazer TUDO!!!
+	Vector2f velocidade, destino;
+	bool ativo;
+	float dano;
+
 
 public:
 	Projetil(); 
 	~Projetil();
-	void update(float deltaTime);
 	void executar();
 	void setId(int novoId) ;
 	int getId() const ;
+	void disparar(const Vector2f& origem, const Vector2f& alvo, float velocidadeInicial, float forcaMitico = 0.f, bool anularGravidade=true);
+	bool getestaAtivo() const { return ativo; }
+	void setAtivo(bool novoAtivo) { this->ativo = novoAtivo; }
+	void setForcaMitico(float forca);
+	float getForcaMitico() const;
+	void checarColisaoComJogador(Jogador* jogador);
+	void desenhar();
 };

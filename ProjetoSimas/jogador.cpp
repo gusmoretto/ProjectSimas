@@ -4,8 +4,8 @@
 
 int Jogador::cont_jogador = 0;
 
-Jogador::Jogador(): Personagem(), impulsoPulo(-400.f) {
-	vida = 100;
+Jogador::Jogador(): Personagem(), impulsoPulo(-650.f) {
+	vida = 150;
 	ataque = 10;
 	pontos = 0;
 	id_jogador = cont_jogador++;
@@ -34,18 +34,19 @@ void Jogador::executar() {
         setId(1);
     else
         setId(2);
-	retangulo.setSize(sf::Vector2f(128.f, 128.f));
-    retangulo.setOrigin(64.f, 64.f);
-	retangulo.setPosition(64.f, 64.f);
+    retangulo.setSize(sf::Vector2f(64.f, 64.f));
+    retangulo.setOrigin(0.f, 0.f); 
+    retangulo.setPosition(x, y);
 	if (id_jogador == 0) {
-        if (!textura.loadFromFile("jogador2.png")) {
+        if (!textura.loadFromFile("player.png")) {
             std::cout << "Erro ao carregar jogador1.png" << std::endl;
         }
 	}
 	else {
-		textura.loadFromFile("jogador1.png");
+		textura.loadFromFile("jogador2.png");
 	}
     retangulo.setTexture(&textura);
+   // retangulo.setOrigin(retangulo.getSize().x / 2.f, retangulo.getSize().y / 2.f);
 }
 void Jogador::mover() {
     sf::Vector2f movimento(0.f, 0.f);
@@ -55,14 +56,12 @@ void Jogador::mover() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
-                retangulo.setScale(1.f, 1.f); // normal
                 olhandoDireita = true;
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             movimento.x -= velocidade;
             if (olhandoDireita) {
-                retangulo.setScale(-1.f, 1.f); // espelha
                 olhandoDireita = false;
             }
         }
@@ -71,14 +70,12 @@ void Jogador::mover() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
-                retangulo.setScale(1.f, 1.f);
                 olhandoDireita = true;
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
             movimento.x -= velocidade;
             if (olhandoDireita) {
-                retangulo.setScale(-1.f, 1.f);
                 olhandoDireita = false;
             }
         }
@@ -101,11 +98,12 @@ void Jogador::mover() {
     sf::Vector2f size = retangulo.getSize();
 
     // Limite chão
-    if (pos.y >= 620.f) {
-        pos.y = 620.f;
-        velocidadeVertical = 0.f;
+    if (pos.y + size.y >= 670.f) {
+        pos.y = 670.f - size.y;
+        retangulo.setPosition(pos);
         noChao = true;
     }
+
     // Limite topo
     if (pos.y < 0.f) {
         pos.y = 0.f;
@@ -116,8 +114,8 @@ void Jogador::mover() {
         pos.x = 0.f;
     }
     
-    if (pos.x + size.x > 3900.f) {
-        pos.x = 3900.f - size.x;
+    if (pos.x + size.x > 3840.f) {
+        pos.x = 3840.f - size.x;
     }
 
     retangulo.setPosition(pos);
@@ -142,6 +140,14 @@ void Jogador::setVelocidade(float nvVelocidade) {
 float Jogador::getVelocidade() {
 	return velocidade;
 }
-
+void Jogador::setNoChao(bool NC) {
+    noChao = NC;
+}
+void Jogador::setVelocidadeVertical(float nvVelocidadeVertical) {
+	velocidadeVertical = nvVelocidadeVertical;
+}
+float Jogador::getVelocidadeVertical() const {
+	return velocidadeVertical;
+}
 
 

@@ -144,7 +144,6 @@
     <ClCompile Include="jogador.cpp" />
     <ClCompile Include="obstaculo.cpp" />
     <ClCompile Include="obst_dificil.cpp" />
-    <ClCompile Include="obst_facil.cpp" />
     <ClCompile Include="obst_medio.cpp" />
     <ClCompile Include="personagem.cpp" />
     <ClCompile Include="plataforma.cpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="jogador.h" />
     <ClInclude Include="obstaculo.h" />
     <ClInclude Include="obst_dificil.h" />
-    <ClInclude Include="obst_facil.h" />
     <ClInclude Include="obst_medio.h" />
     <ClInclude Include="personagem.h" />
     <ClInclude Include="plataforma.h" />

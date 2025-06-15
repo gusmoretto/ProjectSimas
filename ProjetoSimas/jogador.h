@@ -3,8 +3,6 @@
 
 class Jogador: public Personagem{
 private:
-	int vida;
-	int ataque;
 	int pontos;
 	static int cont_jogador;
 	int id_jogador;
@@ -28,4 +26,13 @@ public:
 	int getId() const;
 	void setVelocidade(float nvVelocidade);
 	float getVelocidade();
+	void setNoChao(bool NC);
+	void setVelocidadeVertical(float nvVelocidadeVertical);
+	float getVelocidadeVertical() const;
+	void setForcaMitico(float forca) {
+		forcaMitico = forca;
+	};
+	float getForcaMitico() const {
+		return forcaMitico;
+	};
 };

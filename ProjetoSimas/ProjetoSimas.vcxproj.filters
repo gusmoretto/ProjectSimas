@@ -57,9 +57,6 @@
     <ClCompile Include="plataforma.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="obst_facil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="obst_medio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="plataforma.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="obst_facil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="obst_medio.h">

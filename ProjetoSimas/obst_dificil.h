@@ -14,4 +14,11 @@ public:
 	void setElasticidade(bool e);
 	void setId(int novoId) ;
 	int getId() const ;
+	void desenhar();
+	void setForcaMitico(float forca) {
+		forcaMitico = forca;
+	};
+	float getForcaMitico() const {
+		return forcaMitico;
+	};
 };

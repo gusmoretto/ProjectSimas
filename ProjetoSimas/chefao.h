@@ -5,8 +5,7 @@
 class Chefao : public Inimigo {
 private:
 	short int forca;
-	int vida;
-	int ataque;
+
 public:
 	Chefao();
 	~Chefao();
@@ -23,5 +22,12 @@ public:
 	int getId() const;
 	void setVelocidade(float nvVelocidade);
 	float getVelocidade();
+	void desenhar();
+	void setForcaMitico(float forca) {
+		forcaMitico = forca;
+	};
+	float getForcaMitico() const {
+		return forcaMitico;
+	};
 };
 	

@@ -11,4 +11,6 @@ public:
 	~Obstaculo();
 	virtual void executar() = 0;
 	virtual void obstacular(Jogador* p) = 0; 
+	virtual void setForcaMitico(float forca) = 0; 
+	virtual float getForcaMitico() const = 0; 
 };	

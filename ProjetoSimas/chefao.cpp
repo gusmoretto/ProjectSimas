@@ -3,8 +3,10 @@
 #include "inimigo.h"
 #include <iostream>
 
-Chefao::Chefao() : Inimigo(), forca(10), vida(500), ataque(50) {
+Chefao::Chefao() : Inimigo(), forca(10){
 	nivel_maldade = 3;
+	vida = 500; 
+	ataque = 50; 
 }
 Chefao::~Chefao() {
 	forca = -1;
@@ -51,5 +53,10 @@ void Chefao::setVelocidade(float nvVelocidade) {
 }
 float Chefao::getVelocidade() {
 	return velocidade;
+}
+void Chefao::desenhar() {
+	if (pGG) {
+		pGG->desenha(retangulo);
+	}
 }
 

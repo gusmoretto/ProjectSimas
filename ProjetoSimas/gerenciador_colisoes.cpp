@@ -3,8 +3,8 @@
 namespace Gerenciadores {
 	GerenciadorColisoes::GerenciadorColisoes() : jogador1(nullptr), jogador2(nullptr) {}
 	GerenciadorColisoes::~GerenciadorColisoes() {
-		lObstaculos.clear();
 		lInimigos.clear();
+		lObstaculos.clear();
 		lProjetis.clear();
 		jogador1 = nullptr;
 		jogador2 = nullptr;
@@ -13,7 +13,7 @@ namespace Gerenciadores {
         jogador1 = j1;
         jogador2 = j2;
     }
-    int GerenciadorColisoes::verificarColisao(Entidade* pe1, Entidade* pe2) {
+    const int GerenciadorColisoes::verificarColisao(Entidade* pe1, Entidade* pe2) const{
         if (!pe1 || !pe2)
             return 0;
 
@@ -102,32 +102,118 @@ namespace Gerenciadores {
 	}
 	void GerenciadorColisoes::verificaObs() {
 		for (auto obs : lObstaculos) {
-			if (jogador1 && verificarColisao(jogador1, obs))
-				obs->obstacular(jogador1); // ou trate a colisão conforme sua lógica
+			if (jogador1 && verificarColisao(jogador1, obs)) {
+				obs->obstacular(jogador1);
+			}
 			if (jogador2 && verificarColisao(jogador2, obs))
 				obs->obstacular(jogador2);
 		}
 	}
+
 	void GerenciadorColisoes::verificaInim() {
 		for (auto inim : lInimigos) {
-			if (jogador1 && verificarColisao(jogador1, inim))
-				inim->danificar(jogador1);
-			if (jogador2 && verificarColisao(jogador2, inim))
-				inim->danificar(jogador2);
-		}
-	}
-	void GerenciadorColisoes::verificaProjetil() {
-		for (auto proj : lProjetis) {
-			for (auto inim : lInimigos) {
-				if (verificarColisao(proj, inim)) {
-					// Trate dano ao inimigo, remova projétil, etc.
+			// Jogador 1
+			if (jogador1) {
+				int tipoColisao = verificarColisao(jogador1, inim);
+				if (tipoColisao) {
+					inim->tratarColisaoComJogador(jogador1, tipoColisao);
+
+					// Impede que o jogador 1 fique dentro do inimigo
+					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
+					sf::FloatRect areaJogador = jogador1->getRetangulo().getGlobalBounds();
+
+					float sobreposicaoEsquerda = (areaJogador.left + areaJogador.width) - areaInimigo.left;
+					float sobreposicaoDireita = (areaInimigo.left + areaInimigo.width) - areaJogador.left;
+					float sobreposicaoCima = (areaJogador.top + areaJogador.height) - areaInimigo.top;
+					float sobreposicaoBaixo = (areaInimigo.top + areaInimigo.height) - areaJogador.top;
+
+					float menorSobreposicaoX = std::min(sobreposicaoEsquerda, sobreposicaoDireita);
+					float menorSobreposicaoY = std::min(sobreposicaoCima, sobreposicaoBaixo);
+
+					sf::Vector2f pos = jogador1->getRetangulo().getPosition();
+
+					if (menorSobreposicaoX < menorSobreposicaoY) {
+						if (sobreposicaoEsquerda < sobreposicaoDireita)
+							pos.x = areaInimigo.left - areaJogador.width;
+						else
+							pos.x = areaInimigo.left + areaInimigo.width;
+					}
+					else {
+						if (sobreposicaoCima < sobreposicaoBaixo)
+							pos.y = areaInimigo.top - areaJogador.height;
+						else
+							pos.y = areaInimigo.top + areaInimigo.height;
+					}
+					jogador1->setPosicao(pos.x, pos.y);
 				}
 			}
+
+			// Jogador 2
+			if (jogador2) {
+				int tipoColisao = verificarColisao(jogador2, inim);
+				if (tipoColisao) {
+					inim->tratarColisaoComJogador(jogador2, tipoColisao);
+
+					// Impede que o jogador 2 fique dentro do inimigo
+					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
+					sf::FloatRect areaJogador = jogador2->getRetangulo().getGlobalBounds();
+
+					float sobreposicaoEsquerda = (areaJogador.left + areaJogador.width) - areaInimigo.left;
+					float sobreposicaoDireita = (areaInimigo.left + areaInimigo.width) - areaJogador.left;
+					float sobreposicaoCima = (areaJogador.top + areaJogador.height) - areaInimigo.top;
+					float sobreposicaoBaixo = (areaInimigo.top + areaInimigo.height) - areaJogador.top;
+
+					float menorSobreposicaoX = std::min(sobreposicaoEsquerda, sobreposicaoDireita);
+					float menorSobreposicaoY = std::min(sobreposicaoCima, sobreposicaoBaixo);
+
+					sf::Vector2f pos = jogador2->getRetangulo().getPosition();
+
+					if (menorSobreposicaoX < menorSobreposicaoY) {
+						if (sobreposicaoEsquerda < sobreposicaoDireita)
+							pos.x = areaInimigo.left - areaJogador.width;
+						else
+							pos.x = areaInimigo.left + areaInimigo.width;
+					}
+					else {
+						if (sobreposicaoCima < sobreposicaoBaixo)
+							pos.y = areaInimigo.top - areaJogador.height;
+						else
+							pos.y = areaInimigo.top + areaInimigo.height;
+					}
+					jogador2->setPosicao(pos.x, pos.y);
+				}
+			}
+		}
+		auto it = lInimigos.begin();
+		while (it != lInimigos.end()) {
+			if ((*it)->getVida() <= 0) {
+				delete* it;
+				(*it) = nullptr;
+				it = lInimigos.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+	}
+
+
+	void GerenciadorColisoes::verificaProjetil() {
+		for (auto proj : lProjetis) {
+			// Colisão com jogadores
 			if (jogador1 && verificarColisao(proj, jogador1)) {
-				// Trate dano ao jogador, remova projétil, etc.
+				jogador1->setVida(jogador1->getVida() - 10); // Exemplo de dano
+				proj->setAtivo(false); // Ou remova do jogo
 			}
 			if (jogador2 && verificarColisao(proj, jogador2)) {
-				// Trate dano ao jogador, remova projétil, etc.
+				jogador2->setVida(jogador2->getVida() - 10);
+				proj->setAtivo(false);
+			}
+			// Colisão com inimigos (se projetil do jogador)
+			for (auto inim : lInimigos) {
+				if (verificarColisao(proj, inim)) {
+					proj->setAtivo(false);
+				}
 			}
 		}
 	}
@@ -135,18 +221,55 @@ namespace Gerenciadores {
 		for (auto inim : lInimigos) {
 			for (auto obs : lObstaculos) {
 				if (verificarColisao(inim, obs)) {
-					// Trate a colisão (ex: parar movimento, rebater, etc.)
+					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
+					sf::FloatRect areaObs = obs->getRetangulo().getGlobalBounds();
+
+					float sobreposicaoCima = (areaInimigo.top + areaInimigo.height) - areaObs.top;
+					float sobreposicaoBaixo = (areaObs.top + areaObs.height) - areaInimigo.top;
+
+					// Se o inimigo está caindo sobre a plataforma
+					if (sobreposicaoCima < sobreposicaoBaixo) {
+						// Coloca o inimigo em cima da plataforma
+						inim->setPosicao(areaInimigo.left, areaObs.top - areaInimigo.height);
+						// Opcional: zere a velocidade vertical se usar física mais avançada
+					}
 				}
 			}
 		}
 	}
+
 	void GerenciadorColisoes::verificaObsProjetil() {
 		for (auto proj : lProjetis) {
+			if (!proj->getestaAtivo())
+				continue;
 			for (auto obs : lObstaculos) {
 				if (verificarColisao(proj, obs)) {
-					// Remova projétil, trate efeito, etc.
+					proj->setAtivo(false); // Desativa o projetil ao colidir
+					break; // Não precisa checar outros obstáculos
 				}
 			}
 		}
+		
+		for (auto it = lProjetis.begin(); it != lProjetis.end(); ) {
+			Projetil* proj = *it;
+			if (!proj->getestaAtivo()) {
+				it = lProjetis.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+	}
+	bool GerenciadorColisoes::projetilExiste(const Projetil* p) const {
+		return lProjetis.find(const_cast<Projetil*>(p)) != lProjetis.end();
+	}
+
+	void GerenciadorColisoes::executar() {
+		verificaObs();
+		verificaInim();
+		verificaProjetil();
+		verificaObsInim();
+		verificaObsProjetil();
 	}
 }
+

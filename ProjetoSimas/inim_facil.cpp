@@ -3,8 +3,10 @@
 #include "inimigo.h"
 #include <iostream>
 
-InimFacil::InimFacil(): Inimigo(), raio(50.f), direcaoX(1.f) , vida(100), ataque(10){
+InimFacil::InimFacil(): Inimigo(), raio(50.f), direcaoX(1.f) {
     nivel_maldade = 1;
+	vida = 100; 
+    ataque = 10;
 }
 
 InimFacil::~InimFacil() {
@@ -14,25 +16,25 @@ InimFacil::~InimFacil() {
 void InimFacil::danificar(Jogador* p) {
     if (p) {
         p->setVida(p->getVida() - ataque); // Example: Reduce player's health by 10
-        std::cout << "Jogador danificado! Vida restante: " << p->getVida() << std::endl;
+        
     }
 }
 
 void InimFacil::executar() {
     setId(3);
-    retangulo.setSize(sf::Vector2f(100.f, 100.f));
-    retangulo.setPosition(0, 0);
+    retangulo.setSize(sf::Vector2f(64.f, 64.f));
+    retangulo.setOrigin(0.f, 0.f);
+    retangulo.setPosition(x, y);
    
-    if (!textura.loadFromFile("inim_facil.png")) {
+    if (!textura.loadFromFile("aranha.png")) {
         std::cout << "Erro ao carregar jogador1.png" << std::endl;
     }
     retangulo.setTexture(&textura);  
 }
 
 void InimFacil::mover() {
-    // readaptar pos add do gerenciador grafico
     sf::Vector2f posicao = getPosicao();
-    posicao.x += direcaoX * (velocidade-0.15);
+    posicao.x += direcaoX * (velocidade-0.50);
 
     if (posicao.x <= 0 || posicao.x + retangulo.getSize().x >= 3840) {
         direcaoX = -direcaoX;
@@ -40,16 +42,18 @@ void InimFacil::mover() {
     }
     posicao.y+=aplicarGravidade(0.016f);
     retangulo.setPosition(posicao);
-    if (retangulo.getPosition().y >= 600.f) {
-        sf::Vector2f pos = retangulo.getPosition();
-        pos.y = 600.f;
+    sf::Vector2f pos = retangulo.getPosition();
+    sf::Vector2f size = retangulo.getSize();
+    if (pos.y + size.y >= 670.f) {
+        pos.y = 670.f - size.y;
         retangulo.setPosition(pos);
     }
+
 }
 int InimFacil::getVida() const {
 	return vida;
 }
-int InimFacil::getAtaque() {
+int InimFacil::getAtaque() const {
 	return ataque;
 }
 void InimFacil::setVida(int v) {
@@ -75,3 +79,20 @@ void InimFacil::setVelocidade(float nvVelocidade) {
 float InimFacil::getVelocidade() {
 	return velocidade;
 }
+void InimFacil::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
+    // tipoColisao: 1 = por cima, 2/3 = laterais, 4 = por baixo (ajuste conforme seu verificarColisao)
+    if (tipoColisao == 1) { // Por cima
+        // Elimina o inimigo (pode ser delete this, ou sinalizar para o gerenciador remover)
+        this->setVida(0); // ou outro mecanismo de remoção
+        // Opcional: jogador pode quicar/pular ao eliminar o inimigo
+        jogador->setVelocidadeVertical(-400.f); // impulso de pulo, ajuste conforme seu jogo
+    }
+    else {
+        // Dano e empurra pouco o jogador
+        this->danificar(jogador);
+        sf::Vector2f pos = jogador->getRetangulo().getPosition();
+        pos.x += (tipoColisao == 2) ? -10.f : 10.f; // empurra para o lado oposto
+        jogador->setPosicao(pos.x, pos.y);
+    }
+}
+

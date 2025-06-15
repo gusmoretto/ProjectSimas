@@ -1,7 +1,7 @@
 #include "obst_medio.h"
 #include "jogador.h"
 
-ObstMedio::ObstMedio() : Obstaculo(), largura(0){
+ObstMedio::ObstMedio() : Obstaculo(), largura(0), lentidao(0) {
 	//A fazer
 	danoso = true;
 }
@@ -14,9 +14,15 @@ void ObstMedio::executar() {
 }
 void ObstMedio::obstacular(Jogador* p) {
 	if (p) {
-		p->setVida(p->getVida() - 20); 
-		std::cout << "Jogador danificado por obstáculo médio! Vida restante: " << p->getVida() << std::endl;
+		p->setVelocidade(p->getVelocidade() - getLentidao());
+		std::cout << "Jogador afetado pela lentidao! Nova velocidade: " << p->getVelocidade() << std::endl;
 	}
+}
+float ObstMedio::getLentidao() const {
+	return lentidao;
+}
+void ObstMedio::setLentidao(float lent) {
+	lentidao = lent;
 }
 void ObstMedio::setId(int novoId) {
 	id = novoId;
@@ -29,4 +35,9 @@ void ObstMedio::setLargura(float novaLargura) {
 }
 float ObstMedio::getLargura() const {
 	return largura;
+}
+void ObstMedio::desenhar() {
+	if (pGG) {
+		pGG->desenha(retangulo);
+	}
 }

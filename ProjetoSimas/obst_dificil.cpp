@@ -13,7 +13,7 @@ void ObstDificil::executar() {
 }
 void ObstDificil::obstacular(Jogador* p) {
 	if (p) {
-		//Fazer o jogador ser empurrado
+		//Fazer o jogador ser empurrado e levar dano quanto mais vezes encostar
 		std::cout << "Jogador atingido por obstáculo difícil! Jogador empurrado" << std::endl;
 	}
 }
@@ -28,4 +28,9 @@ void ObstDificil::setElasticidade(bool e){
 }
 bool ObstDificil::getElasticidade() const {
 	return elasticidade;
+}
+void ObstDificil::desenhar() {
+	if (pGG) {
+		pGG->desenha(retangulo);
+	}
 }
