@@ -25,4 +25,5 @@ public:
 	float getForcaMitico() const {
 		return forcaMitico;
 	};
+	void atualizarFisica(float dt = 0.016f);
 };

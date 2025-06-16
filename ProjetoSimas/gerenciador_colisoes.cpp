@@ -1,5 +1,6 @@
 #include "gerenciador_colisoes.h"
 #include "inim_facil.h"
+#include "obst_medio.h"
 
 namespace Gerenciadores {
 	GerenciadorColisoes::GerenciadorColisoes() : jogador1(nullptr), jogador2(nullptr) {}
@@ -102,12 +103,55 @@ namespace Gerenciadores {
 		}
 	}
 	void GerenciadorColisoes::verificaObs() {
-		for (auto obs : lObstaculos) {
-			if (jogador1 && verificarColisao(jogador1, obs)) {
-				obs->obstacular(jogador1);
+
+		// --- Lógica para o Jogador 1 ---
+		if (jogador1) {
+			bool jogador1_estaLentoPorObstMedioNesteFrame = false;
+
+			for (auto obs : lObstaculos) {
+				if (obs == nullptr) {
+					continue; 
+				}
+
+				if (verificarColisao(jogador1, obs)) {
+					obs->obstacular(jogador1);
+					if (obs->getId() == 9) {
+						ObstMedio* obstaculoMedio = dynamic_cast<ObstMedio*>(obs);
+						if (obstaculoMedio) { 
+							obstaculoMedio->obstacular(jogador1); 
+							jogador1_estaLentoPorObstMedioNesteFrame = true; 
+						}
+					}
+				}
 			}
-			if (jogador2 && verificarColisao(jogador2, obs))
-				obs->obstacular(jogador2);
+			if (!jogador1_estaLentoPorObstMedioNesteFrame) {
+				jogador1->setVelocidade(jogador1->getVelocidadeBase());
+			}
+		}
+		if (jogador2) {
+			bool jogador2_estaLentoPorObstMedioNesteFrame = false;
+
+			for (auto obs : lObstaculos) {
+				if (obs == nullptr) {
+					continue;
+				}
+
+				if (verificarColisao(jogador2, obs)) {
+					obs->obstacular(jogador2); 
+
+					if (obs->getId() == 9) {
+						ObstMedio* obstaculoMedio = dynamic_cast<ObstMedio*>(obs);
+						if (obstaculoMedio) {
+							obstaculoMedio->obstacular(jogador2);
+							jogador2_estaLentoPorObstMedioNesteFrame = true;
+						}
+					}
+				}
+			}
+
+			if (!jogador2_estaLentoPorObstMedioNesteFrame) {
+				jogador2->setVelocidade(jogador2->getVelocidadeBase());
+			}
 		}
 	}
 

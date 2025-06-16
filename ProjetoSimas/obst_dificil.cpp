@@ -34,3 +34,14 @@ void ObstDificil::desenhar() {
 		pGG->desenha(retangulo);
 	}
 }
+void ObstDificil::atualizarFisica(float dt) {
+	aplicarGravidade(dt, getForcaMitico());
+
+	// Limite do chão (opcional)
+	sf::Vector2f pos = retangulo.getPosition();
+	if (pos.y + retangulo.getSize().y > 670.f) {
+		pos.y = 670.f - retangulo.getSize().y;
+		velocidadeVertical = 0.f;
+		retangulo.setPosition(pos);
+	}
+}

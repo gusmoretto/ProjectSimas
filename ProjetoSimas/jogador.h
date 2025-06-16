@@ -10,6 +10,7 @@ private:
 	float velocidadeVertical;
 	const float impulsoPulo;
 	bool olhandoDireita;
+	float velocidadeBase;
 
 public:
 	Jogador();
@@ -35,4 +36,5 @@ public:
 	float getForcaMitico() const {
 		return forcaMitico;
 	};
+	float getVelocidadeBase() const { return velocidadeBase; }
 };

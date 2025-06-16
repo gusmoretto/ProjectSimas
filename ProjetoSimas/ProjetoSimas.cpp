@@ -12,6 +12,7 @@
 #include "gerenciador_grafico.h"
 #include "gerenciador_colisoes.h"
 #include "plataforma.h"
+#include "obst_medio.h"
 using namespace std;
 using namespace Gerenciadores;
 
@@ -27,6 +28,9 @@ int main()
     Plataforma* p4 = new Plataforma();
     Plataforma* p5 = new Plataforma();
     Plataforma* p6 = new Plataforma();
+
+	ObstMedio* obstaculo1 = new ObstMedio();
+	ObstMedio* obstaculo2 = new ObstMedio();
 
     Jogador jogador1;
     jogador1.executar();
@@ -63,6 +67,14 @@ int main()
     p5->setPosicao(640.f, 542.f);
 	p6->setPosicao(640.f, 670.f);
 
+	obstaculo1->setPosicao(832.f, 630.f);
+	obstaculo2->setPosicao(896.f, 630.f);
+
+	obstaculo1->executar();
+    gerenciadorColisoes.inclueEntidade(obstaculo1);
+	obstaculo2->executar();
+    gerenciadorColisoes.inclueEntidade(obstaculo2);
+
     for (auto& plataforma : plataformas) {
         plataforma->executar();
         gerenciadorColisoes.inclueEntidade(plataforma);
@@ -87,6 +99,10 @@ int main()
             plataforma->setForcaMitico(-980.f);
             plataforma->atualizarFisica(0.016f);
         }
+		obstaculo1->setForcaMitico(-980.f);
+		obstaculo1->atualizarFisica(0.016f);
+		obstaculo2->setForcaMitico(-980.f);
+		obstaculo2->atualizarFisica(0.016f);
 
         float janelax = gerenciadorGrafico.getTamanhoJanelax();
         float janelay = gerenciadorGrafico.getTamanhoJanelay();
@@ -143,6 +159,10 @@ int main()
             if (plataforma)
                 plataforma->desenhar();
         }
+		if (obstaculo1 != nullptr)
+			obstaculo1->desenhar();
+		if (obstaculo2 != nullptr)
+			obstaculo2->desenhar();
         jogador1.desenhar();
         if (inimigo1 != nullptr)
             inimigo1->desenhar();
