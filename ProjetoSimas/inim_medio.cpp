@@ -32,21 +32,18 @@ void InimMedio::executar() {
 }
 void InimMedio::mover() {
 	sf::Vector2f pos = getPosicao();
-	setNoChao(false); 
-	if (!getNochao()) {
-		velocidadeVertical += 9.8f * 0.016f;
-		pos.y += velocidadeVertical * 0.016f;
-	}
-	else {
-		velocidadeVertical = 0.f;
-	}
-	pos.y += aplicarGravidade(0.016f);
+	pos.y += aplicarGravidade(0.016f, forcaMitico); // Use forcaMitico se aplicável
 
 	sf::Vector2f size = retangulo.getSize();
-	if (pos.y + size.y >= 670.f) {
+	if (pos.y + size.y >= 670.f) { 
 		pos.y = 670.f - size.y;
-		retangulo.setPosition(pos);
+		velocidadeVertical = 0.f; // Zera a velocidade vertical ao atingir o chão
+		setNoChao(true); // Indica que está no chão
 	}
+	else {
+		setNoChao(false); // Não está no chão se não colidiu com o limite inferior
+	}
+
 	setPosicao(pos.x, pos.y);
 }
 

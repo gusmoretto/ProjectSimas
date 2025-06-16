@@ -80,7 +80,7 @@ int main()
         gerenciadorColisoes.inclueEntidade(plataforma);
     }
 
-    inimigo2->setPosicao(130.f, 400.f);
+    inimigo2->setPosicao(190.f, 400.f);
 
     while (gerenciadorGrafico.estaAberta())
     {

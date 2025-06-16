@@ -264,44 +264,41 @@ namespace Gerenciadores {
 	}
 	void GerenciadorColisoes::verificaObsInim() {
 		for (auto inim : lInimigos) {
-			if (!inim) continue; // Garante que o ponteiro do inimigo não é nulo
+			if (!inim) continue;
 
 			for (auto obs : lObstaculos) {
-				if (!obs) continue; // Garante que o ponteiro do obstáculo não é nulo
+				if (!obs) continue;
 
 				int tipoColisao = verificarColisao(inim, obs);
-				if (tipoColisao != 0) { // Se houver colisão
+				if (tipoColisao != 0) {
 					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
 					sf::FloatRect areaObs = obs->getRetangulo().getGlobalBounds();
-					sf::Vector2f posInimigo = inim->getRetangulo().getPosition(); // Pega a posição ATUAL do inimigo
+					sf::Vector2f posInimigo = inim->getRetangulo().getPosition();
 
 					switch (tipoColisao) {
 					case 1: // Inimigo colidiu por CIMA do obstáculo (caiu sobre ele)
 						posInimigo.y = areaObs.top - areaInimigo.height;
 						inim->setVelocidadeVertical(0.f); // Zera velocidade de queda
+						inim->setNoChao(true); // Indica que o inimigo está no chão/plataforma
 						break;
 					case 2: // Inimigo colidiu pela ESQUERDA do obstáculo
 						posInimigo.x = areaObs.left - areaInimigo.width;
-						// inim->setVelocidadeX(0.f); // Zera velocidade horizontal
+						if (inim->getId() == 3) { // Se for InimFacil
+							static_cast<InimFacil*>(inim)->virarDirecao(); // Vira direção
+						}
 						break;
 					case 3: // Inimigo colidiu pela DIREITA do obstáculo
 						posInimigo.x = areaObs.left + areaObs.width;
-						// inim->setVelocidadeX(0.f); // Zera velocidade horizontal
+						if (inim->getId() == 3) { // Se for InimFacil
+							static_cast<InimFacil*>(inim)->virarDirecao(); // Vira direção
+						}
 						break;
 					case 4: // Inimigo colidiu por BAIXO do obstáculo (cabeça no teto)
 						posInimigo.y = areaObs.top + areaObs.height;
-						// inim->setVelocidadeVertical(0.f); // Zera velocidade de subida
+						inim->setVelocidadeVertical(0.f); // Zera velocidade de subida
 						break;
 					}
 					inim->setPosicao(posInimigo.x, posInimigo.y);
-					if (inim->getId() == 3) { 
-						InimFacil* inimigoFacil = dynamic_cast<InimFacil*>(inim);
-						if (inimigoFacil) {
-							if (tipoColisao == 2 || tipoColisao == 3) { 
-								inimigoFacil->virarDirecao(); 
-							}
-						}
-					}
 				}
 			}
 		}
