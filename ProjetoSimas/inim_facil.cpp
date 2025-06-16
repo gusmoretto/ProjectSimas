@@ -100,4 +100,16 @@ void InimFacil::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
         jogador->setPosicao(pos.x, pos.y);
     }
 }
+void InimFacil::setVelocidadeVertical(float nvVelocidadeVertical) {
+    velocidadeVertical = nvVelocidadeVertical;
+}
+float InimFacil::getVelocidadeVertical() const {
+    return velocidadeVertical;
+}
+void InimFacil::setNoChao(bool NC) {
+    noChao = NC;
+}
+bool InimFacil::getNochao() {
+    return noChao;
+}
 

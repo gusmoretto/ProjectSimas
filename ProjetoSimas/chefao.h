@@ -29,5 +29,9 @@ public:
 	float getForcaMitico() const {
 		return forcaMitico;
 	};
+	void setVelocidadeVertical(float nvVelocidadeVertical);
+	float getVelocidadeVertical() const;
+	void setNoChao(bool NC);
+	bool getNochao();
 };
 	

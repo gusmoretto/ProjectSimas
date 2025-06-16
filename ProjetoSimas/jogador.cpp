@@ -144,6 +144,9 @@ float Jogador::getVelocidade() {
 void Jogador::setNoChao(bool NC) {
     noChao = NC;
 }
+bool Jogador::getNochao() {
+	return noChao;
+}
 void Jogador::setVelocidadeVertical(float nvVelocidadeVertical) {
 	velocidadeVertical = nvVelocidadeVertical;
 }

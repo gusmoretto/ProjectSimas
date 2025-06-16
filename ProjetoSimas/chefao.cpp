@@ -59,4 +59,16 @@ void Chefao::desenhar() {
 		pGG->desenha(retangulo);
 	}
 }
+void Chefao::setVelocidadeVertical(float nvVelocidadeVertical) {
+	velocidadeVertical = nvVelocidadeVertical;
+}
+float Chefao::getVelocidadeVertical() const {
+	return velocidadeVertical;
+}
+void Chefao::setNoChao(bool NC) {
+	noChao = NC;
+}
+bool Chefao::getNochao() {
+	return noChao;
+}
 

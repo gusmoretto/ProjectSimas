@@ -38,4 +38,8 @@ public:
 	};
 	void atacar(Jogador* jogador1, Jogador* jogador2, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes);
 	void tratarColisaoComJogador(Jogador* jogador, int tipoColisao);
+	void setVelocidadeVertical(float nvVelocidadeVertical);
+	float getVelocidadeVertical() const;
+	void setNoChao(bool NC);
+	bool getNochao();
 };

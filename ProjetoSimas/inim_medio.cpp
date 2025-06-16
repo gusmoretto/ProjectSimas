@@ -32,14 +32,13 @@ void InimMedio::executar() {
 }
 void InimMedio::mover() {
 	sf::Vector2f pos = getPosicao();
-	float passo = 0.5f; 
-
-	pos.x += direcao * passo;
-	deslocamentoAtual += passo;
-
-	if (deslocamentoAtual >= deslocamentoMax) {
-		direcao *= -1;
-		deslocamentoAtual = 0.f;
+	setNoChao(false); 
+	if (!getNochao()) {
+		velocidadeVertical += 9.8f * 0.016f;
+		pos.y += velocidadeVertical * 0.016f;
+	}
+	else {
+		velocidadeVertical = 0.f;
 	}
 	pos.y += aplicarGravidade(0.016f);
 
@@ -48,8 +47,6 @@ void InimMedio::mover() {
 		pos.y = 670.f - size.y;
 		retangulo.setPosition(pos);
 	}
-
-
 	setPosicao(pos.x, pos.y);
 }
 
@@ -75,7 +72,6 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 			it = projeteis.erase(it);
 		}
 		else {
-			p->executar();
 			++it;
 		}
 	}
@@ -85,7 +81,7 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 	if (tempoAtaque >= intervaloAtaque) {
 		for (int i = 0; i < 15; ++i) {
 			Projetil* novoProj = new Projetil();
-			novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, true);
+			//novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, true);
 			projeteis.push_back(novoProj);
 			if (gerenciadorColisoes)
 				gerenciadorColisoes->inclueEntidade(novoProj);
@@ -143,4 +139,16 @@ void InimMedio::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
 		pos.x += (tipoColisao == 2) ? -10.f : 10.f; // empurra para o lado oposto
 		jogador->setPosicao(pos.x, pos.y);
 	}
+}
+void InimMedio::setVelocidadeVertical(float nvVelocidadeVertical) {
+	velocidadeVertical = nvVelocidadeVertical;
+}
+float InimMedio::getVelocidadeVertical() const {
+	return velocidadeVertical;
+}
+void InimMedio::setNoChao(bool NC) {
+	noChao = NC;
+}
+bool InimMedio::getNochao() {
+	return noChao;
 }

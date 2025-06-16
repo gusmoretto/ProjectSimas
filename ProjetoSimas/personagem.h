@@ -8,6 +8,8 @@ protected:
 	float velocidade;
 	int vida;
 	int ataque;
+	float velocidadeVertical;
+	bool noChao;
 
 public:
 	Personagem();
@@ -22,4 +24,8 @@ public:
 	virtual int getAtaque() const = 0;
 	virtual void setVida(int v) = 0;
 	virtual void setAtaque(int a) = 0;
+	virtual void setVelocidadeVertical(float nvVelocidadeVertical) = 0;
+	virtual float getVelocidadeVertical() const = 0;
+	virtual void setNoChao(bool NC) = 0;
+	virtual bool getNochao() = 0;
 };

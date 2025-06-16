@@ -278,8 +278,7 @@ namespace Gerenciadores {
 					switch (tipoColisao) {
 					case 1: // Inimigo colidiu por CIMA do obstáculo (caiu sobre ele)
 						posInimigo.y = areaObs.top - areaInimigo.height;
-						// inim->setVelocidadeVertical(0.f); // Zera velocidade de queda
-						// inim->noChao(true); // Indica que o inimigo está no chão
+						inim->setVelocidadeVertical(0.f); // Zera velocidade de queda
 						break;
 					case 2: // Inimigo colidiu pela ESQUERDA do obstáculo
 						posInimigo.x = areaObs.left - areaInimigo.width;
