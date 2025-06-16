@@ -63,6 +63,12 @@
     <ClCompile Include="obst_dificil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lista_entidades.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jogador.h">
@@ -108,6 +114,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="obst_dificil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="elemento.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lista.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lista_entidades.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primeira_fase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jogo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

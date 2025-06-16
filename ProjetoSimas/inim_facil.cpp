@@ -3,14 +3,13 @@
 #include "inimigo.h"
 #include <iostream>
 
-InimFacil::InimFacil(): Inimigo(), raio(50.f), direcaoX(1.f) {
+InimFacil::InimFacil(): Inimigo(), direcaoX(1.f) {
     nivel_maldade = 1;
 	vida = 100; 
     ataque = 10;
 }
 
 InimFacil::~InimFacil() {
-    raio = -1;
 }
 
 void InimFacil::danificar(Jogador* p) {
@@ -18,6 +17,9 @@ void InimFacil::danificar(Jogador* p) {
         p->setVida(p->getVida() - ataque); // Example: Reduce player's health by 10
         
     }
+}
+void InimFacil::virarDirecao() {
+    direcaoX = -direcaoX;
 }
 
 void InimFacil::executar() {
@@ -33,22 +35,25 @@ void InimFacil::executar() {
 }
 
 void InimFacil::mover() {
-    sf::Vector2f posicao = getPosicao();
-    posicao.x += direcaoX * (velocidade-0.50);
+    sf::Vector2f posicao = getPosicao(); 
+    posicao.x += direcaoX * (velocidade - 0.50);
 
-    if (posicao.x <= 0 || posicao.x + retangulo.getSize().x >= 3840) {
-        direcaoX = -direcaoX;
-        posicao.x += direcaoX * velocidade; 
+
+    if (posicao.x <= 0) { 
+        posicao.x = 0; 
+        virarDirecao();
     }
-    posicao.y+=aplicarGravidade(0.016f);
-    retangulo.setPosition(posicao);
-    sf::Vector2f pos = retangulo.getPosition();
-    sf::Vector2f size = retangulo.getSize();
-    if (pos.y + size.y >= 670.f) {
-        pos.y = 670.f - size.y;
-        retangulo.setPosition(pos);
+    else if (posicao.x + retangulo.getSize().x >= 3840) { 
+        posicao.x = 3840 - retangulo.getSize().x; 
+        virarDirecao();
     }
 
+    posicao.y += aplicarGravidade(0.016f); 
+
+    if (posicao.y + retangulo.getSize().y >= 670.f) {
+        posicao.y = 670.f - retangulo.getSize().y; 
+    }
+    retangulo.setPosition(posicao); 
 }
 int InimFacil::getVida() const {
 	return vida;

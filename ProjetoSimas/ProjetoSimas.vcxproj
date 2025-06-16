@@ -136,12 +136,14 @@
     <ClCompile Include="chefao.cpp" />
     <ClCompile Include="ente.cpp" />
     <ClCompile Include="entidade.cpp" />
+    <ClCompile Include="fase.cpp" />
     <ClCompile Include="gerenciador_colisoes.cpp" />
     <ClCompile Include="gerenciador_grafico.cpp" />
     <ClCompile Include="inimigo.cpp" />
     <ClCompile Include="inim_facil.cpp" />
     <ClCompile Include="inim_medio.cpp" />
     <ClCompile Include="jogador.cpp" />
+    <ClCompile Include="lista_entidades.cpp" />
     <ClCompile Include="obstaculo.cpp" />
     <ClCompile Include="obst_dificil.cpp" />
     <ClCompile Include="obst_medio.cpp" />
@@ -152,19 +154,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chefao.h" />
+    <ClInclude Include="elemento.h" />
     <ClInclude Include="ente.h" />
     <ClInclude Include="entidade.h" />
+    <ClInclude Include="fase.h" />
     <ClInclude Include="gerenciador_colisoes.h" />
     <ClInclude Include="gerenciador_grafico.h" />
     <ClInclude Include="inimigo.h" />
     <ClInclude Include="inim_facil.h" />
     <ClInclude Include="inim_medio.h" />
     <ClInclude Include="jogador.h" />
+    <ClInclude Include="jogo.h" />
+    <ClInclude Include="lista.h" />
+    <ClInclude Include="lista_entidades.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="obstaculo.h" />
     <ClInclude Include="obst_dificil.h" />
     <ClInclude Include="obst_medio.h" />
     <ClInclude Include="personagem.h" />
     <ClInclude Include="plataforma.h" />
+    <ClInclude Include="primeira_fase.h" />
     <ClInclude Include="projetil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -22,5 +22,7 @@ public:
 	virtual void tratarColisaoComJogador(Jogador* jogador, int tipoColisao) = 0;
 	virtual void setForcaMitico(float forca) = 0;
 	virtual float getForcaMitico() const = 0; 
+	virtual void setId(int novoId) = 0;
+	virtual int getId() const = 0;
 
 };

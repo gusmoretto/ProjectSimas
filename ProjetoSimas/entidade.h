@@ -33,4 +33,6 @@ public:
     virtual void desenhar() = 0;
     virtual void setForcaMitico(float forca) = 0;
     virtual float getForcaMitico() const = 0;
+    virtual void setId(int novoId) = 0;
+    virtual int getId() const = 0;
 };

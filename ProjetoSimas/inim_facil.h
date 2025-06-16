@@ -4,7 +4,6 @@
 
 class InimFacil : public Inimigo {
 private:
-	float raio;
 	float direcaoX;
 
 public:
@@ -22,6 +21,7 @@ public:
 	int getId() const;
 	void setVelocidade(float nvVelocidade);
 	float getVelocidade();
+	void virarDirecao();
 	void tratarColisaoComJogador(Jogador* jogador, int tipoColisao);
 	void setForcaMitico(float forca) {
 		forcaMitico = forca;

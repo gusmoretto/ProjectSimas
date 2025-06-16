@@ -20,7 +20,7 @@ void Plataforma::obstacular(Jogador* p) {
     sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
     sf::FloatRect areaPlataforma = this->getRetangulo().getGlobalBounds();
 
-    float tolerancia = 8.f; // Ajuste conforme necessário
+    float tolerancia = 10.f; // Ajuste conforme necessário
 
     // Colisão por cima
     bool colisaoPorCima =
@@ -35,6 +35,19 @@ void Plataforma::obstacular(Jogador* p) {
         p->setVelocidadeVertical(0.f);
         p->setNoChao(true);
         return;
+    }
+    bool colisaoPorBaixo =
+        (areaJogador.top < areaPlataforma.top + areaPlataforma.height) && 
+        (areaJogador.top > areaPlataforma.top + areaPlataforma.height - tolerancia) && 
+        (p->getVelocidadeVertical() < 0) && 
+        (areaJogador.left + areaJogador.width > areaPlataforma.left + 5.f) &&
+        (areaJogador.left < areaPlataforma.left + areaPlataforma.width - 5.f);
+
+    if (colisaoPorBaixo) {
+        p->setPosicao(areaJogador.left, areaPlataforma.top + areaPlataforma.height); 
+        p->setVelocidadeVertical(0.f); 
+        p->setNoChao(false); 
+        return; 
     }
 
     // Colisão lateral esquerda
