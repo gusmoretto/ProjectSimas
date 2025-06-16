@@ -59,7 +59,6 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 	if (!viewRect.contains(getPosicao()) || !alvo || !viewRect.contains(alvo->getPosicao()))
 		return;
 
-	// 1. Remova e delete projeteis inativos ANTES de criar novos
 	for (auto it = projeteis.begin(); it != projeteis.end(); ) {
 		Projetil* p = *it;
 		if (!p->getestaAtivo()) {
@@ -72,21 +71,17 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 			++it;
 		}
 	}
-
-	// 2. Agora crie novos projeteis se for o momento
 	tempoAtaque += deltaTime;
 	if (tempoAtaque >= intervaloAtaque) {
-		for (int i = 0; i < 15; ++i) {
-			Projetil* novoProj = new Projetil();
-			//novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, true);
-			projeteis.push_back(novoProj);
-			if (gerenciadorColisoes)
-				gerenciadorColisoes->inclueEntidade(novoProj);
-		}
+		Projetil* novoProj = new Projetil();
+		novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, 0.f, false); 
+		projeteis.push_back(novoProj);
+		if (gerenciadorColisoes)
+			gerenciadorColisoes->inclueEntidade(novoProj);
+
 		tempoAtaque = 0.f;
 	}
 }
-
 
 int InimMedio::getVida() const {
 	return vida;

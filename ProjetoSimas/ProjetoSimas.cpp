@@ -149,8 +149,14 @@ int main()
             inimigo2 = nullptr;
         }
 
-        if (inimigo2 != nullptr)
+        if (inimigo2 != nullptr) {
             inimigo2->atacar(&jogador1, nullptr, 0.016f, viewatual, &gerenciadorColisoes);
+            for (auto& proj : inimigo2->getProjeteis()) { 
+                if (proj->getestaAtivo()) {
+                    proj->executar();
+                }
+            }
+        }
 
         gerenciadorGrafico.clear();
         gerenciadorGrafico.desenhaFundo();

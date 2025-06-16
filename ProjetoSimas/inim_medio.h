@@ -42,4 +42,5 @@ public:
 	float getVelocidadeVertical() const;
 	void setNoChao(bool NC);
 	bool getNochao();
+	const std::vector<Projetil*>& getProjeteis() const { return projeteis; }
 };
