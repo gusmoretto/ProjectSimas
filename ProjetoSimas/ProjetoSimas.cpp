@@ -112,6 +112,7 @@ int main()
     }
     else {
         float x, y;
+        if (numObstaculosMedios == 11) numObstaculosMedios = 10;
         for (int i = 0; i < numObstaculosMedios; ++i) {
             if (arqAguas >> x >> y) {
                 ObstMedio* pAgua = new ObstMedio();
