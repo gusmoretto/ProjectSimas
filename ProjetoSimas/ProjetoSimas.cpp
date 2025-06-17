@@ -107,16 +107,28 @@ int main()
     }
 
     ObstMedio* obstaculo1 = new ObstMedio();
-    obstaculo1->setPosicao(768.f, 650.f);
+    obstaculo1->setPosicao(768.f, 660.f);
     obstaculo1->executar();
     gerenciadorColisoes.inclueEntidade(obstaculo1);
     obstaculos.push_back(obstaculo1);
 
     ObstMedio* obstaculo2 = new ObstMedio();
-    obstaculo2->setPosicao(832.f, 650.f);
+    obstaculo2->setPosicao(832.f, 660.f);
     obstaculo2->executar();
     gerenciadorColisoes.inclueEntidade(obstaculo2);
     obstaculos.push_back(obstaculo2);
+  
+    ObstMedio* obstaculo3 = new ObstMedio();
+    obstaculo3->setPosicao(704.f, 660.f);
+    obstaculo3->executar();
+    gerenciadorColisoes.inclueEntidade(obstaculo3);
+    obstaculos.push_back(obstaculo3);
+   
+    ObstMedio* obstaculo4 = new ObstMedio();
+    obstaculo4->setPosicao(896.f, 660.f);
+    obstaculo4->executar();
+    gerenciadorColisoes.inclueEntidade(obstaculo4);
+    obstaculos.push_back(obstaculo4);
 
     // --- Loop Principal ---
     while (gerenciadorGrafico.estaAberta())
