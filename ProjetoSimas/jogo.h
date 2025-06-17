@@ -1,16 +1,18 @@
 #pragma once
+#include "gerenciador_grafico.h"
 #include "jogador.h"
+#include "fase.h"
+
 using namespace Gerenciadores;
 
 class Jogo {
 private:
-	Jogador pjog1;
-	GerenciadorGrafico GG;
+    GerenciadorGrafico* pGG;
+    Jogador* jogador1;
+    Fase* faseAtual;
 
 public:
-	Jogo();
-	~Jogo();
-	void executar();
-
-
+    Jogo();
+    ~Jogo();
+    void executar();
 };

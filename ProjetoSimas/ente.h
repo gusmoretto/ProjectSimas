@@ -12,5 +12,5 @@ public:
 	virtual void executar() = 0;
 	virtual void setId(int novoId) = 0;
 	virtual int getId() const  = 0;
-	void setGerenciadorGrafico(Gerenciadores::GerenciadorGrafico* p) { pGG = p; }
+	static void setGerenciadorGrafico(Gerenciadores::GerenciadorGrafico* p) { pGG = p; }
 };

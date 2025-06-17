@@ -1,4 +1,4 @@
-#pragma onceJ
+#pragma once
 #include "ente.h"
 #include "jogo.h"
 
@@ -9,5 +9,7 @@ private:
 public:
 	Menu();
 	~Menu();
-	void executar();
+	void executar() override;
+	void setId(int novoId) override;
+	int getId() const override;
 };

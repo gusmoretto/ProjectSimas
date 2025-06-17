@@ -2,13 +2,13 @@
 #include "fase.h"
 
 class PrimeiraFase : public Fase {
-private:
-	const int maxLancadores;
+    const int maxLancadores;
+    int maxAguas;
+public:
+    PrimeiraFase(Jogador* j1, Jogador* j2);
+    ~PrimeiraFase();
+
 protected:
-	PrimeiraFase();
-	~PrimeiraFase();
-	void criarAgua();
-	void criarLancador();
-	void criarInimigos() {}
-	void criarObstaculos() {}
+    void criarInimigos() override;
+    void criarObstaculos() override;
 };

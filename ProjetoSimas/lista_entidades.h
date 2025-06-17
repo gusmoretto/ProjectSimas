@@ -13,4 +13,5 @@ public:
 
     void incluir(Entidade* PE); 
     void percorrer();
+    Elemento<Entidade>* getPrimeiro();
 };

@@ -15,3 +15,7 @@ void ListaEntidades::percorrer() {
     std::cout << "Lista de Entidades:" << std::endl;
     LEs.percorrer();
 }
+
+Elemento<Entidade>* ListaEntidades::getPrimeiro() {
+    return LEs.getPrimeiro();
+}
