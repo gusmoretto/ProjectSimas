@@ -14,8 +14,7 @@ InimFacil::~InimFacil() {
 
 void InimFacil::danificar(Jogador* p) {
     if (p) {
-        p->setVida(p->getVida() - ataque); // Example: Reduce player's health by 10
-        
+        p->setVida(p->getVida() - ataque); 
     }
 }
 void InimFacil::virarDirecao() {
@@ -25,9 +24,6 @@ void InimFacil::virarDirecao() {
 void InimFacil::executar() {
     setId(3);
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
-    retangulo.setOrigin(0.f, 0.f);
-    retangulo.setPosition(x, y);
-   
     if (!textura.loadFromFile("aranha.png")) {
         std::cout << "Erro ao carregar jogador1.png" << std::endl;
     }

@@ -33,7 +33,6 @@ void Fase::criarPlataformas(const std::string& nomeArquivo) {
             GC.inclueEntidade(p); 
         }
         else {
-            // Se o arquivo terminar antes do esperado, para o loop.
             std::cerr << "Aviso: Fim do arquivo de plataformas alcancado antes de criar "
                 << numPlataformasParaCriar << " plataformas. Criadas: " << i << std::endl;
             break;
@@ -68,8 +67,10 @@ void Fase::criarinimFaceis(const std::string& nomeArquivo) {
     arquivo.close();
 }
 void Fase::executar() {
-	
-}
-void Fase::colocarCoordenadas() {
-	
+	criarCenario();
+	criarPlataformas("coordPlataformas.txt");
+	criarinimFaceis("coordInimigos.txt");
+	criarObstaculos();
+	criarInimigos();
+	GC.executar();
 }

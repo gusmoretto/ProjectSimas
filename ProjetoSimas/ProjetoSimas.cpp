@@ -18,33 +18,24 @@ using namespace Gerenciadores;
 
 int main()
 {
-    // Inicializa a semente para números aleatórios uma única vez
     srand(time(NULL));
 
     // --- Gerenciadores ---
     GerenciadorGrafico gerenciadorGrafico;
     GerenciadorColisoes gerenciadorColisoes;
 
-    // --- Entidades ---
+    // --- Jogador ---
     Jogador jogador1;
     jogador1.setGerenciadorGrafico(&gerenciadorGrafico);
     jogador1.executar();
     gerenciadorColisoes.inclueEntidade(&jogador1);
-
-    // Inimigo especial com ataque de projétil
-    InimMedio* inimigo2 = new InimMedio();
-    inimigo2->setGerenciadorGrafico(&gerenciadorGrafico);
-    inimigo2->executar();
-    inimigo2->setPosicao(190.f, 400.f);
-    gerenciadorColisoes.inclueEntidade(inimigo2);
-
     gerenciadorColisoes.setJogadores(&jogador1, nullptr);
 
-    // --- Vetores para gerenciar a memória ---
+    // --- Vetores de Entidades ---
     vector<Plataforma*> plataformas;
     vector<Obstaculo*> obstaculos;
 
-    // --- Cenário ---
+    // --- Inicialização Gráfica ---
     gerenciadorGrafico.iniciaFundo("fundo1.png");
     gerenciadorGrafico.iniciaChao("chao.png", 3840.f, 300.f);
 
@@ -65,21 +56,19 @@ int main()
                 plataformas.push_back(p);
             }
             else {
-                break; // Fim do arquivo
+                break;
             }
         }
         arqPlataformas.close();
     }
-
-    // --- Carregar Inimigos Fáceis (Aranhas) do Arquivo ---
-    int numInimigosParaCriar = rand() % (5 - 3 + 1) + 3;
+    int numInimigosFaceis = rand() % (5 - 3 + 1) + 3;
     std::ifstream arqAranhas("coordAranhas.txt");
     if (!arqAranhas.is_open()) {
         std::cerr << "Erro: Nao foi possivel abrir o arquivo de aranhas." << std::endl;
     }
     else {
         float x, y;
-        for (int i = 0; i < numInimigosParaCriar; ++i) {
+        for (int i = 0; i < numInimigosFaceis; ++i) {
             if (arqAranhas >> x >> y) {
                 InimFacil* pAranha = new InimFacil();
                 pAranha->setGerenciadorGrafico(&gerenciadorGrafico);
@@ -88,29 +77,48 @@ int main()
                 gerenciadorColisoes.inclueEntidade(pAranha);
             }
             else {
-                break; // Fim do arquivo
+                break;
             }
         }
         arqAranhas.close();
     }
 
-    // --- Carregar Obstáculos ---
+
+    int numInimigosMedios = rand() % (4 - 3 + 1) + 3; 
+    std::ifstream arqInimMedios("coordLancadores.txt"); 
+    if (!arqInimMedios.is_open()) {
+        std::cerr << "Erro: Nao foi possivel abrir o arquivo de Lancadores." << std::endl;
+    }
+    else {
+        float x, y;
+        for (int i = 0; i < numInimigosMedios; ++i) {
+            if (arqInimMedios >> x >> y) {
+                InimMedio* pInimMedio = new InimMedio();
+                pInimMedio->setGerenciadorGrafico(&gerenciadorGrafico);
+                pInimMedio->setPosicao(x, y);
+                pInimMedio->executar();
+                gerenciadorColisoes.inclueEntidade(pInimMedio);
+            }
+            else {
+                break;
+            }
+        }
+        arqInimMedios.close();
+    }
+
     ObstMedio* obstaculo1 = new ObstMedio();
-    obstaculo1->setPosicao(768.f, 660.f);
+    obstaculo1->setPosicao(768.f, 650.f);
     obstaculo1->executar();
     gerenciadorColisoes.inclueEntidade(obstaculo1);
     obstaculos.push_back(obstaculo1);
 
     ObstMedio* obstaculo2 = new ObstMedio();
-    obstaculo2->setPosicao(832.f, 660.f);
+    obstaculo2->setPosicao(832.f, 650.f);
     obstaculo2->executar();
     gerenciadorColisoes.inclueEntidade(obstaculo2);
     obstaculos.push_back(obstaculo2);
 
-
-    // ===================================================================
-    //                          LOOP PRINCIPAL
-    // ===================================================================
+    // --- Loop Principal ---
     while (gerenciadorGrafico.estaAberta())
     {
         sf::Event evento;
@@ -124,47 +132,40 @@ int main()
             gerenciadorGrafico.fechar();
         }
 
-        // --- Atualização da Física e Movimento ---
-
+        // --- Movimento ---
         jogador1.mover();
 
-        // Move todos os inimigos da lista do gerenciador de colisões
         for (auto* inimigo : gerenciadorColisoes.getInimigos()) {
             if (inimigo) inimigo->mover();
         }
 
-        // CORREÇÃO: Física das plataformas com gravidade neutralizada
+        // --- Física ---
         for (auto* p : plataformas) {
             if (p) {
-                p->setForcaMitico(-980.f); // Neutraliza a gravidade
+                p->setForcaMitico(-980.f);
                 p->atualizarFisica(0.016f);
             }
         }
-
-        // Física dos obstáculos (eles caem normalmente)
         for (auto* o : obstaculos) {
             if (o) {
+                o->setForcaMitico(-980.f);
                 o->atualizarFisica(0.016f);
             }
         }
 
-        // --- Lógica de Ataque ---
-        bool inimigo2AindaExiste = false;
-        for (auto* inim : gerenciadorColisoes.getInimigos()) {
-            if (inim == inimigo2) {
-                inimigo2AindaExiste = true;
-                break;
-            }
-        }
-        if (!inimigo2AindaExiste) {
-            inimigo2 = nullptr; // Define como nulo para não ser mais usado
-        }
-
-        if (inimigo2 != nullptr) {
-            inimigo2->atacar(&jogador1, nullptr, 0.016f, gerenciadorGrafico.getView(), &gerenciadorColisoes);
-            for (auto* proj : inimigo2->getProjeteis()) {
-                if (proj->getestaAtivo()) {
-                    proj->executar();
+        // --- Lógica de Ataque Generalizada para Inimigos Médios ---
+        for (auto* inimigo : gerenciadorColisoes.getInimigos()) {
+            if (inimigo) {
+                // Tenta converter o ponteiro de Inimigo para InimMedio
+                InimMedio* pInimMedio = dynamic_cast<InimMedio*>(inimigo);
+                if (pInimMedio) {
+                    // Se a conversão deu certo, chama o ataque
+                    pInimMedio->atacar(&jogador1, nullptr, 0.016f, gerenciadorGrafico.getView(), &gerenciadorColisoes);
+                    for (auto* proj : pInimMedio->getProjeteis()) {
+                        if (proj && proj->getestaAtivo()) {
+                            proj->executar();
+                        }
+                    }
                 }
             }
         }
@@ -186,27 +187,16 @@ int main()
         for (auto* o : obstaculos) {
             if (o) o->desenhar();
         }
-
         for (auto* inimigo : gerenciadorColisoes.getInimigos()) {
             if (inimigo) inimigo->desenhar();
         }
 
         jogador1.desenhar();
-
         gerenciadorGrafico.mostrar();
     }
 
-    // ===================================================================
-    //                      LIMPEZA DE MEMÓRIA
-    // ===================================================================
-
-    // O Gerenciador de Colisões já deleta os inimigos quando a vida deles acaba.
-    // Os ponteiros restantes na lista dele são os que sobraram vivos.
-    // O ideal seria o Gerenciador de Colisões limpar sua própria lista no destrutor,
-    // mas como ele não faz, limpamos a memória dos sobreviventes aqui.
     auto inimigosVivos = gerenciadorColisoes.getInimigos();
     for (auto* inim : inimigosVivos) {
-        // O inimigo2 já está nesta lista, então não precisa de delete separado.
         delete inim;
     }
 

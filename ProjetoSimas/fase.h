@@ -11,10 +11,9 @@ protected:
 protected:
 	void criarinimFaceis(const std::string& nomeArquivo);
 	void criarPlataformas(const std::string& nomeArquivo);
-	//virtual void criarInimigos() = 0;
-	//virtual void criarObstaculos() = 0;
+	virtual void criarInimigos() = 0;
+	virtual void criarObstaculos() = 0;
 	void criarCenario();
-	void colocarCoordenadas();
 
 public:
 	Fase();
