@@ -1,7 +1,10 @@
-#include "Jogo.h"
+#include "menu.h"
+#include "gerenciador_grafico.h"
 
 int main() {
-    Jogo jogoPrincipal;
-    jogoPrincipal.executar();
-    return 0;
+    Gerenciadores::GerenciadorGrafico* pGG = new Gerenciadores::GerenciadorGrafico(); 
+    Menu menuPrincipal(pGG); 
+    menuPrincipal.executar(); 
+    delete pGG; 
+    return 0; 
 }
