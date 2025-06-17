@@ -1,6 +1,6 @@
 #include "fase.h"
 #include "plataforma.h" 
-#include "inim_facil.h"
+#include "aranha.h"
 #include <fstream>      
 #include <iostream>     
 #include <cstdlib>      
@@ -51,7 +51,7 @@ void Fase::criarinimFaceis(const std::string& nomeArquivo) {
     float x, y;
     for (int i = 0; i < numInimigosParaCriar; ++i) {
         if (arquivo >> x >> y) {
-            InimFacil* pAranha = new InimFacil();
+            Aranha* pAranha = new Aranha();
             pAranha->setPosicao(x, y);
             pAranha->executar(); 
 

@@ -1,19 +1,19 @@
-#include "obst_medio.h"
+#include "agua.h"
 #include "jogador.h"
 
-ObstMedio::ObstMedio() : Obstaculo(), largura(0), lentidao(0) {
+Agua::Agua() : Obstaculo(), largura(0), lentidao(0) {
 	danoso = false;
 }
-ObstMedio::~ObstMedio() {
+Agua::~Agua() {
 	
 }
-void ObstMedio::executar() {
+void Agua::executar() {
 	setId(9);
 	retangulo.setSize(sf::Vector2f(64.f, 48.f));
 	retangulo.setFillColor(sf::Color::Blue);
 	setLentidao(1.f);
 }
-void ObstMedio::obstacular(Jogador* p) {
+void Agua::obstacular(Jogador* p) {
 	float velocidadeDesejada = p->getVelocidadeBase() - getLentidao();
 	float velocidadeFinal = std::max(0.0f, velocidadeDesejada); 
 	float puloMenor = p->getPulo() + getLentidao() * 2.f;
@@ -23,30 +23,30 @@ void ObstMedio::obstacular(Jogador* p) {
 		p->setPulo(-400.f);
 	p->setVelocidade(velocidadeFinal);
 }
-float ObstMedio::getLentidao() const {
+float Agua::getLentidao() const {
 	return lentidao;
 }
-void ObstMedio::setLentidao(float lent) {
+void Agua::setLentidao(float lent) {
 	lentidao = lent;
 }
-void ObstMedio::setId(int novoId) {
+void Agua::setId(int novoId) {
 	id = novoId;
 }
-int ObstMedio::getId() const {
+int Agua::getId() const {
 	return id;
 }
-void ObstMedio::setLargura(float novaLargura) {
+void Agua::setLargura(float novaLargura) {
 	largura = novaLargura;
 }
-float ObstMedio::getLargura() const {
+float Agua::getLargura() const {
 	return largura;
 }
-void ObstMedio::desenhar() {
+void Agua::desenhar() {
 	if (pGG) {
 		pGG->desenha(retangulo);
 	}
 }
-void ObstMedio::atualizarFisica(float dt) {
+void Agua::atualizarFisica(float dt) {
     aplicarGravidade(dt, getForcaMitico());
 
     sf::Vector2f pos = retangulo.getPosition();

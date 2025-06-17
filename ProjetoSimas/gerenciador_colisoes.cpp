@@ -1,6 +1,6 @@
 #include "gerenciador_colisoes.h"
-#include "inim_facil.h"
-#include "obst_medio.h"
+#include "aranha.h"
+#include "agua.h"
 #include <iostream>
 
 namespace Gerenciadores {
@@ -107,7 +107,7 @@ namespace Gerenciadores {
 
 		// --- Lógica para o Jogador 1 ---
 		if (jogador1) {
-			bool jogador1_estaLentoPorObstMedioNesteFrame = false;
+			bool jogador1_estaLentoPorAguaNesteFrame = false;
 
 			for (auto obs : lObstaculos) {
 				if (obs == nullptr) {
@@ -117,21 +117,21 @@ namespace Gerenciadores {
 				if (verificarColisao(jogador1, obs)) {
 					obs->obstacular(jogador1);
 					if (obs->getId() == 9) {
-						ObstMedio* obstaculoMedio = dynamic_cast<ObstMedio*>(obs);
+						Agua* obstaculoMedio = dynamic_cast<Agua*>(obs);
 						if (obstaculoMedio) { 
 							obstaculoMedio->obstacular(jogador1); 
-							jogador1_estaLentoPorObstMedioNesteFrame = true; 
+							jogador1_estaLentoPorAguaNesteFrame = true; 
 						}
 					}
 				}
 			}
-			if (!jogador1_estaLentoPorObstMedioNesteFrame) {
+			if (!jogador1_estaLentoPorAguaNesteFrame) {
 				jogador1->setPulo(jogador1->getPuloBase());
 				jogador1->setVelocidade(jogador1->getVelocidadeBase());
 			}
 		}
 		if (jogador2) {
-			bool jogador2_estaLentoPorObstMedioNesteFrame = false;
+			bool jogador2_estaLentoPorAguaNesteFrame = false;
 
 			for (auto obs : lObstaculos) {
 				if (obs == nullptr) {
@@ -142,16 +142,16 @@ namespace Gerenciadores {
 					obs->obstacular(jogador2); 
 
 					if (obs->getId() == 9) {
-						ObstMedio* obstaculoMedio = dynamic_cast<ObstMedio*>(obs);
+						Agua* obstaculoMedio = dynamic_cast<Agua*>(obs);
 						if (obstaculoMedio) {
 							obstaculoMedio->obstacular(jogador2);
-							jogador2_estaLentoPorObstMedioNesteFrame = true;
+							jogador2_estaLentoPorAguaNesteFrame = true;
 						}
 					}
 				}
 			}
 
-			if (!jogador2_estaLentoPorObstMedioNesteFrame) {
+			if (!jogador2_estaLentoPorAguaNesteFrame) {
 				jogador2->setVelocidade(jogador2->getVelocidadeBase());
 			}
 		}
@@ -291,11 +291,11 @@ namespace Gerenciadores {
 
 				int tipoColisao = verificarColisao(inim, obs);
 
-				if (tipoColisao == 2 || tipoColisao == 3) { // Colisão lateral
-					if (InimFacil* inimFacil = dynamic_cast<InimFacil*>(inim)) {
-						inimFacil->virarDirecao();
-						sf::Vector2f pos = inimFacil->getPosicao();
-						inimFacil->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
+				if (tipoColisao == 2 || tipoColisao == 3) {
+					if (Aranha* Aranha = dynamic_cast<Aranha*>(inim)) {
+						Aranha->virarDirecao();
+						sf::Vector2f pos = Aranha->getPosicao();
+						Aranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
 					}
 				}
 				else if (tipoColisao == 4) { 

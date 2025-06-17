@@ -2,14 +2,14 @@
 #include "obstaculo.h"
 #include "jogador.h"
 
-class ObstMedio : public Obstaculo {
+class Agua : public Obstaculo {
 private:
 	float largura;
 	float lentidao;
 
 public:
-	ObstMedio();
-	~ObstMedio();
+	Agua();
+	~Agua();
 	void executar();
 	void obstacular(Jogador* p);
 	float getLargura() const;

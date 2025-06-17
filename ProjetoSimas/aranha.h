@@ -2,13 +2,13 @@
 #include "inimigo.h"
 #include "jogador.h"
 
-class InimFacil : public Inimigo {
+class Aranha : public Inimigo {
 private:
 	float direcaoX;
 
 public:
-	InimFacil();
-	~InimFacil();
+	Aranha();
+	~Aranha();
 	void executar();
 	void danificar(Jogador* p) ;
 	void mover();

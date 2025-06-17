@@ -1,10 +1,10 @@
-#include "inim_medio.h"
+#include "lancador.h"
 #include "jogador.h"
 #include "inimigo.h"
 #include "gerenciador_colisoes.h"
 #include <iostream>
 
-InimMedio::InimMedio() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f), intervaloAtaque(2.f) {
+Lancador::Lancador() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f), intervaloAtaque(2.f) {
 	nivel_maldade = 2;
 	vida = 200;
 	ataque = 20;
@@ -12,17 +12,17 @@ InimMedio::InimMedio() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f),
 	deslocamentoAtual = 0.f;
 	posicaoInicial = getPosicao();
 }
-InimMedio::~InimMedio() {
+Lancador::~Lancador() {
 	tamanho = -1;
 }
 
-void InimMedio::danificar(Jogador* p) {
+void Lancador::danificar(Jogador* p) {
 	if (p) {
 		p->setVida(p->getVida() - ataque); 
 		std::cout << "Jogador danificado! Vida restante: " << p->getVida() << std::endl;
 	}
 }
-void InimMedio::executar() {
+void Lancador::executar() {
 	setId(4);
 	retangulo.setSize(sf::Vector2f(64.f, 64.f));
 	if (!textura.loadFromFile("lancador.png")) {
@@ -30,7 +30,7 @@ void InimMedio::executar() {
 	}
 	retangulo.setTexture(&textura);
 }
-void InimMedio::mover() {
+void Lancador::mover() {
 	if (!noChao) {
 		sf::Vector2f pos = getPosicao();
 		pos.y += aplicarGravidade(0.016f, forcaMitico);
@@ -38,7 +38,7 @@ void InimMedio::mover() {
 	}
 }
 
-void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes) {
+void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes) {
 	Jogador* alvo = jogador1;
 
 	sf::FloatRect viewRect(
@@ -65,7 +65,7 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 	tempoAtaque += deltaTime;
 	if (tempoAtaque >= intervaloAtaque) {
 		Projetil* novoProj = new Projetil();
-		novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, 0.f, true); 
+		novoProj->disparar(getPosicao(), alvo->getPosicao(), 200.f, 0.f, true); 
 		projeteis.push_back(novoProj);
 		if (gerenciadorColisoes)
 			gerenciadorColisoes->inclueEntidade(novoProj);
@@ -74,31 +74,31 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 	}
 }
 
-int InimMedio::getVida() const {
+int Lancador::getVida() const {
 	return vida;
 }
-int InimMedio::getAtaque() const {
+int Lancador::getAtaque() const {
 	return ataque;
 }
-void InimMedio::setVida(int v) {
+void Lancador::setVida(int v) {
 	vida = v;
 }
-void InimMedio::setAtaque(int a) {
+void Lancador::setAtaque(int a) {
 	ataque = a;
 }
-void InimMedio::setId(int novoId) {
+void Lancador::setId(int novoId) {
 	id = novoId;
 }
-int InimMedio::getId() const {
+int Lancador::getId() const {
 	return id;
 }
-void InimMedio::setVelocidade(float nvVelocidade) {
+void Lancador::setVelocidade(float nvVelocidade) {
 	velocidade = nvVelocidade;
 }
-float InimMedio::getVelocidade() {
+float Lancador::getVelocidade() {
 	return velocidade;
 }
-void InimMedio::desenhar() {
+void Lancador::desenhar() {
 	if (pGG) {
 		pGG->desenha(retangulo);
 		for (Projetil* p : projeteis) {
@@ -107,7 +107,7 @@ void InimMedio::desenhar() {
 		}
 	}
 }
-void InimMedio::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
+void Lancador::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
 	// tipoColisao: 1 = por cima, 2/3 = laterais, 4 = por baixo (ajuste conforme seu verificarColisao)
 	if (tipoColisao == 1) { // Por cima
 		// Elimina o inimigo (pode ser delete this, ou sinalizar para o gerenciador remover)
@@ -123,15 +123,15 @@ void InimMedio::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
 		jogador->setPosicao(pos.x, pos.y);
 	}
 }
-void InimMedio::setVelocidadeVertical(float nvVelocidadeVertical) {
+void Lancador::setVelocidadeVertical(float nvVelocidadeVertical) {
 	velocidadeVertical = nvVelocidadeVertical;
 }
-float InimMedio::getVelocidadeVertical() const {
+float Lancador::getVelocidadeVertical() const {
 	return velocidadeVertical;
 }
-void InimMedio::setNoChao(bool NC) {
+void Lancador::setNoChao(bool NC) {
 	noChao = NC;
 }
-bool InimMedio::getNochao() {
+bool Lancador::getNochao() {
 	return noChao;
 }

@@ -36,10 +36,10 @@
     <ClCompile Include="personagem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="inim_facil.cpp">
+    <ClCompile Include="aranha.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="inim_medio.cpp">
+    <ClCompile Include="lancador.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chefao.cpp">
@@ -57,7 +57,7 @@
     <ClCompile Include="plataforma.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="obst_medio.cpp">
+    <ClCompile Include="agua.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="obst_dificil.cpp">
@@ -89,10 +89,10 @@
     <ClInclude Include="personagem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inim_facil.h">
+    <ClInclude Include="aranha.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inim_medio.h">
+    <ClInclude Include="lancador.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chefao.h">
@@ -110,7 +110,7 @@
     <ClInclude Include="plataforma.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="obst_medio.h">
+    <ClInclude Include="agua.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="obst_dificil.h">

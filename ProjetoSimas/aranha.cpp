@@ -1,27 +1,27 @@
-#include "inim_facil.h"
+#include "aranha.h"
 #include "jogador.h"
 #include "inimigo.h"
 #include <iostream>
 
-InimFacil::InimFacil(): Inimigo(), direcaoX(1.f) {
+Aranha::Aranha(): Inimigo(), direcaoX(1.f) {
     nivel_maldade = 1;
 	vida = 100; 
     ataque = 10;
 }
 
-InimFacil::~InimFacil() {
+Aranha::~Aranha() {
 }
 
-void InimFacil::danificar(Jogador* p) {
+void Aranha::danificar(Jogador* p) {
     if (p) {
         p->setVida(p->getVida() - ataque); 
     }
 }
-void InimFacil::virarDirecao() {
+void Aranha::virarDirecao() {
     direcaoX = -direcaoX;
 }
 
-void InimFacil::executar() {
+void Aranha::executar() {
     setId(3);
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
     if (!textura.loadFromFile("aranha.png")) {
@@ -30,7 +30,7 @@ void InimFacil::executar() {
     retangulo.setTexture(&textura);  
 }
 
-void InimFacil::mover() {
+void Aranha::mover() {
     sf::Vector2f posicao = getPosicao(); 
     posicao.x += direcaoX * (velocidade - 0.50);
 
@@ -51,36 +51,36 @@ void InimFacil::mover() {
     }
     retangulo.setPosition(posicao); 
 }
-int InimFacil::getVida() const {
+int Aranha::getVida() const {
 	return vida;
 }
-int InimFacil::getAtaque() const {
+int Aranha::getAtaque() const {
 	return ataque;
 }
-void InimFacil::setVida(int v) {
+void Aranha::setVida(int v) {
 	vida = v;
 }
-void InimFacil::setAtaque(int a) {
+void Aranha::setAtaque(int a) {
 	ataque = a;
 }
-void InimFacil::desenhar() {
+void Aranha::desenhar() {
     if (pGG) {
         pGG->desenha(retangulo);
     }
 }
-void InimFacil::setId(int novoId) {
+void Aranha::setId(int novoId) {
     id = novoId;
 }
-int InimFacil::getId() const {
+int Aranha::getId() const {
     return id;
 }
-void InimFacil::setVelocidade(float nvVelocidade) {
+void Aranha::setVelocidade(float nvVelocidade) {
 	velocidade = nvVelocidade;
 }
-float InimFacil::getVelocidade() {
+float Aranha::getVelocidade() {
 	return velocidade;
 }
-void InimFacil::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
+void Aranha::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
     // tipoColisao: 1 = por cima, 2/3 = laterais, 4 = por baixo (ajuste conforme seu verificarColisao)
     if (tipoColisao == 1) { // Por cima
         // Elimina o inimigo (pode ser delete this, ou sinalizar para o gerenciador remover)
@@ -96,16 +96,16 @@ void InimFacil::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
         jogador->setPosicao(pos.x, pos.y);
     }
 }
-void InimFacil::setVelocidadeVertical(float nvVelocidadeVertical) {
+void Aranha::setVelocidadeVertical(float nvVelocidadeVertical) {
     velocidadeVertical = nvVelocidadeVertical;
 }
-float InimFacil::getVelocidadeVertical() const {
+float Aranha::getVelocidadeVertical() const {
     return velocidadeVertical;
 }
-void InimFacil::setNoChao(bool NC) {
+void Aranha::setNoChao(bool NC) {
     noChao = NC;
 }
-bool InimFacil::getNochao() {
+bool Aranha::getNochao() {
     return noChao;
 }
 

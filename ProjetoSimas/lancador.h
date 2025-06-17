@@ -4,7 +4,7 @@
 #include "projetil.h"
 #include "gerenciador_colisoes.h"
 
-class InimMedio : public Inimigo {
+class Lancador : public Inimigo {
 private:
 	int tamanho;
 	float direcao; // -1 para esquerda, 1 para direita
@@ -16,8 +16,8 @@ private:
 	Vector2f posicaoInicial;
 
 public:
-	InimMedio();
-	~InimMedio();
+	Lancador();
+	~Lancador();
 	void executar();
 	void danificar(Jogador* p);
 	void mover();

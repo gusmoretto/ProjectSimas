@@ -8,9 +8,9 @@
 #include "gerenciador_colisoes.h"
 #include "jogador.h"
 #include "plataforma.h"
-#include "inim_facil.h"
-#include "inim_medio.h"
-#include "obst_medio.h"
+#include "aranha.h"
+#include "lancador.h"
+#include "agua.h"
 #include "projetil.h"
 
 using namespace std;
@@ -70,7 +70,7 @@ int main()
         float x, y;
         for (int i = 0; i < numInimigosFaceis; ++i) {
             if (arqAranhas >> x >> y) {
-                InimFacil* pAranha = new InimFacil();
+                Aranha* pAranha = new Aranha();
                 pAranha->setGerenciadorGrafico(&gerenciadorGrafico);
                 pAranha->setPosicao(x, y);
                 pAranha->executar();
@@ -85,25 +85,25 @@ int main()
 
 
     int numInimigosMedios = rand() % (4 - 3 + 1) + 3; 
-    std::ifstream arqInimMedios("coordLancadores.txt"); 
-    if (!arqInimMedios.is_open()) {
+    std::ifstream arqLancadors("coordLancadores.txt"); 
+    if (!arqLancadors.is_open()) {
         std::cerr << "Erro: Nao foi possivel abrir o arquivo de Lancadores." << std::endl;
     }
     else {
         float x, y;
         for (int i = 0; i < numInimigosMedios; ++i) {
-            if (arqInimMedios >> x >> y) {
-                InimMedio* pInimMedio = new InimMedio();
-                pInimMedio->setGerenciadorGrafico(&gerenciadorGrafico);
-                pInimMedio->setPosicao(x, y);
-                pInimMedio->executar();
-                gerenciadorColisoes.inclueEntidade(pInimMedio);
+            if (arqLancadors >> x >> y) {
+                Lancador* pLancador = new Lancador();
+                pLancador->setGerenciadorGrafico(&gerenciadorGrafico);
+                pLancador->setPosicao(x, y);
+                pLancador->executar();
+                gerenciadorColisoes.inclueEntidade(pLancador);
             }
             else {
                 break;
             }
         }
-        arqInimMedios.close();
+        arqLancadors.close();
     }
     int numObstaculosMedios = rand() % (12 - 10 + 1) + 10; 
     std::ifstream arqAguas("coordAguas.txt");
@@ -115,7 +115,7 @@ int main()
         if (numObstaculosMedios == 11) numObstaculosMedios = 10;
         for (int i = 0; i < numObstaculosMedios; ++i) {
             if (arqAguas >> x >> y) {
-                ObstMedio* pAgua = new ObstMedio();
+                Agua* pAgua = new Agua();
                 pAgua->setPosicao(x, y);
                 pAgua->executar();
                 gerenciadorColisoes.inclueEntidade(pAgua);
@@ -166,12 +166,12 @@ int main()
         // --- Lógica de Ataque Generalizada para Inimigos Médios ---
         for (auto* inimigo : gerenciadorColisoes.getInimigos()) {
             if (inimigo) {
-                // Tenta converter o ponteiro de Inimigo para InimMedio
-                InimMedio* pInimMedio = dynamic_cast<InimMedio*>(inimigo);
-                if (pInimMedio) {
+                // Tenta converter o ponteiro de Inimigo para Lancador
+                Lancador* pLancador = dynamic_cast<Lancador*>(inimigo);
+                if (pLancador) {
                     // Se a conversão deu certo, chama o ataque
-                    pInimMedio->atacar(&jogador1, nullptr, 0.016f, gerenciadorGrafico.getView(), &gerenciadorColisoes);
-                    for (auto* proj : pInimMedio->getProjeteis()) {
+                    pLancador->atacar(&jogador1, nullptr, 0.016f, gerenciadorGrafico.getView(), &gerenciadorColisoes);
+                    for (auto* proj : pLancador->getProjeteis()) {
                         if (proj && proj->getestaAtivo()) {
                             proj->executar();
                         }
