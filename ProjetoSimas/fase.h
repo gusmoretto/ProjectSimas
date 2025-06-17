@@ -9,8 +9,8 @@ protected:
 	Gerenciadores::GerenciadorColisoes GC;
 	
 protected:
-	void criarinimFaceis();
-	void criarPlataformas();
+	void criarinimFaceis(const std::string& nomeArquivo);
+	void criarPlataformas(const std::string& nomeArquivo);
 	//virtual void criarInimigos() = 0;
 	//virtual void criarObstaculos() = 0;
 	void criarCenario();
