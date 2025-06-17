@@ -3,7 +3,7 @@
 #include "jogador.h"
 
 Obstaculo::Obstaculo() : Entidade(), danoso(false) {
-	// a contruir o retangulo com tamanho e posicao
+	gravidadeAtiva = false;
 }
 Obstaculo::~Obstaculo() {
 	std::cout << "Destrutor de Obstaculo chamado." << std::endl;

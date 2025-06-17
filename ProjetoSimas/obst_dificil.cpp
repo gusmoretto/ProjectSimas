@@ -35,13 +35,14 @@ void ObstDificil::desenhar() {
 	}
 }
 void ObstDificil::atualizarFisica(float dt) {
-	aplicarGravidade(dt, getForcaMitico());
+	if (gravidadeAtiva) { // Verificação já deve estar aqui
+		aplicarGravidade(dt, getForcaMitico());
 
-	// Limite do chão (opcional)
-	sf::Vector2f pos = retangulo.getPosition();
-	if (pos.y + retangulo.getSize().y > 670.f) {
-		pos.y = 670.f - retangulo.getSize().y;
-		velocidadeVertical = 0.f;
-		retangulo.setPosition(pos);
+		sf::Vector2f pos = retangulo.getPosition();
+		if (pos.y + retangulo.getSize().y > 670.f) {
+			pos.y = 670.f - retangulo.getSize().y;
+			velocidadeVertical = 0.f;
+			retangulo.setPosition(pos);
+		}
 	}
 }

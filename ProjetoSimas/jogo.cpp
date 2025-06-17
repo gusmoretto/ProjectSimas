@@ -54,7 +54,15 @@ void Jogo::executar() {
             }
             pElementoProj = pElementoProj->getProx();
         }
-
+        
+        Elemento<Entidade>* pElemento = pListaEnts->getPrimeiro();
+        while (pElemento) {
+            Entidade* pEnt = pElemento->getInfo();
+            if (Obstaculo* pObs = dynamic_cast<Obstaculo*>(pEnt)) {
+                pObs->atualizarFisica();
+            }
+            pElemento = pElemento->getProx();
+        }
 
         pGC->executar();
 

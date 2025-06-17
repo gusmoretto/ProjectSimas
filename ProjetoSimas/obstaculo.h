@@ -6,6 +6,7 @@
 class Obstaculo : public Entidade {
 protected:
 	bool danoso;
+	bool gravidadeAtiva;
 public:
 	Obstaculo();
 	~Obstaculo();

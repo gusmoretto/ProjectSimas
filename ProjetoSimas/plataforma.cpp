@@ -2,7 +2,6 @@
 
 Plataforma::Plataforma(): Obstaculo(), altura(650), velocidadeVertical(0.f) {
 	danoso = false;
-	gravidadeAtiva = true;
 	forcaMitico = 0.f; 
     setId(7);
 }
@@ -94,11 +93,16 @@ float Plataforma::getForcaMitico() const {
 	return forcaMitico;
 }
 void Plataforma::atualizarFisica(float dt) {
-    aplicarGravidade(dt, getForcaMitico());
-
-    // Limite do chão (opcional)
     sf::Vector2f pos = retangulo.getPosition();
-    if (pos.y + retangulo.getSize().y > 670.f) {
+    if (gravidadeAtiva) { 
+        aplicarGravidade(dt, getForcaMitico());
+        if (pos.y + retangulo.getSize().y > 670.f) {
+            pos.y = 670.f - retangulo.getSize().y;
+            velocidadeVertical = 0.f;
+            retangulo.setPosition(pos);
+        }
+    }
+    else if (pos.y + retangulo.getSize().y > 670.f) {
         pos.y = 670.f - retangulo.getSize().y;
         velocidadeVertical = 0.f;
         retangulo.setPosition(pos);

@@ -6,7 +6,6 @@ class Plataforma : public Obstaculo {
 private:
 	int altura;
 	float velocidadeVertical;
-	bool gravidadeAtiva;
 
 public:
 	Plataforma();

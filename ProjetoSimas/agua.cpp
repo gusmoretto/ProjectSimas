@@ -47,12 +47,20 @@ void Agua::desenhar() {
 	}
 }
 void Agua::atualizarFisica(float dt) {
-    aplicarGravidade(dt, getForcaMitico());
+	sf::Vector2f pos = retangulo.getPosition();
 
-    sf::Vector2f pos = retangulo.getPosition();
-    if (pos.y + retangulo.getSize().y > 734.f) {
-        pos.y = 734.f - retangulo.getSize().y;
-        velocidadeVertical = 0.f;
-        retangulo.setPosition(pos);
-    }
+	if (gravidadeAtiva) { // Verificação já deve estar aqui
+		aplicarGravidade(dt, getForcaMitico());
+
+		if (pos.y + retangulo.getSize().y > 734.f) {
+			pos.y = 734.f - retangulo.getSize().y;
+			velocidadeVertical = 0.f;
+			retangulo.setPosition(pos);
+		}
+	}
+	else if (pos.y + retangulo.getSize().y > 734.f) {
+		pos.y = 734.f - retangulo.getSize().y;
+		velocidadeVertical = 0.f;
+		retangulo.setPosition(pos);
+	}
 }
