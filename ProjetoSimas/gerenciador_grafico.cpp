@@ -6,9 +6,6 @@ using namespace Gerenciadores;
 GerenciadorGrafico::GerenciadorGrafico(){
 	window.create(VideoMode(1200, 700), "Globix", Style::Default);
 	window.setFramerateLimit(120);
-	texturaFundo.loadFromFile("fundo1.png");
-	spriteFundo.setTexture(texturaFundo);
-	spriteFundo.setPosition(0, 0);
 	camera = window.getDefaultView();
 }
 Gerenciadores::GerenciadorGrafico::~GerenciadorGrafico() {
@@ -65,6 +62,13 @@ void GerenciadorGrafico::iniciaChao(const std::string& caminho, float larguraMap
 }
 void GerenciadorGrafico::desenhaChao() {
 	window.draw(chao);
+}
+void GerenciadorGrafico::iniciaFundo(const std::string& caminho) {
+	if (!texturaFundo.loadFromFile(caminho)) {
+		std::cerr << "Erro ao carregar textura de fundo." << std::endl;
+	}
+	spriteFundo.setTexture(texturaFundo);
+	spriteFundo.setPosition(0, 0);
 }
 
 

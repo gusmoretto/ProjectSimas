@@ -31,6 +31,7 @@ namespace Gerenciadores {
 		}
 		void centralizarCamera(const sf::Vector2f& centro, float bgWidth, float bgHeight);
 		void iniciaChao(const std::string& caminho, float larguraMapa, float alturaChao);
+		void iniciaFundo(const std::string& caminho);
 		void desenhaChao();
 		View& getView() { return camera; }
 	};

@@ -28,6 +28,22 @@ int main()
     Plataforma* p4 = new Plataforma();
     Plataforma* p5 = new Plataforma();
     Plataforma* p6 = new Plataforma();
+    Plataforma* p7 = new Plataforma();
+    Plataforma* p8 = new Plataforma();
+    Plataforma* p9 = new Plataforma();
+    Plataforma* p10 = new Plataforma();
+    Plataforma* p11 = new Plataforma();
+    Plataforma* p12 = new Plataforma();
+    Plataforma* p13 = new Plataforma();
+    Plataforma* p14 = new Plataforma();
+    Plataforma* p15 = new Plataforma();
+    Plataforma* p16 = new Plataforma();
+    Plataforma* p17 = new Plataforma();
+    Plataforma* p18 = new Plataforma();
+    Plataforma* p19 = new Plataforma();
+    Plataforma* p20 = new Plataforma();
+    Plataforma* p21 = new Plataforma();
+
 
 	ObstMedio* obstaculo1 = new ObstMedio();
 	ObstMedio* obstaculo2 = new ObstMedio();
@@ -44,6 +60,7 @@ int main()
     inimigo2->executar();
     inimigo2->setGerenciadorGrafico(&gerenciadorGrafico);
 
+	gerenciadorGrafico.iniciaFundo("fundo1.png");
     gerenciadorGrafico.iniciaChao("chao.png", 3840.f, 300.f);
 
     gerenciadorColisoes.inclueEntidade(&jogador1);
@@ -58,6 +75,23 @@ int main()
     plataformas.push_back(p4);
 	plataformas.push_back(p5);
 	plataformas.push_back(p6);
+	plataformas.push_back(p7);
+	plataformas.push_back(p8);
+	plataformas.push_back(p9);
+	plataformas.push_back(p10);
+	plataformas.push_back(p11);
+	plataformas.push_back(p12);
+	plataformas.push_back(p13);
+	plataformas.push_back(p14);
+	plataformas.push_back(p15);
+    plataformas.push_back(p16);
+    plataformas.push_back(p17);
+    plataformas.push_back(p18);
+    plataformas.push_back(p19);
+    plataformas.push_back(p20);
+    plataformas.push_back(p21);
+
+
 
     p1->setPosicao(128.f, 478.f);
     p2->setPosicao(192.f, 478.f);
@@ -67,8 +101,25 @@ int main()
     p5->setPosicao(640.f, 542.f);
 	p6->setPosicao(640.f, 670.f);
 
-	obstaculo1->setPosicao(832.f, 660.f);
-	obstaculo2->setPosicao(896.f, 660.f);
+	p7->setPosicao(960.f, 670.f);
+	p8->setPosicao(1024.f, 670.f);
+	p9->setPosicao(1024.f, 542.f);
+	p10->setPosicao(1088.f, 670.f);
+	p11->setPosicao(1088.f, 542.f);
+	p12->setPosicao(1088.f, 478.f);
+	p13->setPosicao(1152.f, 478.f);
+	p14->setPosicao(1216.f, 478.f);
+	p15->setPosicao(1280.f, 478.f);
+    p16->setPosicao(1536.f, 670.f);
+    p17->setPosicao(1664.f, 670.f);
+    p18->setPosicao(1664.f, 542.f);
+    p19->setPosicao(1792.f, 478.f);
+    p20->setPosicao(1856.f, 478.f);
+    p21->setPosicao(1920.f, 478.f);
+
+
+	obstaculo1->setPosicao(768.f, 660.f);
+	obstaculo2->setPosicao(832.f, 660.f);
 
 	obstaculo1->executar();
     gerenciadorColisoes.inclueEntidade(obstaculo1);

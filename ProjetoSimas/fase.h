@@ -11,9 +11,10 @@ protected:
 protected:
 	void criarinimFaceis();
 	void criarPlataformas();
-	virtual void criarInimigos() = 0;
-	virtual void criarObstaculos() = 0;
+	//virtual void criarInimigos() = 0;
+	//virtual void criarObstaculos() = 0;
 	void criarCenario();
+	void colocarCoordenadas();
 
 public:
 	Fase();
