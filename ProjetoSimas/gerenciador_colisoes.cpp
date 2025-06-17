@@ -126,6 +126,7 @@ namespace Gerenciadores {
 				}
 			}
 			if (!jogador1_estaLentoPorObstMedioNesteFrame) {
+				jogador1->setPulo(jogador1->getPuloBase());
 				jogador1->setVelocidade(jogador1->getVelocidadeBase());
 			}
 		}

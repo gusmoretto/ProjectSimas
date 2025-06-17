@@ -6,9 +6,10 @@ private:
 	int pontos;
 	static int cont_jogador;
 	int id_jogador;
-	const float impulsoPulo;
+	float impulsoPulo;
 	bool olhandoDireita;
 	float velocidadeBase;
+	float puloBase;
 
 public:
 	Jogador();
@@ -27,6 +28,9 @@ public:
 	float getVelocidade();
 	void setNoChao(bool NC);
 	bool getNochao();
+	void setPulo(float nvPulo) { impulsoPulo = nvPulo; };
+	float getPulo() const { return impulsoPulo; };
+	float getPuloBase() const;
 	void setVelocidadeVertical(float nvVelocidadeVertical);
 	float getVelocidadeVertical() const;
 	void setForcaMitico(float forca) {

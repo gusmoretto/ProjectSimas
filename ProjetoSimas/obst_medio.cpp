@@ -15,7 +15,12 @@ void ObstMedio::executar() {
 }
 void ObstMedio::obstacular(Jogador* p) {
 	float velocidadeDesejada = p->getVelocidadeBase() - getLentidao();
-	float velocidadeFinal = std::max(0.0f, velocidadeDesejada); // Garante que não fique negativa
+	float velocidadeFinal = std::max(0.0f, velocidadeDesejada); 
+	float puloMenor = p->getPulo() + getLentidao() * 2.f;
+	if (puloMenor <= -400.f)
+		p->setPulo(puloMenor);
+	else
+		p->setPulo(-400.f);
 	p->setVelocidade(velocidadeFinal);
 }
 float ObstMedio::getLentidao() const {

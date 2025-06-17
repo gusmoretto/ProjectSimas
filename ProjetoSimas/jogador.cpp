@@ -4,7 +4,7 @@
 
 int Jogador::cont_jogador = 0;
 
-Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f) {
+Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f) {
 	vida = 150;
 	ataque = 10;
 	pontos = 0;
@@ -47,6 +47,7 @@ void Jogador::executar() {
 	}
     retangulo.setTexture(&textura);
     velocidadeBase = getVelocidade();
+    puloBase = getPulo();
    // retangulo.setOrigin(retangulo.getSize().x / 2.f, retangulo.getSize().y / 2.f);
 }
 void Jogador::mover() {
@@ -152,6 +153,9 @@ void Jogador::setVelocidadeVertical(float nvVelocidadeVertical) {
 }
 float Jogador::getVelocidadeVertical() const {
 	return velocidadeVertical;
+}
+float Jogador::getPuloBase() const {
+    return puloBase;
 }
 
 
