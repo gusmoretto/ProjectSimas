@@ -20,6 +20,7 @@ Jogo::~Jogo() {
 void Jogo::executar() {
     GerenciadorColisoes* pGC = faseAtual->getGerenciadorColisoes();
     const std::vector<Inimigo*>& inimigos = pGC->getInimigos();
+    ListaEntidades* pListaEnts = faseAtual->getListaEntidades(); // Ponteiro para a lista
 
     while (pGG->estaAberta()) {
         sf::Event evento;
@@ -32,27 +33,66 @@ void Jogo::executar() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             pGG->fechar();
         }
+
         jogador1->mover();
         for (auto* inimigo : inimigos) {
             if (inimigo) inimigo->mover();
         }
         for (auto* inimigo : inimigos) {
             if (Lancador* pLancador = dynamic_cast<Lancador*>(inimigo)) {
-                pLancador->atacar(jogador1, nullptr, 0.016f, pGG->getView(), pGC);
-                for (auto* proj : pLancador->getProjeteis()) {
-                    if (proj && proj->getestaAtivo()) {
-                        proj->executar();
-                    }
-                }
+                pLancador->atacar(jogador1, nullptr, 0.016f, pGG->getView(), pGC, pListaEnts);
             }
         }
+
+    
+        Elemento<Entidade>* pElementoProj = pListaEnts->getPrimeiro();
+        while (pElementoProj) {
+            if (Projetil* pProj = dynamic_cast<Projetil*>(pElementoProj->getInfo())) {
+                if (pProj->getestaAtivo()) {
+                    pProj->executar();
+                }
+            }
+            pElementoProj = pElementoProj->getProx();
+        }
+
+
         pGC->executar();
+
+        std::vector<Entidade*> aRemover;
+        Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
+        while (pEl) {
+            Entidade* pEnt = pEl->getInfo();
+            bool remover = false;
+
+            if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEnt)) {
+                if (pInimigo->getVida() <= 0) {
+                    remover = true;
+                }
+            }
+        
+            else if (Projetil* pProj = dynamic_cast<Projetil*>(pEnt)) {
+                if (!pProj->getestaAtivo()) {
+                    remover = true;
+                }
+            }
+
+            if (remover) {
+                aRemover.push_back(pEnt);
+            }
+            pEl = pEl->getProx();
+        }
+        for (auto pEnt : aRemover) {
+            pGC->removeEntidade(pEnt);      
+            pListaEnts->remover(pEnt);       
+            delete pEnt;                     
+        }
+
         pGG->centralizarCamera(jogador1->getRetangulo().getPosition(), 3840.f, 700.f);
         pGG->clear();
         pGG->desenhaFundo();
         pGG->desenhaChao();
 
-        Elemento<Entidade>* pAux = faseAtual->getListaEntidades()->getPrimeiro();
+        Elemento<Entidade>* pAux = pListaEnts->getPrimeiro();
         while (pAux) {
             if (pAux->getInfo()) {
                 pAux->getInfo()->desenhar();

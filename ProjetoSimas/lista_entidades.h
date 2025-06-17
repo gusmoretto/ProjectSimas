@@ -14,4 +14,5 @@ public:
     void incluir(Entidade* PE); 
     void percorrer();
     Elemento<Entidade>* getPrimeiro();
+    void remover(Entidade* pEnt);
 };

@@ -10,7 +10,7 @@ private:
     Elemento<TL>* pUltimo;
 
 public:
-    // Declarações
+    void remover(TL* pInfo);
     Lista();
     ~Lista();
     void incluir(TL* p); // Agora recebe um PONTEIRO para TL
@@ -24,6 +24,35 @@ public:
 template <typename TL>
 Lista<TL>::Lista() : pPrimeiro(nullptr), pUltimo(nullptr) {
     // Para depuração: std::cout << "Lista criada." << std::endl;
+}
+
+template <typename TL>
+void Lista<TL>::remover(TL* pInfo) {
+    Elemento<TL>* pAux = pPrimeiro;
+    Elemento<TL>* pAnt = nullptr;
+
+    while (pAux != nullptr && pAux->getInfo() != pInfo) {
+        pAnt = pAux;
+        pAux = pAux->getProx();
+    }
+
+    // Se não encontrou, não faz nada
+    if (pAux == nullptr) return;
+
+    // Se encontrou, ajusta os ponteiros
+    if (pAnt == nullptr) { // Era o primeiro elemento
+        pPrimeiro = pAux->getProx();
+    }
+    else {
+        pAnt->setProx(pAux->getProx());
+    }
+
+    if (pAux == pUltimo) {
+        pUltimo = pAnt;
+    }
+
+    // Deleta apenas o NÓ da lista (Elemento), não a informação (Entidade)
+    delete pAux;
 }
 
 template <typename TL>

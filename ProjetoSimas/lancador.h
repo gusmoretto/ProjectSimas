@@ -3,6 +3,7 @@
 #include "jogador.h"
 #include "projetil.h"
 #include "gerenciador_colisoes.h"
+#include "lista_entidades.h"
 
 class Lancador : public Inimigo {
 private:
@@ -36,7 +37,7 @@ public:
 	float getForcaMitico() const {
 		return forcaMitico;
 	};
-	void atacar(Jogador* jogador1, Jogador* jogador2, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes);
+	void atacar(Jogador* jogador1, Jogador* jogador2, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes, ListaEntidades* pListaEnts);
 	void tratarColisaoComJogador(Jogador* jogador, int tipoColisao);
 	void setVelocidadeVertical(float nvVelocidadeVertical);
 	float getVelocidadeVertical() const;

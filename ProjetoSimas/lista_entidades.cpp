@@ -19,3 +19,7 @@ void ListaEntidades::percorrer() {
 Elemento<Entidade>* ListaEntidades::getPrimeiro() {
     return LEs.getPrimeiro();
 }
+
+void ListaEntidades::remover(Entidade* pEnt) {
+    LEs.remover(pEnt);
+}

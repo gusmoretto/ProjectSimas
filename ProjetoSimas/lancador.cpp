@@ -39,7 +39,7 @@ void Lancador::mover() {
 	}
 }
 
-void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes) {
+void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes, ListaEntidades* pListaEnts) {
 	Jogador* alvo = jogador1;
 
 	sf::FloatRect viewRect(
@@ -54,10 +54,7 @@ void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::Vi
 	for (auto it = projeteis.begin(); it != projeteis.end(); ) {
 		Projetil* p = *it;
 		if (!p->getestaAtivo()) {
-			if (gerenciadorColisoes)
-				gerenciadorColisoes->removeEntidade(p);
-			delete p;
-			it = projeteis.erase(it);
+			it = projeteis.erase(it); // Apenas remove da lista local
 		}
 		else {
 			++it;
@@ -66,10 +63,14 @@ void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::Vi
 	tempoAtaque += deltaTime;
 	if (tempoAtaque >= intervaloAtaque) {
 		Projetil* novoProj = new Projetil();
-		novoProj->disparar(getPosicao(), alvo->getPosicao(), 200.f, 0.f, true); 
-		projeteis.push_back(novoProj);
+		novoProj->disparar(getPosicao(), alvo->getPosicao(), 200.f, 0.f, true);
+
+		projeteis.push_back(novoProj); 
+
 		if (gerenciadorColisoes)
 			gerenciadorColisoes->inclueEntidade(novoProj);
+		if (pListaEnts)
+			pListaEnts->incluir(novoProj);
 
 		tempoAtaque = 0.f;
 	}

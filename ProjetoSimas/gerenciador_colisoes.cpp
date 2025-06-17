@@ -231,17 +231,6 @@ namespace Gerenciadores {
 				}
 			}
 		}
-		auto it = lInimigos.begin();
-		while (it != lInimigos.end()) {
-			if ((*it)->getVida() <= 0) {
-				delete* it;
-				(*it) = nullptr;
-				it = lInimigos.erase(it);
-			}
-			else {
-				++it;
-			}
-		}
 	}
 
 	void GerenciadorColisoes::verificaProjetil() {
