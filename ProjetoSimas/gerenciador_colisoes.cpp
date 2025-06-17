@@ -1,6 +1,7 @@
 #include "gerenciador_colisoes.h"
 #include "inim_facil.h"
 #include "obst_medio.h"
+#include <iostream>
 
 namespace Gerenciadores {
 	GerenciadorColisoes::GerenciadorColisoes() : jogador1(nullptr), jogador2(nullptr) {}
@@ -253,78 +254,52 @@ namespace Gerenciadores {
 				jogador2->setVida(jogador2->getVida() - 10);
 				proj->setAtivo(false);
 			}
-			// Colisão com inimigos (se projetil do jogador)
-			for (auto inim : lInimigos) {
-				if (verificarColisao(proj, inim)) {
-					proj->setAtivo(false);
-				}
-			}
 		}
 	}
 	void GerenciadorColisoes::verificaObsInim() {
 		for (auto inim : lInimigos) {
 			if (!inim) continue;
 
+			bool estaApoiado = false;
+
+			for (auto obs : lObstaculos) {
+				if (!obs) continue;
+
+				sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
+				sf::FloatRect areaObs = obs->getRetangulo().getGlobalBounds();
+
+				// Condição 1: Eles se sobrepõem no eixo X?
+				bool x_overlap = areaInimigo.left < areaObs.left + areaObs.width &&
+					areaInimigo.left + areaInimigo.width > areaObs.left;
+
+				// Condição 2: O pé do inimigo está cruzando o topo do obstáculo e ele está caindo?
+				bool y_overlap_support = areaInimigo.top + areaInimigo.height >= areaObs.top &&
+					areaInimigo.top < areaObs.top;
+
+				if (x_overlap && y_overlap_support && inim->getVelocidadeVertical() >= 0) {
+					inim->setPosicao(areaInimigo.left, areaObs.top - areaInimigo.height);
+					inim->setVelocidadeVertical(0.f);
+					estaApoiado = true;
+					break; // Encontrou um chão, não precisa checar outros para suporte.
+				}
+			}
+			inim->setNoChao(estaApoiado);
+
 			for (auto obs : lObstaculos) {
 				if (!obs) continue;
 
 				int tipoColisao = verificarColisao(inim, obs);
-				if (tipoColisao != 0) {
-					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
-					sf::FloatRect areaObs = obs->getRetangulo().getGlobalBounds();
-					sf::Vector2f posInimigo = inim->getRetangulo().getPosition();
-					if (obs->getId() == 7) { 
-						if (tipoColisao == 1) { 
-							posInimigo.y = areaObs.top - areaInimigo.height;
-							inim->setPosicao(posInimigo.x, posInimigo.y);
-							inim->setVelocidadeVertical(0.f);
-							inim->setNoChao(true);
-						}
-						if (inim->getNochao() && areaInimigo.top + areaInimigo.height == areaObs.top && areaInimigo.left + areaInimigo.width > areaObs.left && areaInimigo.left < areaObs.left + areaObs.width) {
-							inim->setVelocidadeVertical(0.f);
-							inim->setNoChao(true);
-						}
-						else if (inim->getNochao() && !(areaInimigo.left + areaInimigo.width > areaObs.left && areaInimigo.left < areaObs.left + areaObs.width)) {
-							inim->setNoChao(false);
-						}
-					}
-					else if (obs->getId() == 9) { 
-						if (tipoColisao != 0) {
-							// Exemplo: inim->tomarDano(proj->getDano());
-							// ((Projetil*)obs)->setEstaAtivo(false); // Inativa o projétil
-						}
-					}
-					else { 
-						switch (tipoColisao) {
-						case 1: 
-							posInimigo.y = areaObs.top - areaInimigo.height;
-							inim->setVelocidadeVertical(0.f);
-							inim->setNoChao(true);
-							break;
-						case 2: // Colisão pela esquerda
-							posInimigo.x = areaObs.left - areaInimigo.width;
-							inim->virarDirecao(); // O inimigo vira ao colidir com uma parede
-							break;
-						case 3: // Colisão pela direita
-							posInimigo.x = areaObs.left + areaObs.width;
-							inim->virarDirecao(); // O inimigo vira ao colidir com uma parede
-							break;
-						case 4: // Colisão por baixo
-							posInimigo.y = areaObs.top + areaObs.height;
-							inim->setVelocidadeVertical(0.f);
-							break;
-						}
-						inim->setPosicao(posInimigo.x, posInimigo.y);
+
+				if (tipoColisao == 2 || tipoColisao == 3) { // Colisão lateral
+					if (InimFacil* inimFacil = dynamic_cast<InimFacil*>(inim)) {
+						inimFacil->virarDirecao();
+						sf::Vector2f pos = inimFacil->getPosicao();
+						inimFacil->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
 					}
 				}
-				else {
-					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
-					sf::FloatRect areaObs = obs->getRetangulo().getGlobalBounds();
-					sf::Vector2f posInimigo = inim->getRetangulo().getPosition();
-					if (inim->getNochao() && obs->getId() == 7) { 
-						if (!(areaInimigo.top + areaInimigo.height == areaObs.top && areaInimigo.left + areaInimigo.width > areaObs.left && areaInimigo.left < areaObs.left + areaObs.width)) {
-
-						}
+				else if (tipoColisao == 4) { 
+					if (inim->getVelocidadeVertical() < 0) {
+						inim->setVelocidadeVertical(0.f);
 					}
 				}
 			}

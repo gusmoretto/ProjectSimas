@@ -67,8 +67,8 @@ int main()
     p5->setPosicao(640.f, 542.f);
 	p6->setPosicao(640.f, 670.f);
 
-	obstaculo1->setPosicao(832.f, 630.f);
-	obstaculo2->setPosicao(896.f, 630.f);
+	obstaculo1->setPosicao(832.f, 660.f);
+	obstaculo2->setPosicao(896.f, 660.f);
 
 	obstaculo1->executar();
     gerenciadorColisoes.inclueEntidade(obstaculo1);

@@ -9,7 +9,7 @@ ObstMedio::~ObstMedio() {
 }
 void ObstMedio::executar() {
 	setId(9);
-	retangulo.setSize(sf::Vector2f(64.f, 32.f));
+	retangulo.setSize(sf::Vector2f(64.f, 48.f));
 	retangulo.setFillColor(sf::Color::Blue);
 	setLentidao(1.f);
 }

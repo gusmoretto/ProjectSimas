@@ -31,20 +31,11 @@ void InimMedio::executar() {
 	retangulo.setTexture(&textura);
 }
 void InimMedio::mover() {
-	sf::Vector2f pos = getPosicao();
-	pos.y += aplicarGravidade(0.016f, forcaMitico); // Use forcaMitico se aplicável
-
-	sf::Vector2f size = retangulo.getSize();
-	if (pos.y + size.y >= 670.f) { 
-		pos.y = 670.f - size.y;
-		velocidadeVertical = 0.f; // Zera a velocidade vertical ao atingir o chão
-		setNoChao(true); // Indica que está no chão
+	if (!noChao) {
+		sf::Vector2f pos = getPosicao();
+		pos.y += aplicarGravidade(0.016f, forcaMitico);
+		setPosicao(pos.x, pos.y);
 	}
-	else {
-		setNoChao(false); // Não está no chão se não colidiu com o limite inferior
-	}
-
-	setPosicao(pos.x, pos.y);
 }
 
 void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes) {
@@ -74,7 +65,7 @@ void InimMedio::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::V
 	tempoAtaque += deltaTime;
 	if (tempoAtaque >= intervaloAtaque) {
 		Projetil* novoProj = new Projetil();
-		novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, 0.f, false); 
+		novoProj->disparar(getPosicao(), alvo->getPosicao(), 300.f, 0.f, true); 
 		projeteis.push_back(novoProj);
 		if (gerenciadorColisoes)
 			gerenciadorColisoes->inclueEntidade(novoProj);
