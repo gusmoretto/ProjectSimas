@@ -149,6 +149,7 @@
     <ClCompile Include="agua.cpp" />
     <ClCompile Include="personagem.cpp" />
     <ClCompile Include="plataforma.cpp" />
+    <ClCompile Include="primeira_fase.cpp" />
     <ClCompile Include="projetil.cpp" />
     <ClCompile Include="ProjetoSimas.cpp" />
   </ItemGroup>

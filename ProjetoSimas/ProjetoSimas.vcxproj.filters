@@ -69,6 +69,9 @@
     <ClCompile Include="lista_entidades.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="primeira_fase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jogador.h">

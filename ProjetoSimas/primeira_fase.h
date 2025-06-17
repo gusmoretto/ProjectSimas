@@ -3,8 +3,12 @@
 
 class PrimeiraFase : public Fase {
 private:
-	const int maxAranhas;
+	const int maxLancadores;
 protected:
+	PrimeiraFase();
+	~PrimeiraFase();
 	void criarAgua();
-	void criarAranhas();
+	void criarLancador();
+	void criarInimigos() {}
+	void criarObstaculos() {}
 };

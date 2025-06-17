@@ -12,6 +12,7 @@ Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), pulo
     noChao = true;
     velocidadeVertical = 0.f;
 	olhandoDireita = true; 
+    num_vidas = 5;
 }
 Jogador::~Jogador() {
 	vida = -1;

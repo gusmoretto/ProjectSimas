@@ -7,6 +7,7 @@ Aranha::Aranha(): Inimigo(), direcaoX(1.f) {
     nivel_maldade = 1;
 	vida = 100; 
     ataque = 10;
+    num_vidas = 1;
 }
 
 Aranha::~Aranha() {

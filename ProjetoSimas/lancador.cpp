@@ -11,6 +11,7 @@ Lancador::Lancador() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f), i
 	deslocamentoMax = 32.f;
 	deslocamentoAtual = 0.f;
 	posicaoInicial = getPosicao();
+	num_vidas = 1;
 }
 Lancador::~Lancador() {
 	tamanho = -1;

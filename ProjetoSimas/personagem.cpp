@@ -2,8 +2,7 @@
 #include "personagem.h"
 #include "entidade.h"
 
-Personagem::Personagem() : Entidade(), num_vidas(3) { 
-	// a criar o retangulo com tamanho e posicao
+Personagem::Personagem() : Entidade(), num_vidas(1), vida(0), noChao(true), velocidadeVertical(0.f), ataque(0) { 
 	velocidade = 1.7f; 
 }
 Personagem::~Personagem() {

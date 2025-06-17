@@ -9,11 +9,11 @@ protected:
 	Gerenciadores::GerenciadorColisoes GC;
 	
 protected:
-	void criarinimFaceis(const std::string& nomeArquivo);
+	void criarAranhas(const std::string& nomeArquivo);
 	void criarPlataformas(const std::string& nomeArquivo);
 	virtual void criarInimigos() = 0;
 	virtual void criarObstaculos() = 0;
-	void criarCenario();
+	void criarCenario(int fase);
 
 public:
 	Fase();

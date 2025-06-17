@@ -11,9 +11,15 @@ Fase::Fase() {
 }
 Fase::~Fase() {}
 
-void Fase::criarCenario() {
-	pGG->iniciaFundo("fundo.png");
-	pGG->iniciaChao("chao.png", 3840.f, 300.f);
+void Fase::criarCenario(int fase) {
+    if (fase == 1) {
+        pGG->iniciaFundo("fundo1.png");
+        pGG->iniciaChao("chao.png", 3840.f, 300.f);
+    }
+    else
+        pGG->iniciaFundo("fundo2.png");
+        pGG->iniciaChao("chao2.png", 3840.f, 300.f);
+
 }
 void Fase::criarPlataformas(const std::string& nomeArquivo) {
     int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; 
@@ -40,7 +46,7 @@ void Fase::criarPlataformas(const std::string& nomeArquivo) {
     }
     arquivo.close();
 }
-void Fase::criarinimFaceis(const std::string& nomeArquivo) {
+void Fase::criarAranhas(const std::string& nomeArquivo) {
     int numInimigosParaCriar = rand() % (5 - 3 + 1) + 3; 
 
     std::ifstream arquivo(nomeArquivo);
@@ -68,9 +74,6 @@ void Fase::criarinimFaceis(const std::string& nomeArquivo) {
 }
 void Fase::executar() {
 	criarCenario();
-	criarPlataformas("coordPlataformas.txt");
-	criarinimFaceis("coordInimigos.txt");
 	criarObstaculos();
 	criarInimigos();
-	GC.executar();
 }
