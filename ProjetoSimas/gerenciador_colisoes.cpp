@@ -192,6 +192,13 @@ namespace Gerenciadores {
 							pos.y = areaInimigo.top + areaInimigo.height;
 					}
 					jogador1->setPosicao(pos.x, pos.y);
+					if (tipoColisao == 2 || tipoColisao == 3) {
+						if (Aranha* pAranha = dynamic_cast<Aranha*>(inim)) {
+							pAranha->virarDirecao();
+							sf::Vector2f pos = pAranha->getPosicao();
+							pAranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
+						}
+					}
 				}
 			}
 
@@ -228,6 +235,13 @@ namespace Gerenciadores {
 							pos.y = areaInimigo.top + areaInimigo.height;
 					}
 					jogador2->setPosicao(pos.x, pos.y);
+					if (tipoColisao == 2 || tipoColisao == 3) {
+						if (Aranha* pAranha = dynamic_cast<Aranha*>(inim)) {
+							pAranha->virarDirecao();
+							sf::Vector2f pos = pAranha->getPosicao();
+							pAranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
+						}
+					}
 				}
 			}
 		}
