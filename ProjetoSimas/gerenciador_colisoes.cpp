@@ -292,10 +292,10 @@ namespace Gerenciadores {
 				int tipoColisao = verificarColisao(inim, obs);
 
 				if (tipoColisao == 2 || tipoColisao == 3) {
-					if (Aranha* Aranha = dynamic_cast<Aranha*>(inim)) {
-						Aranha->virarDirecao();
-						sf::Vector2f pos = Aranha->getPosicao();
-						Aranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
+					if (Aranha* pAranha = dynamic_cast<Aranha*>(inim)) {
+						pAranha->virarDirecao();
+						sf::Vector2f pos = pAranha->getPosicao();
+						pAranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
 					}
 				}
 				else if (tipoColisao == 4) { 
