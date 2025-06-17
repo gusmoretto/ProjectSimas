@@ -105,30 +105,27 @@ int main()
         }
         arqInimMedios.close();
     }
-
-    ObstMedio* obstaculo1 = new ObstMedio();
-    obstaculo1->setPosicao(768.f, 660.f);
-    obstaculo1->executar();
-    gerenciadorColisoes.inclueEntidade(obstaculo1);
-    obstaculos.push_back(obstaculo1);
-
-    ObstMedio* obstaculo2 = new ObstMedio();
-    obstaculo2->setPosicao(832.f, 660.f);
-    obstaculo2->executar();
-    gerenciadorColisoes.inclueEntidade(obstaculo2);
-    obstaculos.push_back(obstaculo2);
-  
-    ObstMedio* obstaculo3 = new ObstMedio();
-    obstaculo3->setPosicao(704.f, 660.f);
-    obstaculo3->executar();
-    gerenciadorColisoes.inclueEntidade(obstaculo3);
-    obstaculos.push_back(obstaculo3);
-   
-    ObstMedio* obstaculo4 = new ObstMedio();
-    obstaculo4->setPosicao(896.f, 660.f);
-    obstaculo4->executar();
-    gerenciadorColisoes.inclueEntidade(obstaculo4);
-    obstaculos.push_back(obstaculo4);
+    int numObstaculosMedios = rand() % (12 - 10 + 1) + 10; 
+    std::ifstream arqAguas("coordAguas.txt");
+    if (!arqAguas.is_open()) {
+        std::cerr << "Erro: Nao foi possivel abrir o arquivo de aguas." << std::endl;
+    }
+    else {
+        float x, y;
+        for (int i = 0; i < numObstaculosMedios; ++i) {
+            if (arqAguas >> x >> y) {
+                ObstMedio* pAgua = new ObstMedio();
+                pAgua->setPosicao(x, y);
+                pAgua->executar();
+                gerenciadorColisoes.inclueEntidade(pAgua);
+                obstaculos.push_back(pAgua);
+            }
+            else {
+                break;
+            }
+        }
+        arqAguas.close();
+    }
 
     // --- Loop Principal ---
     while (gerenciadorGrafico.estaAberta())
