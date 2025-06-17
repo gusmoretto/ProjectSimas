@@ -157,91 +157,102 @@ namespace Gerenciadores {
 		}
 	}
 
-	void GerenciadorColisoes::verificaInim() {
+	void Gerenciadores::GerenciadorColisoes::verificaInim() {
 		for (auto inim : lInimigos) {
-			// Jogador 1
 			if (jogador1) {
 				int tipoColisao = verificarColisao(jogador1, inim);
 				if (tipoColisao) {
+					int vidaInimigoAntesColisao = inim->getVida();
+
 					inim->tratarColisaoComJogador(jogador1, tipoColisao);
 
-					// Impede que o jogador 1 fique dentro do inimigo
+					bool inimigoFoiMortoPorCima = (inim->getVida() <= 0 && vidaInimigoAntesColisao > 0 && tipoColisao == 1);
 					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
 					sf::FloatRect areaJogador = jogador1->getRetangulo().getGlobalBounds();
 
-					float sobreposicaoEsquerda = (areaJogador.left + areaJogador.width) - areaInimigo.left;
-					float sobreposicaoDireita = (areaInimigo.left + areaInimigo.width) - areaJogador.left;
-					float sobreposicaoCima = (areaJogador.top + areaJogador.height) - areaInimigo.top;
-					float sobreposicaoBaixo = (areaInimigo.top + areaInimigo.height) - areaJogador.top;
+					float dx = (areaJogador.left + areaJogador.width / 2) - (areaInimigo.left + areaInimigo.width / 2);
+					float dy = (areaJogador.top + areaJogador.height / 2) - (areaInimigo.top + areaInimigo.height / 2);
 
-					float menorSobreposicaoX = std::min(sobreposicaoEsquerda, sobreposicaoDireita);
-					float menorSobreposicaoY = std::min(sobreposicaoCima, sobreposicaoBaixo);
+					float intersectX = std::min(areaJogador.left + areaJogador.width, areaInimigo.left + areaInimigo.width) - std::max(areaJogador.left, areaInimigo.left);
+					float intersectY = std::min(areaJogador.top + areaJogador.height, areaInimigo.top + areaInimigo.height) - std::max(areaJogador.top, areaInimigo.top);
 
 					sf::Vector2f pos = jogador1->getRetangulo().getPosition();
 
-					if (menorSobreposicaoX < menorSobreposicaoY) {
-						if (sobreposicaoEsquerda < sobreposicaoDireita)
-							pos.x = areaInimigo.left - areaJogador.width;
-						else
+					if (intersectX < intersectY) { 
+						if (dx > 0) {
 							pos.x = areaInimigo.left + areaInimigo.width;
-					}
-					else {
-						if (sobreposicaoCima < sobreposicaoBaixo)
-							pos.y = areaInimigo.top - areaJogador.height;
-						else
-							pos.y = areaInimigo.top + areaInimigo.height;
-					}
-					jogador1->setPosicao(pos.x, pos.y);
-					if (tipoColisao == 2 || tipoColisao == 3) {
+						}
+						else { 
+							pos.x = areaInimigo.left - areaJogador.width;
+						}
 						if (Aranha* pAranha = dynamic_cast<Aranha*>(inim)) {
 							pAranha->virarDirecao();
-							sf::Vector2f pos = pAranha->getPosicao();
-							pAranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
+							sf::Vector2f posAranha = pAranha->getPosicao();
+							pAranha->setPosicao(posAranha.x + (dx > 0 ? -pAranha->getVelocidade() * 0.05f : pAranha->getVelocidade() * 0.05f), posAranha.y);
 						}
 					}
+					else { 
+						if (dy > 0) { 
+							pos.y = areaInimigo.top + areaInimigo.height;
+							jogador1->setVelocidadeVertical(0.f);
+						}
+						else { 
+							pos.y = areaInimigo.top - areaJogador.height;
+							if (!inimigoFoiMortoPorCima) { 
+								jogador1->setVelocidadeVertical(0.f);
+							}
+							jogador1->setNoChao(true);
+						}
+					}
+					jogador1->setPosicao(pos.x, pos.y);
 				}
 			}
-
-			// Jogador 2
 			if (jogador2) {
 				int tipoColisao = verificarColisao(jogador2, inim);
 				if (tipoColisao) {
+					int vidaInimigoAntesColisao = inim->getVida();
+
 					inim->tratarColisaoComJogador(jogador2, tipoColisao);
 
-					// Impede que o jogador 2 fique dentro do inimigo
+					bool inimigoFoiMortoPorCima = (inim->getVida() <= 0 && vidaInimigoAntesColisao > 0 && tipoColisao == 1);
 					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
 					sf::FloatRect areaJogador = jogador2->getRetangulo().getGlobalBounds();
 
-					float sobreposicaoEsquerda = (areaJogador.left + areaJogador.width) - areaInimigo.left;
-					float sobreposicaoDireita = (areaInimigo.left + areaInimigo.width) - areaJogador.left;
-					float sobreposicaoCima = (areaJogador.top + areaJogador.height) - areaInimigo.top;
-					float sobreposicaoBaixo = (areaInimigo.top + areaInimigo.height) - areaJogador.top;
+					float dx = (areaJogador.left + areaJogador.width / 2) - (areaInimigo.left + areaInimigo.width / 2);
+					float dy = (areaJogador.top + areaJogador.height / 2) - (areaInimigo.top + areaInimigo.height / 2);
 
-					float menorSobreposicaoX = std::min(sobreposicaoEsquerda, sobreposicaoDireita);
-					float menorSobreposicaoY = std::min(sobreposicaoCima, sobreposicaoBaixo);
+					float intersectX = std::min(areaJogador.left + areaJogador.width, areaInimigo.left + areaInimigo.width) - std::max(areaJogador.left, areaInimigo.left);
+					float intersectY = std::min(areaJogador.top + areaJogador.height, areaInimigo.top + areaInimigo.height) - std::max(areaJogador.top, areaInimigo.top);
 
 					sf::Vector2f pos = jogador2->getRetangulo().getPosition();
 
-					if (menorSobreposicaoX < menorSobreposicaoY) {
-						if (sobreposicaoEsquerda < sobreposicaoDireita)
-							pos.x = areaInimigo.left - areaJogador.width;
-						else
+					if (intersectX < intersectY) {
+						if (dx > 0) {
 							pos.x = areaInimigo.left + areaInimigo.width;
-					}
-					else {
-						if (sobreposicaoCima < sobreposicaoBaixo)
-							pos.y = areaInimigo.top - areaJogador.height;
-						else
-							pos.y = areaInimigo.top + areaInimigo.height;
-					}
-					jogador2->setPosicao(pos.x, pos.y);
-					if (tipoColisao == 2 || tipoColisao == 3) {
+						}
+						else {
+							pos.x = areaInimigo.left - areaJogador.width;
+						}
 						if (Aranha* pAranha = dynamic_cast<Aranha*>(inim)) {
 							pAranha->virarDirecao();
-							sf::Vector2f pos = pAranha->getPosicao();
-							pAranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
+							sf::Vector2f posAranha = pAranha->getPosicao();
+							pAranha->setPosicao(posAranha.x + (dx > 0 ? -pAranha->getVelocidade() * 0.05f : pAranha->getVelocidade() * 0.05f), posAranha.y);
 						}
 					}
+					else {
+						if (dy > 0) {
+							pos.y = areaInimigo.top + areaInimigo.height;
+							jogador2->setVelocidadeVertical(0.f);
+						}
+						else {
+							pos.y = areaInimigo.top - areaJogador.height;
+							if (!inimigoFoiMortoPorCima) {
+								jogador2->setVelocidadeVertical(0.f);
+							}
+							jogador2->setNoChao(true);
+						}
+					}
+					jogador2->setPosicao(pos.x, pos.y);
 				}
 			}
 		}

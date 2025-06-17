@@ -4,7 +4,7 @@
 #include "gerenciador_colisoes.h"
 #include <iostream>
 
-Lancador::Lancador() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f), intervaloAtaque(2.f) {
+Lancador::Lancador() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f), intervaloAtaque(4.f) {
 	nivel_maldade = 2;
 	vida = 200;
 	ataque = 20;
