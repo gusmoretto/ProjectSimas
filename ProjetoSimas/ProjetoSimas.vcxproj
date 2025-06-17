@@ -145,6 +145,7 @@
     <ClCompile Include="lancador.cpp" />
     <ClCompile Include="jogador.cpp" />
     <ClCompile Include="lista_entidades.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="obstaculo.cpp" />
     <ClCompile Include="obst_dificil.cpp" />

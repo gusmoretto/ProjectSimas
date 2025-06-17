@@ -112,10 +112,3 @@ void Jogo::executar() {
         pGG->mostrar();
     }
 }
-
-int main()
-{
-    Jogo jogoPrincipal;
-    jogoPrincipal.executar();
-    return 0;
-}
