@@ -26,7 +26,7 @@ void Chefao::executar() {
 	retangulo.setTexture(&textura);
 }
 void Chefao::mover() {
-	//ainda pensando como fazer a movimentacao do chefao, a principio ele seria lento
+	
 }
 short int Chefao::getForca() const {
 	return forca;
@@ -87,7 +87,7 @@ void Chefao::salvar() {
 }
 void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
 	if (tipoColisao == 1) {
-		this->setVida(0);
+		this->setVida(getVida()-10);
 		jogador->setVelocidadeVertical(-400.f);
 	}
 	else {

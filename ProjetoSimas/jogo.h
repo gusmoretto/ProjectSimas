@@ -15,4 +15,5 @@ public:
     Jogo();
     ~Jogo();
     void executar();
+    void setFaseAtual(int fase)
 };

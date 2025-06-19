@@ -11,7 +11,6 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), faseAtual(nullp
     Ente::setGerenciadorGrafico(pGG);
     jogador1 = new Jogador();
     jogador1->executar();
-    faseAtual = new SegundaFase(jogador1, nullptr);
 }
 
 Jogo::~Jogo() {
@@ -61,6 +60,7 @@ void Jogo::executar() {
             Entidade* pEnt = pElemento->getInfo();
             if (Obstaculo* pObs = dynamic_cast<Obstaculo*>(pEnt)) {
                 pObs->atualizarFisica();
+
             }
             pElemento = pElemento->getProx();
         }
@@ -111,5 +111,13 @@ void Jogo::executar() {
         jogador1->desenhar();
 
         pGG->mostrar();
+    }
+}
+void Jogo::setFaseAtual(int fase) {
+    if (fase == 1) {
+        faseAtual = new PrimeiraFase(jogador1, nullptr);
+    }
+    else if (fase == 2) {
+        faseAtual = new SegundaFase(jogador1, nullptr);
     }
 }

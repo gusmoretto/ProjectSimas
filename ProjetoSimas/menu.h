@@ -9,9 +9,11 @@ private:
     Gerenciadores::GerenciadorGrafico* pGG_Menu;
 
     sf::Font font;
-    sf::Text textoNovoJogo;
+    sf::Text textoNovoFase1;
+    sf::Text textoNovoFase2;
     sf::Text textoSair;
-    sf::RectangleShape botaoNovoJogo;
+    sf::RectangleShape botaoNovoFase1;
+    sf::RectangleShape botaoNovoFase2;
     sf::RectangleShape botaoSair;
     sf::Texture texturaFundoMenu; 
     sf::Sprite spriteFundoMenu;

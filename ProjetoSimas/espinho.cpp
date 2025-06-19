@@ -45,7 +45,7 @@ void Espinho::desenhar() {
 	}
 }
 void Espinho::atualizarFisica(float dt) {
-	if (!gravidadeAtiva) {
+	if (gravidadeAtiva) {
 		aplicarGravidade(dt, getForcaMitico());
 
 		sf::Vector2f pos = retangulo.getPosition();
