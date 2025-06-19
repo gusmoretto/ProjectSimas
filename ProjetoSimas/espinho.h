@@ -8,7 +8,8 @@ private:
 public:
 	Espinho();
 	~Espinho();
-	void executar() ;
+	void executar();
+	void salvar();
 	void obstacular(Jogador* p) ;
 	bool getElasticidade() const;
 	void setElasticidade(bool e);

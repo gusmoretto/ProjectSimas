@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-SegundaFase::SegundaFase(Jogador* j1, Jogador* j2) : Fase(j1, j2), maxEspinhos(5), maxChefoes(3) {
+SegundaFase::SegundaFase(Jogador* j1, Jogador* j2) : Fase(j1, j2), maxEspinhos(4), maxChefoes(3) {
 	fase = 2;
 	criarCenario(fase);
 	Fase::executar();
@@ -34,4 +34,51 @@ void SegundaFase::criarInimigos() {
 		}
 	}
 	arqChefoes.close();
+}
+void SegundaFase::criarObstaculos() {
+	int numEspinhos = rand() % (maxEspinhos - 3 + 1) + 3;
+	std::ifstream arqEspinhos("coordEspinhos.txt");
+	if (!arqEspinhos.is_open()) {
+		std::cerr << "Erro: Nao foi possivel abrir o arquivo de Espinhos." << std::endl;
+		return;
+	}
+	float x, y;
+	for (int i = 0; i < numEspinhos; ++i) {
+		if (arqEspinhos >> x >> y) {
+			Espinho* pEspinho = new Espinho();
+			pEspinho->setPosicao(x, y);
+			pEspinho->executar();
+			GC.inclueEntidade(pEspinho);
+			lista_ents.incluir(dynamic_cast<Entidade*>(pEspinho));
+		}
+		else {
+			break;
+		}
+	}
+	arqEspinhos.close();
+	int numAguas = rand() % (9 - 8 + 1) + 8;
+	std::ifstream arqAguas("coordAguas2.txt");
+	if (!arqAguas.is_open()) {
+		std::cerr << "Erro: Nao foi possivel abrir o arquivo de Aguas." << std::endl;
+		return;
+	}
+	for (int i = 0; i < numAguas; ++i) {
+		if (arqAguas >> x >> y) {
+			Agua* pAgua = new Agua();
+			pAgua->setPosicao(x, y);
+			pAgua->executar();
+			GC.inclueEntidade(pAgua);
+			lista_ents.incluir(dynamic_cast<Entidade*>(pAgua));
+		}
+		else {
+			break;
+		}
+	}
+	arqAguas.close();
+}
+void SegundaFase::setId(int novoId) {
+	id = novoId;
+}
+int SegundaFase::getId() const {
+	return id;
 }

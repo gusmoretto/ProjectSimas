@@ -75,4 +75,27 @@ void Chefao::setNoChao(bool NC) {
 bool Chefao::getNochao() {
 	return noChao;
 }
+void Chefao::salvar() {
+	Inimigo::salvarDataBuffer();
+	if (buffer) {
+		*buffer << forca << endl; 
+	}
+	ofstream arquivoChefao;
+	arquivoChefao.open("arquivo_chefao.txt");
+	arquivoChefao << buffer;
+	arquivoChefao.close();
+}
+void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
+	if (tipoColisao == 1) {
+		this->setVida(0);
+		jogador->setVelocidadeVertical(-400.f);
+	}
+	else {
+		this->danificar(jogador);
+		sf::Vector2f pos = jogador->getRetangulo().getPosition();
+		pos.x += (tipoColisao == 2) ? -10.f : 10.f;
+		jogador->setPosicao(pos.x, pos.y);
+	}
+}
+
 

@@ -1,5 +1,6 @@
 #include "jogo.h"
 #include "primeira_fase.h"
+#include "segunda_fase.h"
 #include "inimigo.h"
 #include "obstaculo.h"
 #include "lancador.h"
@@ -10,7 +11,7 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), faseAtual(nullp
     Ente::setGerenciadorGrafico(pGG);
     jogador1 = new Jogador();
     jogador1->executar();
-    faseAtual = new PrimeiraFase(jogador1, nullptr);
+    faseAtual = new SegundaFase(jogador1, nullptr);
 }
 
 Jogo::~Jogo() {
