@@ -64,3 +64,13 @@ void Agua::atualizarFisica(float dt) {
 		retangulo.setPosition(pos);
 	}
 }
+void Agua::salvar() {
+	Obstaculo::salvarDataBuffer();
+	if (buffer) {
+		*buffer << largura << lentidao << endl;
+	}
+	ofstream arquivoAgua;
+	arquivoAgua.open("arquivo_agua.txt");
+	arquivoAgua << buffer;
+	arquivoAgua.close();
+}

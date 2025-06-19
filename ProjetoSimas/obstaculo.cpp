@@ -11,6 +11,11 @@ Obstaculo::~Obstaculo() {
 void Obstaculo::executar() {
 	std::cout << "Executando Obstaculo." << std::endl;
 }
+void Obstaculo::salvarDataBuffer() {
+	Entidade::salvarDataBuffer();
+	if (buffer)
+		*buffer << danoso << gravidadeAtiva;
+}
 
 
 

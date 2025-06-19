@@ -76,5 +76,15 @@ void Projetil::desenhar(){
     if (pGG)
         pGG->desenha(retangulo);
 }
+void Projetil::salvar(){
+	Entidade::salvarDataBuffer();
+	if (buffer) {
+		*buffer << velocidade.x << velocidade.y << ativo << dano;
+	}
+    ofstream arquivoProjetil;
+    arquivoProjetil.open("arquivo_projetil.txt");
+    arquivoProjetil << buffer;
+    arquivoProjetil.close();
+}
 
 

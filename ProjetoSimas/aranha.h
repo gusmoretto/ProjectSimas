@@ -9,6 +9,7 @@ private:
 public:
 	Aranha();
 	~Aranha();
+	void salvar();
 	void executar();
 	void danificar(Jogador* p) ;
 	void mover();

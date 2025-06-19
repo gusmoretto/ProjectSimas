@@ -8,14 +8,13 @@ protected:
 	float velocidade;
 	int vida;
 	int ataque;
-	float velocidadeVertical;
 	bool noChao;
 
 public:
 	Personagem();
 	~Personagem();
-	//void salvarDataBuffer();
-	//virtul void salvar() const = 0;
+	void salvarDataBuffer();
+	virtual void salvar() = 0;
 	virtual void mover() = 0;
 	virtual void executar() = 0;
 	virtual void setVelocidade(float nvVelocidade) = 0;

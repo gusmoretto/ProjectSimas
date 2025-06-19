@@ -4,7 +4,7 @@
 using namespace Gerenciadores;
 
 GerenciadorGrafico::GerenciadorGrafico(){
-	window.create(VideoMode(1200, 700), "Globix", Style::Default);
+	window.create(VideoMode(1200, 700), "Cavalheiro do dia e noite++", Style::Default);
 	window.setFramerateLimit(120);
 	camera = window.getDefaultView();
 }

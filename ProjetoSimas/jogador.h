@@ -4,23 +4,23 @@
 class Jogador: public Personagem{
 private:
 	int pontos;
-	static int cont_jogador;
-	int id_jogador;
 	float impulsoPulo;
 	bool olhandoDireita;
 	float velocidadeBase;
 	float puloBase;
+	int id_jogador;
+	static int cont_jogador; 
 
 public:
 	Jogador();
 	 ~Jogador();
+	 void salvar();
 	int getVida() const;
 	int getAtaque() const;
 	void setVida(int vida);
 	void setAtaque(int ataque);
 	void executar();
 	virtual void mover();
-	int getIdJogador() const;
 	void desenhar();
 	void setId(int novoId);
 	int getId() const;
@@ -41,3 +41,5 @@ public:
 	};
 	float getVelocidadeBase() const { return velocidadeBase; }
 };
+
+int Jogador::cont_jogador = 0;

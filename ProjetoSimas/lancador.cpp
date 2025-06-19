@@ -46,8 +46,7 @@ void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::Vi
 		viewAtual.getCenter().x - viewAtual.getSize().x / 2.f,
 		viewAtual.getCenter().y - viewAtual.getSize().y / 2.f,
 		viewAtual.getSize().x,
-		viewAtual.getSize().y
-	);
+		viewAtual.getSize().y);
 	if (!viewRect.contains(getPosicao()) || !alvo || !viewRect.contains(alvo->getPosicao()))
 		return;
 
@@ -110,18 +109,14 @@ void Lancador::desenhar() {
 	}
 }
 void Lancador::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
-	// tipoColisao: 1 = por cima, 2/3 = laterais, 4 = por baixo (ajuste conforme seu verificarColisao)
-	if (tipoColisao == 1) { // Por cima
-		// Elimina o inimigo (pode ser delete this, ou sinalizar para o gerenciador remover)
-		this->setVida(0); // ou outro mecanismo de remoção
-		// Opcional: jogador pode quicar/pular ao eliminar o inimigo
-		jogador->setVelocidadeVertical(-400.f); // impulso de pulo, ajuste conforme seu jogo
+	if (tipoColisao == 1) { 
+		this->setVida(0); 
+		jogador->setVelocidadeVertical(-400.f); 
 	}
 	else {
-		// Dano e empurra pouco o jogador
 		this->danificar(jogador);
 		sf::Vector2f pos = jogador->getRetangulo().getPosition();
-		pos.x += (tipoColisao == 2) ? -10.f : 10.f; // empurra para o lado oposto
+		pos.x += (tipoColisao == 2) ? -10.f : 10.f; 
 		jogador->setPosicao(pos.x, pos.y);
 	}
 }
@@ -136,4 +131,13 @@ void Lancador::setNoChao(bool NC) {
 }
 bool Lancador::getNochao() {
 	return noChao;
+}
+void Lancador::salvar() {
+	Inimigo::salvarDataBuffer();
+	if (buffer)
+		*buffer << tamanho << direcao << tempoAtaque << intervaloAtaque << deslocamentoAtual << deslocamentoMax << posicaoInicial.x << posicaoInicial.y << endl;
+	ofstream arquivoLancador;
+	arquivoLancador.open("arquivo_lancador.txt");
+	arquivoLancador << buffer;
+	arquivoLancador.close();
 }

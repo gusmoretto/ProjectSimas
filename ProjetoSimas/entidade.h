@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <ostream>
 #include "ente.h"
 using namespace std;
@@ -18,8 +19,8 @@ public:
     Entidade();
     virtual ~Entidade();
     virtual void executar() = 0;
-    //virtual void salvar() const = 0;
-    //void salvarDataBuffer();
+    virtual void salvar() = 0;
+    void salvarDataBuffer();
     virtual float aplicarGravidade(float deltaTime, float forcaExtra = 0.f);
     Vector2f getPosicao() const {
         return retangulo.getPosition();

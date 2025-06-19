@@ -82,18 +82,14 @@ float Aranha::getVelocidade() {
 	return velocidade;
 }
 void Aranha::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
-    // tipoColisao: 1 = por cima, 2/3 = laterais, 4 = por baixo (ajuste conforme seu verificarColisao)
-    if (tipoColisao == 1) { // Por cima
-        // Elimina o inimigo (pode ser delete this, ou sinalizar para o gerenciador remover)
-        this->setVida(0); // ou outro mecanismo de remoção
-        // Opcional: jogador pode quicar/pular ao eliminar o inimigo
-        jogador->setVelocidadeVertical(-400.f); // impulso de pulo, ajuste conforme seu jogo
+    if (tipoColisao == 1) { 
+        this->setVida(0); 
+        jogador->setVelocidadeVertical(-400.f); 
     }
     else {
-        // Dano e empurra pouco o jogador
         this->danificar(jogador);
         sf::Vector2f pos = jogador->getRetangulo().getPosition();
-        pos.x += (tipoColisao == 2) ? -10.f : 10.f; // empurra para o lado oposto
+        pos.x += (tipoColisao == 2) ? -10.f : 10.f;
         jogador->setPosicao(pos.x, pos.y);
     }
 }
@@ -108,5 +104,14 @@ void Aranha::setNoChao(bool NC) {
 }
 bool Aranha::getNochao() {
     return noChao;
+}
+void Aranha::salvar() {
+    Inimigo::salvarDataBuffer();
+    if (buffer)
+        *buffer << direcaoX << endl;
+    ofstream arquivoAranha;
+    arquivoAranha.open("arquivo_aranha.txt");
+    arquivoAranha << buffer;
+    arquivoAranha.close();
 }
 

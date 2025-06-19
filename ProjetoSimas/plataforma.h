@@ -11,6 +11,7 @@ public:
 	Plataforma();
 	~Plataforma();
 	void executar();
+	void salvar();
 	void obstacular(Jogador* p);
 	void desenhar();
 	void setId(int novoId);

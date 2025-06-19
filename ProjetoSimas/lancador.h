@@ -8,9 +8,9 @@
 class Lancador : public Inimigo {
 private:
 	int tamanho;
-	float direcao; // -1 para esquerda, 1 para direita
-	float tempoAtaque; // tempo acumulado para controlar disparos
-	float intervaloAtaque; // intervalo entre disparos
+	float direcao; 
+	float tempoAtaque; 
+	float intervaloAtaque; 
 	std::vector<Projetil*> projeteis;
 	float deslocamentoMax;
 	float deslocamentoAtual;
@@ -20,6 +20,7 @@ public:
 	Lancador();
 	~Lancador();
 	void executar();
+	void salvar();
 	void danificar(Jogador* p);
 	void mover();
 	int getVida() const;

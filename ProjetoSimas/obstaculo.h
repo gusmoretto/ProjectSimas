@@ -10,6 +10,8 @@ protected:
 public:
 	Obstaculo();
 	~Obstaculo();
+	virtual void salvar() = 0;
+	void salvarDataBuffer();
 	virtual void executar() = 0;
 	virtual void obstacular(Jogador* p) = 0; 
 	virtual void setForcaMitico(float forca) = 0; 

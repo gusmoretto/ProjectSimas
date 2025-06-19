@@ -2,7 +2,7 @@
 #include "personagem.h"
 #include "entidade.h"
 
-Personagem::Personagem() : Entidade(), num_vidas(1), vida(0), noChao(true), velocidadeVertical(0.f), ataque(0) { 
+Personagem::Personagem() : Entidade(), num_vidas(1), vida(0), noChao(true), ataque(0) { 
 	velocidade = 1.7f; 
 }
 Personagem::~Personagem() {
@@ -11,6 +11,8 @@ Personagem::~Personagem() {
 void Personagem::executar() {
 	std::cout << "Executando Personagem com " << num_vidas << " vidas." << std::endl;
 }
-//void Personagem::salvarDataBuffer() {
-//	std::cout << "Salvando dados do personagem com " << num_vidas << " vidas." << std::endl;
-//}
+void Personagem::salvarDataBuffer() {
+	Entidade::salvarDataBuffer();
+	if (buffer)
+		*buffer << num_vidas << vida << velocidade << noChao << ataque;
+}

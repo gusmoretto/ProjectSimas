@@ -123,9 +123,6 @@ void Jogador::mover() {
 
     retangulo.setPosition(pos);
 }
-int Jogador::getIdJogador() const {
-	return id_jogador;
-}
 void Jogador::desenhar() {
 	if (pGG) {
 		pGG->desenha(retangulo);
@@ -157,6 +154,16 @@ float Jogador::getVelocidadeVertical() const {
 }
 float Jogador::getPuloBase() const {
     return puloBase;
+}
+void Jogador::salvar() {
+	Personagem::salvarDataBuffer();
+	if (buffer) {
+		*buffer << id_jogador << pontos << impulsoPulo << olhandoDireita << velocidadeBase << puloBase << endl;
+	}
+    ofstream arquivoJogador;
+    arquivoJogador.open("arquivo_jogador.txt");
+    arquivoJogador << buffer;
+    arquivoJogador.close();
 }
 
 

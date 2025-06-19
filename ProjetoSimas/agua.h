@@ -11,6 +11,7 @@ public:
 	Agua();
 	~Agua();
 	void executar();
+	void salvar();
 	void obstacular(Jogador* p);
 	float getLargura() const;
 	void setLargura(float l);

@@ -108,4 +108,13 @@ void Plataforma::atualizarFisica(float dt) {
         retangulo.setPosition(pos);
     }
 }
+void Plataforma::salvar() {
+    Obstaculo::salvarDataBuffer();
+    if(buffer)
+		*buffer << altura << velocidadeVertical << endl;    
+    ofstream arquivoPlataforma;
+    arquivoPlataforma.open("arquivo_plataforma.txt");
+    arquivoPlataforma << buffer;
+    arquivoPlataforma.close();
+}
 
