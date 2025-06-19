@@ -5,7 +5,8 @@
 #include <iostream>
 
 PrimeiraFase::PrimeiraFase(Jogador* j1, Jogador* j2) : Fase(j1, j2) , maxLancadores(4), maxAguas(12){
-    criarCenario("fundo1.png", "chao.png");
+    fase = 1;
+    criarCenario(fase);
     Fase::executar();
 }
 
@@ -32,7 +33,7 @@ void PrimeiraFase::criarInimigos() {
             break; //
         }
     }
-    arqLancadores.close(); //
+    arqLancadores.close(); 
 }
 
 void PrimeiraFase::criarObstaculos() {
@@ -56,5 +57,11 @@ void PrimeiraFase::criarObstaculos() {
             break; //
         }
     }
-    arqAguas.close(); //
+    arqAguas.close(); 
+}
+void PrimeiraFase::setId(int novoId) {
+	id = novoId;
+}   
+int PrimeiraFase::getId() const {
+	return id;
 }

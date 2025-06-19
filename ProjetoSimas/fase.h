@@ -10,15 +10,16 @@ protected:
     Gerenciadores::GerenciadorColisoes GC;
     Jogador* jogador1;
     Jogador* jogador2;
+    int fase;
 
 protected:
-    void criarPlataformas(const char* caminhoArquivo);
-    void criarAranhas(const char* caminhoArquivo);
+    void criarPlataformas(int fase);
+    void criarAranhas(int fase);
 
     virtual void criarInimigos() = 0;
     virtual void criarObstaculos() = 0;
 
-    void criarCenario(const std::string& fundo, const std::string& chao);
+    void criarCenario(int fase);
 
 public:
     Fase(Jogador* j1, Jogador* j2);
@@ -26,6 +27,5 @@ public:
     virtual void executar();
     Gerenciadores::GerenciadorColisoes* getGerenciadorColisoes() { return &GC; }
     ListaEntidades* getListaEntidades() { return &lista_ents; }
-    void setId(int novoId);
-    int getId() const;
+	int getFase() const { return fase; }
 };

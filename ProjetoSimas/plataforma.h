@@ -19,4 +19,5 @@ public:
 	void setForcaMitico(float forca);
 	float getForcaMitico() const;
 	void atualizarFisica(float dt = 0.016f);
+	void setarTexturaFase(int fase);
 };

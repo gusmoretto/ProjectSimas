@@ -19,7 +19,11 @@ void Chefao::danificar(Jogador* p) {
 }
 void Chefao::executar() {
 	setId(5);
-	//a fazer
+	retangulo.setSize(sf::Vector2f(128.f, 128.f));
+	if (!textura.loadFromFile("chefao.png")) {
+		std::cout << "Erro ao carregar Chefao.png" << std::endl;
+	}
+	retangulo.setTexture(&textura);
 }
 void Chefao::mover() {
 	//ainda pensando como fazer a movimentacao do chefao, a principio ele seria lento

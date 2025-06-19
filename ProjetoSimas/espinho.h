@@ -2,12 +2,12 @@
 #include "obstaculo.h"
 #include "jogador.h"
 
-class ObstDificil : public Obstaculo {
+class Espinho : public Obstaculo {
 private:
 	bool elasticidade;
 public:
-	ObstDificil();
-	~ObstDificil();
+	Espinho();
+	~Espinho();
 	void executar() ;
 	void obstacular(Jogador* p) ;
 	bool getElasticidade() const;

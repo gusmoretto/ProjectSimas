@@ -7,8 +7,10 @@ class PrimeiraFase : public Fase {
 public:
     PrimeiraFase(Jogador* j1, Jogador* j2);
     ~PrimeiraFase();
+    void setId(int novoId);
+    int getId() const;
 
 protected:
-    void criarInimigos() override;
-    void criarObstaculos() override;
+    void criarInimigos();
+    void criarObstaculos();
 };

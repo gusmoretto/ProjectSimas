@@ -20,7 +20,7 @@ Jogo::~Jogo() {
 void Jogo::executar() {
     GerenciadorColisoes* pGC = faseAtual->getGerenciadorColisoes();
     const std::vector<Inimigo*>& inimigos = pGC->getInimigos();
-    ListaEntidades* pListaEnts = faseAtual->getListaEntidades(); // Ponteiro para a lista
+    ListaEntidades* pListaEnts = faseAtual->getListaEntidades(); 
 
     while (pGG->estaAberta()) {
         sf::Event evento;

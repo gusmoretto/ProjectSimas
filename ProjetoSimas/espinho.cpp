@@ -1,40 +1,40 @@
-#include "obst_dificil.h"
+#include "espinho.h"
 #include "jogador.h"
 
-ObstDificil::ObstDificil() : Obstaculo() {
+Espinho::Espinho() : Obstaculo() {
 	//A fazer
 }
-ObstDificil::~ObstDificil() {
+Espinho::~Espinho() {
 	//A fazer
 }
-void ObstDificil::executar() {
+void Espinho::executar() {
 	setId(10);
 	//A fazer
 }
-void ObstDificil::obstacular(Jogador* p) {
+void Espinho::obstacular(Jogador* p) {
 	if (p) {
 		//Fazer o jogador ser empurrado e levar dano quanto mais vezes encostar
 		std::cout << "Jogador atingido por obstáculo difícil! Jogador empurrado" << std::endl;
 	}
 }
-void ObstDificil::setId(int novoId) {
+void Espinho::setId(int novoId) {
 	id = novoId;
 }
-int ObstDificil::getId() const {
+int Espinho::getId() const {
 	return id;
 }
-void ObstDificil::setElasticidade(bool e){
+void Espinho::setElasticidade(bool e){
 	elasticidade = e;
 }
-bool ObstDificil::getElasticidade() const {
+bool Espinho::getElasticidade() const {
 	return elasticidade;
 }
-void ObstDificil::desenhar() {
+void Espinho::desenhar() {
 	if (pGG) {
 		pGG->desenha(retangulo);
 	}
 }
-void ObstDificil::atualizarFisica(float dt) {
+void Espinho::atualizarFisica(float dt) {
 	if (gravidadeAtiva) { // Verificação já deve estar aqui
 		aplicarGravidade(dt, getForcaMitico());
 

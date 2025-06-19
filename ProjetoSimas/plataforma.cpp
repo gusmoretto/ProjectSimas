@@ -9,10 +9,19 @@ Plataforma::~Plataforma() {
 }
 void Plataforma::executar() {
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
-    if (!textura.loadFromFile("plataforma2.png")) {
-        std::cout << "Erro ao carregar plataforma.png" << std::endl;
-    }
-    retangulo.setTexture(&textura);
+}
+void Plataforma::setarTexturaFase(int fase) {
+	if (fase == 1) {
+		if (!textura.loadFromFile("plataforma2.png")) {
+			std::cout << "Erro ao carregar plataforma1.png" << std::endl;
+		}
+	}
+	else if (fase == 2) {
+		if (!textura.loadFromFile("plataforma.png")) {
+			std::cout << "Erro ao carregar plataforma2.png" << std::endl;
+		}
+	}
+	retangulo.setTexture(&textura);
 }
 
 void Plataforma::obstacular(Jogador* p) {

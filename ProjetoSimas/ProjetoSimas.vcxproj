@@ -148,12 +148,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="obstaculo.cpp" />
-    <ClCompile Include="obst_dificil.cpp" />
+    <ClCompile Include="espinho.cpp" />
     <ClCompile Include="agua.cpp" />
     <ClCompile Include="personagem.cpp" />
     <ClCompile Include="plataforma.cpp" />
     <ClCompile Include="primeira_fase.cpp" />
     <ClCompile Include="projetil.cpp" />
+    <ClCompile Include="segunda_fase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chefao.h" />
@@ -172,12 +173,13 @@
     <ClInclude Include="lista_entidades.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="obstaculo.h" />
-    <ClInclude Include="obst_dificil.h" />
+    <ClInclude Include="espinho.h" />
     <ClInclude Include="agua.h" />
     <ClInclude Include="personagem.h" />
     <ClInclude Include="plataforma.h" />
     <ClInclude Include="primeira_fase.h" />
     <ClInclude Include="projetil.h" />
+    <ClInclude Include="segunda_fase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

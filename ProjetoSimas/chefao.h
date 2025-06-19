@@ -33,5 +33,7 @@ public:
 	float getVelocidadeVertical() const;
 	void setNoChao(bool NC);
 	bool getNochao();
+	void tratarColisaoComJogador(Jogador* jogador, int tipoColisao);
+	void salvar();
 };
 	
