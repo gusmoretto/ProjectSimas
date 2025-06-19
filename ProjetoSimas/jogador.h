@@ -42,4 +42,3 @@ public:
 	float getVelocidadeBase() const { return velocidadeBase; }
 };
 
-int Jogador::cont_jogador = 0;
