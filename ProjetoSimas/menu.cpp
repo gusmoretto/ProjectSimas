@@ -20,30 +20,30 @@ Menu::~Menu() {
 }
 
 void Menu::inicializarTextos() {
-    if (!font.loadFromFile("fonteMenu.ttf")) { 
-        std::cerr << "Erro ao carregar fonte arial.ttf" << std::endl; 
+    if (!font.loadFromFile("fonteMenu.ttf")) {
+        std::cerr << "Erro ao carregar fonte arial.ttf" << std::endl;
     }
 
-    textoNovoFase1.setFont(font); 
+    textoNovoFase1.setFont(font);
     textoNovoFase1.setString("Novo Fase 1");
     textoNovoFase1.setCharacterSize(25);
     textoNovoFase1.setFillColor(sf::Color::Black);
     textoNovoFase1.setOrigin(textoNovoFase1.getLocalBounds().width / 2, textoNovoFase1.getLocalBounds().height / 2);
     textoNovoFase1.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 - 100);
-    
+
     textoNovoFase2.setFont(font);
     textoNovoFase2.setString("Novo Fase 2");
     textoNovoFase2.setCharacterSize(25);
     textoNovoFase2.setFillColor(sf::Color::Black);
     textoNovoFase2.setOrigin(textoNovoFase2.getLocalBounds().width / 2, textoNovoFase2.getLocalBounds().height / 2);
-    textoNovoFase2.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 - 100);
+    textoNovoFase2.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2);
 
-    textoSair.setFont(font); 
-    textoSair.setString("Sair do Jogo"); 
-    textoSair.setCharacterSize(30); 
-    textoSair.setFillColor(sf::Color::Black); 
-    textoSair.setOrigin(textoSair.getLocalBounds().width / 2, textoSair.getLocalBounds().height / 2); 
-    textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 50); 
+    textoSair.setFont(font);
+    textoSair.setString("Sair do Jogo");
+    textoSair.setCharacterSize(30);
+    textoSair.setFillColor(sf::Color::Black);
+    textoSair.setOrigin(textoSair.getLocalBounds().width / 2, textoSair.getLocalBounds().height / 2);
+    textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 100);
 }
 
 void Menu::inicializarBotoes() {
