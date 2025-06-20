@@ -67,10 +67,10 @@ void Agua::atualizarFisica(float dt) {
 void Agua::salvar() {
 	Obstaculo::salvarDataBuffer();
 	if (buffer) {
-		*buffer << largura << lentidao << endl;
+		buffer << largura << lentidao << endl;
 	}
 	ofstream arquivoAgua;
 	arquivoAgua.open("arquivo_agua.txt");
-	arquivoAgua << buffer;
+	arquivoAgua << &buffer;
 	arquivoAgua.close();
 }

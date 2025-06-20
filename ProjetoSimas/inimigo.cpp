@@ -11,7 +11,7 @@ Inimigo::~Inimigo() {
 void Inimigo::salvarDataBuffer() {
 	Personagem::salvarDataBuffer();
 	if (buffer)
-		*buffer << nivel_maldade;
+		buffer << nivel_maldade;
 }
 
 

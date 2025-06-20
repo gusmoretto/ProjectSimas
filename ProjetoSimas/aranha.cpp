@@ -108,10 +108,10 @@ bool Aranha::getNochao() {
 void Aranha::salvar() {
     Inimigo::salvarDataBuffer();
     if (buffer)
-        *buffer << direcaoX << endl;
+        buffer << direcaoX << endl;
     ofstream arquivoAranha;
     arquivoAranha.open("arquivo_aranha.txt");
-    arquivoAranha << buffer;
+    arquivoAranha << &buffer;
     arquivoAranha.close();
 }
 

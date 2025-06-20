@@ -158,11 +158,11 @@ float Jogador::getPuloBase() const {
 void Jogador::salvar() {
 	Personagem::salvarDataBuffer();
 	if (buffer) {
-		*buffer << id_jogador << pontos << impulsoPulo << olhandoDireita << velocidadeBase << puloBase << endl;
+		buffer << id_jogador << pontos << impulsoPulo << olhandoDireita << velocidadeBase << puloBase << endl;
 	}
     ofstream arquivoJogador;
     arquivoJogador.open("arquivo_jogador.txt");
-    arquivoJogador << buffer;
+    arquivoJogador << &buffer;
     arquivoJogador.close();
 }
 

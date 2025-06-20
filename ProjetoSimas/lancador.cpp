@@ -135,9 +135,9 @@ bool Lancador::getNochao() {
 void Lancador::salvar() {
 	Inimigo::salvarDataBuffer();
 	if (buffer)
-		*buffer << tamanho << direcao << tempoAtaque << intervaloAtaque << deslocamentoAtual << deslocamentoMax << posicaoInicial.x << posicaoInicial.y << endl;
+		buffer << tamanho << direcao << tempoAtaque << intervaloAtaque << deslocamentoAtual << deslocamentoMax << posicaoInicial.x << posicaoInicial.y << endl;
 	ofstream arquivoLancador;
 	arquivoLancador.open("arquivo_lancador.txt");
-	arquivoLancador << buffer;
+	arquivoLancador << &buffer;
 	arquivoLancador.close();
 }

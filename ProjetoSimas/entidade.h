@@ -8,7 +8,7 @@ using namespace std;
 class Entidade: public Ente {
 protected:
     int x, y;
-    ostream* buffer; 
+    ostream buffer; 
     float gravidade;
 	RectangleShape retangulo;
 	Texture textura;

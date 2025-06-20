@@ -120,10 +120,10 @@ void Plataforma::atualizarFisica(float dt) {
 void Plataforma::salvar() {
     Obstaculo::salvarDataBuffer();
     if(buffer)
-		*buffer << altura << velocidadeVertical << endl;    
+		buffer << altura << velocidadeVertical << endl;    
     ofstream arquivoPlataforma;
     arquivoPlataforma.open("arquivo_plataforma.txt");
-    arquivoPlataforma << buffer;
+    arquivoPlataforma << &buffer;
     arquivoPlataforma.close();
 }
 

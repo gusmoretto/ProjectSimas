@@ -21,7 +21,7 @@ void Espinho::obstacular(Jogador* p) {
 				p->setVelocidadeVertical(-p->getVelocidadeVertical() * 0.5f);
 			}
 			else {
-				p->setVida(p->getVida() - 10); 
+				p->setVida(p->getVida() - 10);
 			}
 			std::cout << "Jogador atingido por espinho! Vida restante: " << p->getVida() << std::endl;
 		}
@@ -59,9 +59,9 @@ void Espinho::atualizarFisica(float dt) {
 void Espinho::salvar() {
 	Obstaculo::salvarDataBuffer();
 	if (buffer)
-		*buffer << elasticidade << endl;
+		buffer << elasticidade << endl;
 	ofstream arquivoEspinhos;
 	arquivoEspinhos.open("arquivo_espinho.txt");
-	arquivoEspinhos << buffer;
+	arquivoEspinhos << &buffer;
 	arquivoEspinhos.close();
 }

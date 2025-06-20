@@ -78,11 +78,11 @@ bool Chefao::getNochao() {
 void Chefao::salvar() {
 	Inimigo::salvarDataBuffer();
 	if (buffer) {
-		*buffer << forca << endl; 
+		buffer << forca << endl; 
 	}
 	ofstream arquivoChefao;
 	arquivoChefao.open("arquivo_chefao.txt");
-	arquivoChefao << buffer;
+	arquivoChefao << &buffer;
 	arquivoChefao.close();
 }
 void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
