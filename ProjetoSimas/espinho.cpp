@@ -14,6 +14,7 @@ void Espinho::executar() {
 }
 void Espinho::obstacular(Jogador* p) {
 	if (p) {
+		// Verifica se o jogador colidiu com o espinho
 		sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
 		sf::FloatRect areaEspinho = this->getRetangulo().getGlobalBounds();
 		if (areaJogador.intersects(areaEspinho)) {
