@@ -31,6 +31,11 @@ void Jogo::executar() {
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            Elemento<Entidade>* pElementoEntidade = pListaEnts->getPrimeiro();
+            while (pElementoEntidade) {
+				pElementoEntidade->getInfo()->salvar();
+                pElementoEntidade = pElementoEntidade->getProx();
+            }
             pGG->fechar();
         }
 
