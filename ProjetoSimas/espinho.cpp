@@ -19,34 +19,37 @@ void Espinho::obstacular(Jogador* p, int tipoColisao) {
 
 	sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
 	sf::FloatRect areaEspinho = this->getRetangulo().getGlobalBounds();
-	float impulsoRepulsaoVertical = 450.f; 
-	float impulsoBounceLateral = -600.f; 
-	float tolerancia = 10.f;
 
-	p->setVida(p->getVida() - 10); 
+	float impulsoRepulsaoVertical = 450.f;
+	float impulsoRepulsaoHorizontal = 600.f;
+	float impulsoVerticalCurto = -200.f; // Um pequeno pulo ao ser atingido de lado
+
+	p->setVida(p->getVida() - 10);
 	std::cout << "Jogador atingido por espinho! Vida restante: " << p->getVida() << std::endl;
 
 	switch (tipoColisao) {
-	case 1: 
+	case 1: // Colisão por cima
 		p->setPosicao(areaJogador.left, areaEspinho.top - areaJogador.height);
 		p->setVelocidadeVertical(-impulsoRepulsaoVertical);
 		p->setNoChao(true);
 		break;
 
-	case 4: 
+	case 4: // Colisão por baixo
 		p->setPosicao(areaJogador.left, areaEspinho.top + areaEspinho.height);
 		p->setVelocidadeVertical(impulsoRepulsaoVertical);
 		break;
 
-	case 2: 
-		p->setPosicao(areaEspinho.left  - areaJogador.width, areaJogador.top);
-		p->setVelocidadeVertical(impulsoBounceLateral);
+	case 2: // Colisão pela esquerda do espinho (o jogador vem da direita)
+		p->setPosicao(areaEspinho.left - areaJogador.width, areaJogador.top);
+		p->setVelocidadeHorizontal(-impulsoRepulsaoHorizontal); // Repulsão para a ESQUERDA
+		p->setVelocidadeVertical(impulsoVerticalCurto); // Joga o jogador um pouco para cima
 		p->setNoChao(false);
 		break;
 
-	case 3: 
-		p->setPosicao(areaEspinho.left  + areaEspinho.width, areaJogador.top);
-		p->setVelocidadeVertical(impulsoBounceLateral);
+	case 3: // Colisão pela direita do espinho (o jogador vem da esquerda)
+		p->setPosicao(areaEspinho.left + areaEspinho.width, areaJogador.top);
+		p->setVelocidadeHorizontal(impulsoRepulsaoHorizontal); // Repulsão para a DIREITA
+		p->setVelocidadeVertical(impulsoVerticalCurto); // Joga o jogador um pouco para cima
 		p->setNoChao(false);
 		break;
 	}

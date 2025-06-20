@@ -4,7 +4,7 @@
 
 int Jogador::cont_jogador = 0;
 
-Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f) {
+Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f) , velocidadeHorizontal(0.f) {
 	vida = 150;
 	ataque = 10;
 	pontos = 0;
@@ -53,7 +53,10 @@ void Jogador::executar() {
 }
 void Jogador::mover() {
     sf::Vector2f movimento(0.f, 0.f);
-    if (id_jogador == 1) {
+    float dt = 0.016f; // Usando o mesmo delta time fixo da gravidade
+
+    // --- Movimento horizontal controlado pelo jogador ---
+    if (id_jogador == 1) { // Lógica para o Jogador 2 (setas do teclado)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
@@ -67,7 +70,7 @@ void Jogador::mover() {
             }
         }
     }
-    else if (id_jogador == 0) {
+    else if (id_jogador == 0) { // Lógica para o Jogador 1 (teclas A e D)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
@@ -82,41 +85,62 @@ void Jogador::mover() {
         }
     }
 
-    // Pulo
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && noChao) {
+    // --- Movimento horizontal externo (repulsão/knockback) ---
+    movimento.x += velocidadeHorizontal * dt;
+
+    // Aplica um "atrito" para que a velocidade de repulsão diminua com o tempo
+    velocidadeHorizontal *= 0.92f; // Fator de atrito, ajuste se necessário
+    if (std::abs(velocidadeHorizontal) < 1.0f) {
+        velocidadeHorizontal = 0.f;
+    }
+
+    // --- Movimento Vertical (Pulo e Gravidade) ---
+    // Verifica a tecla de pulo baseado no id do jogador
+    bool puloPressionado = false;
+    if (id_jogador == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { // Pulo do Jogador 1 na tecla 'W'
+        puloPressionado = true;
+    }
+    else if (id_jogador == 1 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) { // Pulo do Jogador 2 na tecla 'Seta para Cima'
+        puloPressionado = true;
+    }
+
+    if (puloPressionado && noChao) {
         velocidadeVertical = impulsoPulo;
         noChao = false;
     }
 
-    // Gravidade
-    velocidadeVertical += gravidade * 0.016f;
-    movimento.y += velocidadeVertical * 0.016f;
+    // Aplica gravidade
+    velocidadeVertical += gravidade * dt;
+    movimento.y += velocidadeVertical * dt;
 
     retangulo.move(movimento);
 
-    // Limites da janela
+    // --- Verificação de limites (lógica original com melhorias) ---
     sf::Vector2f pos = retangulo.getPosition();
     sf::Vector2f size = retangulo.getSize();
 
-    // Limite chão
     if (pos.y + size.y >= 670.f) {
         pos.y = 670.f - size.y;
         retangulo.setPosition(pos);
         noChao = true;
+        if (velocidadeVertical > 0)
+            velocidadeVertical = 0.f;
     }
 
-    // Limite topo
     if (pos.y < 0.f) {
         pos.y = 0.f;
         velocidadeVertical = 0.f;
     }
-    // Limite esquerda
     if (pos.x < 0.f) {
         pos.x = 0.f;
+        if (velocidadeHorizontal < 0)
+            velocidadeHorizontal = 0.f;
     }
-    
+
     if (pos.x + size.x > 3840.f) {
         pos.x = 3840.f - size.x;
+        if (velocidadeHorizontal > 0)
+            velocidadeHorizontal = 0.f;
     }
 
     retangulo.setPosition(pos);
@@ -137,6 +161,12 @@ void Jogador::setVelocidade(float nvVelocidade) {
 }
 float Jogador::getVelocidade() {
 	return velocidade;
+}
+void Jogador::setVelocidadeHorizontal(float nvVelocidadeHorizontal) {
+    velocidadeHorizontal = nvVelocidadeHorizontal;
+}
+float Jogador::getVelocidadeHorizontal() const {
+    return velocidadeHorizontal;
 }
 void Jogador::setNoChao(bool NC) {
     noChao = NC;

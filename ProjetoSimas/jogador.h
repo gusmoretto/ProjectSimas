@@ -10,6 +10,7 @@ private:
 	float puloBase;
 	int id_jogador;
 	static int cont_jogador; 
+	float velocidadeHorizontal;
 
 public:
 	Jogador();
@@ -26,6 +27,8 @@ public:
 	int getId() const;
 	void setVelocidade(float nvVelocidade);
 	float getVelocidade();
+	void setVelocidadeHorizontal(float nvVelocidadeHorizontal);
+	float getVelocidadeHorizontal() const;
 	void setNoChao(bool NC);
 	bool getNochao();
 	void setPulo(float nvPulo) { impulsoPulo = nvPulo; };
