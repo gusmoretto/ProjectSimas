@@ -4,13 +4,10 @@
 #include "gerenciador_colisoes.h"
 #include <iostream>
 
-Lancador::Lancador() : Inimigo(), tamanho(50), direcao(1.f), tempoAtaque(0.f), intervaloAtaque(4.f) {
+Lancador::Lancador() : Inimigo(), tamanho(50), tempoAtaque(0.f), intervaloAtaque(4.f) {
 	nivel_maldade = 2;
 	vida = 200;
 	ataque = 20;
-	deslocamentoMax = 32.f;
-	deslocamentoAtual = 0.f;
-	posicaoInicial = getPosicao();
 	num_vidas = 1;
 }
 Lancador::~Lancador() {
@@ -142,7 +139,7 @@ void Lancador::salvar() {
 	}
 
 	Inimigo::salvarDataBuffer();
-	*buffer << tamanho << " " << direcao << " " << tempoAtaque << " " << intervaloAtaque << " " << deslocamentoAtual << " " << deslocamentoMax << " " << posicaoInicial.x << " " << posicaoInicial.y << std::endl;
+	*buffer << tamanho << " " << tempoAtaque << " " << intervaloAtaque << " " << getPosicao().x << " " << getPosicao().y << endl;
 
 	std::ofstream arquivoLancador("arquivo_lancador.txt", std::ios::app);
 	if (arquivoLancador.is_open()) {

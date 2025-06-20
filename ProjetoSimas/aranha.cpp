@@ -115,7 +115,7 @@ void Aranha::salvar() {
     }
 
     Inimigo::salvarDataBuffer();
-    *buffer << direcaoX << std::endl;
+    *buffer << direcaoX << " " << getPosicao().x << " " << getPosicao().y << endl;
 
     std::ofstream arquivoAranha("arquivo_aranha.txt", std::ios::app);
     if (arquivoAranha.is_open()) {

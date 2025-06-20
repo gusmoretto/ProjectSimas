@@ -8,13 +8,9 @@
 class Lancador : public Inimigo {
 private:
 	int tamanho;
-	float direcao; 
 	float tempoAtaque; 
 	float intervaloAtaque; 
 	std::vector<Projetil*> projeteis;
-	float deslocamentoMax;
-	float deslocamentoAtual;
-	Vector2f posicaoInicial;
 
 public:
 	Lancador();
