@@ -14,7 +14,6 @@ void Espinho::executar() {
 }
 void Espinho::obstacular(Jogador* p) {
 	if (p) {
-		// Verifica se o jogador colidiu com o espinho
 		sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
 		sf::FloatRect areaEspinho = this->getRetangulo().getGlobalBounds();
 		if (areaJogador.intersects(areaEspinho)) {
@@ -46,10 +45,16 @@ void Espinho::desenhar() {
 	}
 }
 void Espinho::atualizarFisica(float dt) {
+	sf::Vector2f pos = retangulo.getPosition();
 	if (gravidadeAtiva) {
 		aplicarGravidade(dt, getForcaMitico());
-
-		sf::Vector2f pos = retangulo.getPosition();
+		if (pos.y + retangulo.getSize().y > 670.f) {
+			pos.y = 670.f - retangulo.getSize().y;
+			velocidadeVertical = 0.f;
+			retangulo.setPosition(pos);
+		}
+	}
+	else {
 		if (pos.y + retangulo.getSize().y > 670.f) {
 			pos.y = 670.f - retangulo.getSize().y;
 			velocidadeVertical = 0.f;

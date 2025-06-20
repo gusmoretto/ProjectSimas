@@ -104,8 +104,6 @@ namespace Gerenciadores {
 		}
 	}
 	void GerenciadorColisoes::verificaObs() {
-
-		// --- Lógica para o Jogador 1 ---
 		if (jogador1) {
 			bool jogador1_estaLentoPorAguaNesteFrame = false;
 
@@ -260,10 +258,9 @@ namespace Gerenciadores {
 
 	void GerenciadorColisoes::verificaProjetil() {
 		for (auto proj : lProjetis) {
-			// Colisão com jogadores
 			if (jogador1 && verificarColisao(proj, jogador1)) {
-				jogador1->setVida(jogador1->getVida() - 10); // Exemplo de dano
-				proj->setAtivo(false); // Ou remova do jogo
+				jogador1->setVida(jogador1->getVida() - 10); 
+				proj->setAtivo(false); 
 			}
 			if (jogador2 && verificarColisao(proj, jogador2)) {
 				jogador2->setVida(jogador2->getVida() - 10);
@@ -283,11 +280,9 @@ namespace Gerenciadores {
 				sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
 				sf::FloatRect areaObs = obs->getRetangulo().getGlobalBounds();
 
-				// Condição 1: Eles se sobrepõem no eixo X?
 				bool x_overlap = areaInimigo.left < areaObs.left + areaObs.width &&
 					areaInimigo.left + areaInimigo.width > areaObs.left;
 
-				// Condição 2: O pé do inimigo está cruzando o topo do obstáculo e ele está caindo?
 				bool y_overlap_support = areaInimigo.top + areaInimigo.height >= areaObs.top &&
 					areaInimigo.top < areaObs.top;
 
@@ -295,7 +290,7 @@ namespace Gerenciadores {
 					inim->setPosicao(areaInimigo.left, areaObs.top - areaInimigo.height);
 					inim->setVelocidadeVertical(0.f);
 					estaApoiado = true;
-					break; // Encontrou um chão, não precisa checar outros para suporte.
+					break;
 				}
 			}
 			inim->setNoChao(estaApoiado);
@@ -327,8 +322,8 @@ namespace Gerenciadores {
 				continue;
 			for (auto obs : lObstaculos) {
 				if (verificarColisao(proj, obs)) {
-					proj->setAtivo(false); // Desativa o projetil ao colidir
-					break; // Não precisa checar outros obstáculos
+					proj->setAtivo(false); 
+					break; 
 				}
 			}
 		}

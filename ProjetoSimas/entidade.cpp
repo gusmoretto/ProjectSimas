@@ -21,7 +21,7 @@ float Entidade::aplicarGravidade(float deltaTime, float forcaExtra) {
 }
 void Entidade::salvarDataBuffer() {
     if (buffer) {
-        *buffer << x << " " << y << " " << velocidadeVertical << " " << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " ";
+        *buffer  << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " ";
     }
 }
 

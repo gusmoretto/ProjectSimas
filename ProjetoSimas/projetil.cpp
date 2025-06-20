@@ -34,9 +34,8 @@ void Projetil::executar() {
     if (!ativo)
         return;
 
-    float dt = 0.016f; // ou deltaTime real
+    float dt = 0.016f; 
 
-    // Só aplica gravidade se não estiver anulada
     if (!forcaMiticaAtiva)
         velocidade.y += aplicarGravidade(dt);
 
@@ -44,7 +43,6 @@ void Projetil::executar() {
     pos += velocidade * dt;
     setPosicao(pos.x, pos.y);
 
-    // Desativa se sair da tela
     if (pos.x < 0.f || pos.x > 3840.f || pos.y < 0.f || pos.y > 700.f)
         ativo = false;
 }
@@ -86,7 +84,7 @@ void Projetil::salvar() {
     }
 
     Entidade::salvarDataBuffer();
-    *buffer << velocidade.x << " " << velocidade.y << " " << ativo << " " << dano << std::endl;
+    *buffer << velocidade.x << " " << velocidade.y << " " << ativo << " " << dano << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 
     std::ofstream arquivoProjetil("arquivo_projetil.txt", std::ios::app);
     if (arquivoProjetil.is_open()) {
