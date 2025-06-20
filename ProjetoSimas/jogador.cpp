@@ -13,6 +13,7 @@ Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), pulo
     velocidadeVertical = 0.f;
 	olhandoDireita = true; 
     num_vidas = 5;
+    velocidade = 2.2f;
 }
 Jogador::~Jogador() {
 	vida = -1;
@@ -49,12 +50,9 @@ void Jogador::executar() {
     retangulo.setTexture(&textura);
     velocidadeBase = getVelocidade();
     puloBase = getPulo();
-   // retangulo.setOrigin(retangulo.getSize().x / 2.f, retangulo.getSize().y / 2.f);
 }
 void Jogador::mover() {
     sf::Vector2f movimento(0.f, 0.f);
-
-    // Movimento horizontal
     if (id_jogador == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             movimento.x += velocidade;

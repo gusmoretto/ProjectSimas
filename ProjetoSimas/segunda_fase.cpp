@@ -55,26 +55,7 @@ void SegundaFase::criarObstaculos() {
 			break;
 		}
 	}
-	arqEspinhos.close();
-	int numAguas = rand() % (9 - 8 + 1) + 8;
-	std::ifstream arqAguas("coordAguas2.txt");
-	if (!arqAguas.is_open()) {
-		std::cerr << "Erro: Nao foi possivel abrir o arquivo de Aguas." << std::endl;
-		return;
-	}
-	for (int i = 0; i < numAguas; ++i) {
-		if (arqAguas >> x >> y) {
-			Agua* pAgua = new Agua();
-			pAgua->setPosicao(x, y);
-			pAgua->executar();
-			GC.inclueEntidade(pAgua);
-			lista_ents.incluir(dynamic_cast<Entidade*>(pAgua));
-		}
-		else {
-			break;
-		}
-	}
-	arqAguas.close();
+	arqEspinhos.close();\
 }
 void SegundaFase::setId(int novoId) {
 	id = novoId;

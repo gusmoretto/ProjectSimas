@@ -6,7 +6,7 @@ Espinho::~Espinho() {
 }
 void Espinho::executar() {
 	setId(10);
-	retangulo.setSize(sf::Vector2f(64.f, 64.f));
+	retangulo.setSize(sf::Vector2f(60.f, 60.f));
 	if (!textura.loadFromFile("cacto.png")) {
 		std::cout << "Erro ao carregar espinho.png" << std::endl;
 	}
@@ -19,7 +19,9 @@ void Espinho::obstacular(Jogador* p, int tipoColisao) {
 
 	sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
 	sf::FloatRect areaEspinho = this->getRetangulo().getGlobalBounds();
-	float impulsoRepulsao = 400.f; 
+	float impulsoRepulsaoVertical = 450.f; 
+	float impulsoBounceLateral = -600.f; 
+	float tolerancia = 10.f;
 
 	p->setVida(p->getVida() - 10); 
 	std::cout << "Jogador atingido por espinho! Vida restante: " << p->getVida() << std::endl;
@@ -27,23 +29,25 @@ void Espinho::obstacular(Jogador* p, int tipoColisao) {
 	switch (tipoColisao) {
 	case 1: 
 		p->setPosicao(areaJogador.left, areaEspinho.top - areaJogador.height);
-		p->setVelocidadeVertical(-impulsoRepulsao); 
+		p->setVelocidadeVertical(-impulsoRepulsaoVertical);
 		p->setNoChao(true);
 		break;
 
 	case 4: 
 		p->setPosicao(areaJogador.left, areaEspinho.top + areaEspinho.height);
-		p->setVelocidadeVertical(impulsoRepulsao); 
+		p->setVelocidadeVertical(impulsoRepulsaoVertical);
 		break;
 
 	case 2: 
-		p->setPosicao(areaEspinho.left + areaEspinho.width, areaJogador.top);
-		p->setPosicao(p->getPosicao().x + 5.f, p->getPosicao().y);
+		p->setPosicao(areaEspinho.left  - areaJogador.width, areaJogador.top);
+		p->setVelocidadeVertical(impulsoBounceLateral);
+		p->setNoChao(false);
 		break;
 
-	case 3:
-		p->setPosicao(areaEspinho.left - areaJogador.width, areaJogador.top);
-		p->setPosicao(p->getPosicao().x - 5.f, p->getPosicao().y);
+	case 3: 
+		p->setPosicao(areaEspinho.left  + areaEspinho.width, areaJogador.top);
+		p->setVelocidadeVertical(impulsoBounceLateral);
+		p->setNoChao(false);
 		break;
 	}
 }

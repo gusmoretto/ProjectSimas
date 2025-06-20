@@ -58,6 +58,7 @@ void Fase::criarPlataformas(int fase) {
     }
     else if(fase == 2) {
         int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; //
+		if (numPlataformasParaCriar == 40) numPlataformasParaCriar = 39; 
         std::ifstream arquivo("coordPlataformas2.txt");
         if (!arquivo.is_open()) {
             std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas2.txt" << std::endl; //
