@@ -76,15 +76,23 @@ void Projetil::desenhar(){
     if (pGG)
         pGG->desenha(retangulo);
 }
-void Projetil::salvar(){
-	Entidade::salvarDataBuffer();
-	if (buffer) {
-		buffer << velocidade.x << velocidade.y << ativo << dano;
-	}
-    ofstream arquivoProjetil;
-    arquivoProjetil.open("arquivo_projetil.txt");
-    arquivoProjetil << &buffer;
-    arquivoProjetil.close();
+void Projetil::salvar() {
+    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+        p_sstream->str("");
+        p_sstream->clear();
+    }
+    else {
+        return;
+    }
+
+    Entidade::salvarDataBuffer();
+    *buffer << velocidade.x << " " << velocidade.y << " " << ativo << " " << dano << std::endl;
+
+    std::ofstream arquivoProjetil("arquivo_projetil.txt", std::ios::app);
+    if (arquivoProjetil.is_open()) {
+        arquivoProjetil << buffer;
+        arquivoProjetil.close();
+    }
 }
 
 

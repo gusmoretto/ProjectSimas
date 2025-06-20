@@ -14,5 +14,5 @@ void Personagem::executar() {
 void Personagem::salvarDataBuffer() {
 	Entidade::salvarDataBuffer();
 	if (buffer)
-		buffer << num_vidas << vida << velocidade << noChao << ataque;
+		*buffer << num_vidas << vida << velocidade << noChao << ataque;
 }

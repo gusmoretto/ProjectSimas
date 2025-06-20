@@ -2,13 +2,14 @@
 #include <iostream>
 #include <fstream>
 #include <ostream>
+#include <sstream> 
 #include "ente.h"
 using namespace std;
 
 class Entidade: public Ente {
 protected:
     int x, y;
-    ostream buffer; 
+    ostream *buffer; 
     float gravidade;
 	RectangleShape retangulo;
 	Texture textura;
@@ -36,4 +37,14 @@ public:
     virtual float getForcaMitico() const = 0;
     virtual void setId(int novoId) = 0;
     virtual int getId() const = 0;
+    Entidade(const Entidade&) = delete;
+    Entidade& operator=(const Entidade&) = delete;
 };
+inline std::ostream& operator<<(std::ostream& os, const std::ostream* ptr_buffer) { //evita multipla definicao
+    if (ptr_buffer) {
+        if (const auto* p_sstream = dynamic_cast<const std::ostringstream*>(ptr_buffer)) {
+            os << p_sstream->str();
+        }
+    }
+    return os;
+}

@@ -156,14 +156,22 @@ float Jogador::getPuloBase() const {
     return puloBase;
 }
 void Jogador::salvar() {
-	Personagem::salvarDataBuffer();
-	if (buffer) {
-		buffer << id_jogador << pontos << impulsoPulo << olhandoDireita << velocidadeBase << puloBase << endl;
-	}
-    ofstream arquivoJogador;
-    arquivoJogador.open("arquivo_jogador.txt");
-    arquivoJogador << &buffer;
-    arquivoJogador.close();
+    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+        p_sstream->str("");
+        p_sstream->clear();
+    }
+    else {
+        return;
+    }
+
+    Personagem::salvarDataBuffer();
+    *buffer << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " " << velocidadeBase << " " << puloBase << std::endl;
+
+    std::ofstream arquivoJogador("arquivo_jogador.txt");
+    if (arquivoJogador.is_open()) {
+        arquivoJogador << buffer;
+        arquivoJogador.close();
+    }
 }
 
 

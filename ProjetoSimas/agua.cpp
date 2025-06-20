@@ -65,12 +65,20 @@ void Agua::atualizarFisica(float dt) {
 	}
 }
 void Agua::salvar() {
-	Obstaculo::salvarDataBuffer();
-	if (buffer) {
-		buffer << largura << lentidao << endl;
+	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+		p_sstream->str("");
+		p_sstream->clear();
 	}
-	ofstream arquivoAgua;
-	arquivoAgua.open("arquivo_agua.txt");
-	arquivoAgua << &buffer;
-	arquivoAgua.close();
+	else {
+		return; 
+	}
+
+	Obstaculo::salvarDataBuffer();
+	*buffer << largura << " " << lentidao << std::endl;
+
+	ofstream arquivoAgua("arquivo_agua.txt", std::ios::app);
+	if (arquivoAgua.is_open()) {
+		arquivoAgua << buffer;
+		arquivoAgua.close();
+	}
 }

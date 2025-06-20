@@ -106,12 +106,21 @@ bool Aranha::getNochao() {
     return noChao;
 }
 void Aranha::salvar() {
+    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+        p_sstream->str("");
+        p_sstream->clear();
+    }
+    else {
+        return; 
+    }
+
     Inimigo::salvarDataBuffer();
-    if (buffer)
-        buffer << direcaoX << endl;
-    ofstream arquivoAranha;
-    arquivoAranha.open("arquivo_aranha.txt");
-    arquivoAranha << &buffer;
-    arquivoAranha.close();
+    *buffer << direcaoX << std::endl;
+
+    std::ofstream arquivoAranha("arquivo_aranha.txt", std::ios::app);
+    if (arquivoAranha.is_open()) {
+        arquivoAranha << buffer;
+        arquivoAranha.close();
+    }
 }
 

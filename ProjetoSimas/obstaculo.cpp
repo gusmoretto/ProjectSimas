@@ -14,7 +14,7 @@ void Obstaculo::executar() {
 void Obstaculo::salvarDataBuffer() {
 	Entidade::salvarDataBuffer();
 	if (buffer)
-		buffer << danoso << gravidadeAtiva;
+		*buffer << danoso << gravidadeAtiva;
 }
 
 

@@ -76,14 +76,22 @@ bool Chefao::getNochao() {
 	return noChao;
 }
 void Chefao::salvar() {
-	Inimigo::salvarDataBuffer();
-	if (buffer) {
-		buffer << forca << endl; 
+	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+		p_sstream->str("");
+		p_sstream->clear();
 	}
-	ofstream arquivoChefao;
-	arquivoChefao.open("arquivo_chefao.txt");
-	arquivoChefao << &buffer;
-	arquivoChefao.close();
+	else {
+		return;
+	}
+
+	Inimigo::salvarDataBuffer();
+	*buffer << forca << std::endl;
+
+	std::ofstream arquivoChefao("arquivo_chefao.txt", std::ios::app);
+	if (arquivoChefao.is_open()) {
+		arquivoChefao << buffer;
+		arquivoChefao.close();
+	}
 }
 void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
 	if (tipoColisao == 1) {

@@ -133,11 +133,20 @@ bool Lancador::getNochao() {
 	return noChao;
 }
 void Lancador::salvar() {
+	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+		p_sstream->str("");
+		p_sstream->clear();
+	}
+	else {
+		return;
+	}
+
 	Inimigo::salvarDataBuffer();
-	if (buffer)
-		buffer << tamanho << direcao << tempoAtaque << intervaloAtaque << deslocamentoAtual << deslocamentoMax << posicaoInicial.x << posicaoInicial.y << endl;
-	ofstream arquivoLancador;
-	arquivoLancador.open("arquivo_lancador.txt");
-	arquivoLancador << &buffer;
-	arquivoLancador.close();
+	*buffer << tamanho << " " << direcao << " " << tempoAtaque << " " << intervaloAtaque << " " << deslocamentoAtual << " " << deslocamentoMax << " " << posicaoInicial.x << " " << posicaoInicial.y << std::endl;
+
+	std::ofstream arquivoLancador("arquivo_lancador.txt", std::ios::app);
+	if (arquivoLancador.is_open()) {
+		arquivoLancador << buffer;
+		arquivoLancador.close();
+	}
 }

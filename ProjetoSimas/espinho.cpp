@@ -58,11 +58,20 @@ void Espinho::atualizarFisica(float dt) {
 	}
 }
 void Espinho::salvar() {
+	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+		p_sstream->str("");
+		p_sstream->clear();
+	}
+	else {
+		return;
+	}
+
 	Obstaculo::salvarDataBuffer();
-	if (buffer)
-		buffer << elasticidade << endl;
-	ofstream arquivoEspinhos;
-	arquivoEspinhos.open("arquivo_espinho.txt");
-	arquivoEspinhos << &buffer;
-	arquivoEspinhos.close();
+	*buffer << elasticidade << std::endl;
+
+	std::ofstream arquivoEspinhos("arquivo_espinho.txt", std::ios::app);
+	if (arquivoEspinhos.is_open()) {
+		arquivoEspinhos << buffer;
+		arquivoEspinhos.close();
+	}
 }

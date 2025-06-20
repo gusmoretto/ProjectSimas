@@ -118,12 +118,21 @@ void Plataforma::atualizarFisica(float dt) {
     }
 }
 void Plataforma::salvar() {
+    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
+        p_sstream->str("");
+        p_sstream->clear();
+    }
+    else {
+        return;
+    }
+
     Obstaculo::salvarDataBuffer();
-    if(buffer)
-		buffer << altura << velocidadeVertical << endl;    
-    ofstream arquivoPlataforma;
-    arquivoPlataforma.open("arquivo_plataforma.txt");
-    arquivoPlataforma << &buffer;
-    arquivoPlataforma.close();
+    *buffer << altura << " " << velocidadeVertical << std::endl;
+
+    std::ofstream arquivoPlataforma("arquivo_plataforma.txt", std::ios::app);
+    if (arquivoPlataforma.is_open()) {
+        arquivoPlataforma << buffer;
+        arquivoPlataforma.close();
+    }
 }
 

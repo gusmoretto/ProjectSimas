@@ -1,14 +1,16 @@
 #include <iostream>
 #include "entidade.h"
 
-Entidade::Entidade() : x(0), y(0), velocidadeVertical(0.f), forcaMitico(0.f), buffer(){
+Entidade::Entidade() : x(0), y(0), velocidadeVertical(0.f), forcaMitico(0.f){
+    buffer = new std::ostringstream();
     gravidade = 980.f;
     x = retangulo.getPosition().x;
 	y = retangulo.getPosition().y;
 }
 
 Entidade::~Entidade() {
-    std::cout << "Destrutor de Entidade chamado." << std::endl;
+    delete buffer;
+    buffer = nullptr;
 }
 
 float Entidade::aplicarGravidade(float deltaTime, float forcaExtra) {
@@ -18,9 +20,10 @@ float Entidade::aplicarGravidade(float deltaTime, float forcaExtra) {
 	return velocidadeVertical * deltaTime;
 }
 void Entidade::salvarDataBuffer() {
-	if (buffer) {
-		buffer << x << y << velocidadeVertical << gravidade << forcaMitico << forcaMiticaAtiva;
-	}    
+    if (buffer) {
+        *buffer << x << " " << y << " " << velocidadeVertical << " " << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " ";
+    }
 }
+
 
 
