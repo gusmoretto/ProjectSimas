@@ -12,7 +12,7 @@ public:
 	~Plataforma();
 	void executar();
 	void salvar();
-	void obstacular(Jogador* p);
+	void obstacular(Jogador* p, int tipoColisao = 0);
 	void desenhar();
 	void setId(int novoId);
 	int getId() const;

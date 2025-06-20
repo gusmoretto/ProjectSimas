@@ -12,7 +12,7 @@ public:
 	~Agua();
 	void executar();
 	void salvar();
-	void obstacular(Jogador* p);
+	void obstacular(Jogador* p, int tipoColisao = 0);
 	float getLargura() const;
 	void setLargura(float l);
 	float getLentidao() const;

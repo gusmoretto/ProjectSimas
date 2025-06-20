@@ -24,13 +24,12 @@ void Plataforma::setarTexturaFase(int fase) {
 	retangulo.setTexture(&textura);
 }
 
-void Plataforma::obstacular(Jogador* p) {
+void Plataforma::obstacular(Jogador* p, int tipoColisao) {
     sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
     sf::FloatRect areaPlataforma = this->getRetangulo().getGlobalBounds();
 
     float tolerancia = 10.f; 
 
-    // Colisão por cima
     bool colisaoPorCima =
         (areaJogador.top + areaJogador.height > areaPlataforma.top) &&
         (areaJogador.top + areaJogador.height < areaPlataforma.top + tolerancia) &&

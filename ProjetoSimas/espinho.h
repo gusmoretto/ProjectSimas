@@ -10,7 +10,7 @@ public:
 	~Espinho();
 	void executar();
 	void salvar();
-	void obstacular(Jogador* p) ;
+	void obstacular(Jogador* p, int tipoColisao = 0);
 	bool getElasticidade() const;
 	void setElasticidade(bool e);
 	void setId(int novoId) ;

@@ -13,7 +13,7 @@ void Agua::executar() {
 	retangulo.setFillColor(sf::Color::Blue);
 	setLentidao(1.f);
 }
-void Agua::obstacular(Jogador* p) {
+void Agua::obstacular(Jogador* p, int tipoColisao) {
 	float velocidadeDesejada = p->getVelocidadeBase() - getLentidao();
 	float velocidadeFinal = std::max(0.0f, velocidadeDesejada); 
 	float puloMenor = p->getPulo() + getLentidao() * 2.f;

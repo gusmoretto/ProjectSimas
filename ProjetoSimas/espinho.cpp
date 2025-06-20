@@ -12,19 +12,39 @@ void Espinho::executar() {
 	}
 	retangulo.setTexture(&textura);
 }
-void Espinho::obstacular(Jogador* p) {
-	if (p) {
-		sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
-		sf::FloatRect areaEspinho = this->getRetangulo().getGlobalBounds();
-		if (areaJogador.intersects(areaEspinho)) {
-			if (elasticidade) {
-				p->setVelocidadeVertical(-p->getVelocidadeVertical() * 0.5f);
-			}
-			else {
-				p->setVida(p->getVida() - 10);
-			}
-			std::cout << "Jogador atingido por espinho! Vida restante: " << p->getVida() << std::endl;
-		}
+void Espinho::obstacular(Jogador* p, int tipoColisao) {
+	if (!p) {
+		return;
+	}
+
+	sf::FloatRect areaJogador = p->getRetangulo().getGlobalBounds();
+	sf::FloatRect areaEspinho = this->getRetangulo().getGlobalBounds();
+	float impulsoRepulsao = 400.f; 
+
+	p->setVida(p->getVida() - 10); 
+	std::cout << "Jogador atingido por espinho! Vida restante: " << p->getVida() << std::endl;
+
+	switch (tipoColisao) {
+	case 1: 
+		p->setPosicao(areaJogador.left, areaEspinho.top - areaJogador.height);
+		p->setVelocidadeVertical(-impulsoRepulsao); 
+		p->setNoChao(true);
+		break;
+
+	case 4: 
+		p->setPosicao(areaJogador.left, areaEspinho.top + areaEspinho.height);
+		p->setVelocidadeVertical(impulsoRepulsao); 
+		break;
+
+	case 2: 
+		p->setPosicao(areaEspinho.left + areaEspinho.width, areaJogador.top);
+		p->setPosicao(p->getPosicao().x + 5.f, p->getPosicao().y);
+		break;
+
+	case 3:
+		p->setPosicao(areaEspinho.left - areaJogador.width, areaJogador.top);
+		p->setPosicao(p->getPosicao().x - 5.f, p->getPosicao().y);
+		break;
 	}
 }
 void Espinho::setId(int novoId) {
