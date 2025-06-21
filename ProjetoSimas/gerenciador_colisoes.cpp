@@ -338,9 +338,6 @@ namespace Gerenciadores {
 			}
 		}
 	}
-	bool GerenciadorColisoes::projetilExiste(const Projetil* p) const {
-		return lProjetis.find(const_cast<Projetil*>(p)) != lProjetis.end();
-	}
 
 	void GerenciadorColisoes::executar() {
 		verificaObs();

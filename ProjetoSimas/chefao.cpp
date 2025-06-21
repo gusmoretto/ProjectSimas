@@ -124,24 +124,24 @@ void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
     sf::FloatRect areaChefao = this->getRetangulo().getGlobalBounds();
 
     switch (tipoColisao) {
-    case 1: // Por cima
+    case 1: 
         jogador->setPosicao(areaJogador.left, areaChefao.top - areaJogador.height);
         jogador->setVelocidadeVertical(-impulsoRepulsaoVertical);
         if (getVida() > 0)setVida(getVida() /2);
         jogador->setNoChao(false);
         break;
-    case 4: // Por baixo
+    case 4: 
         jogador->setPosicao(areaJogador.left, areaChefao.top + areaChefao.height);
         jogador->setVelocidadeVertical(impulsoRepulsaoVertical);
         break;
-    case 2: // Pela esquerda
+    case 2: 
         jogador->setPosicao(areaChefao.left - areaJogador.width, areaJogador.top);
         jogador->setVelocidadeHorizontal(-impulsoRepulsaoHorizontal);
         jogador->setVelocidadeVertical(impulsoVerticalCurto);
         this->danificar(jogador);
         jogador->setNoChao(false);
         break;
-    case 3: // Pela direita
+    case 3: 
         jogador->setPosicao(areaChefao.left + areaChefao.width, areaJogador.top);
         jogador->setVelocidadeHorizontal(impulsoRepulsaoHorizontal);
         jogador->setVelocidadeVertical(impulsoVerticalCurto);

@@ -12,19 +12,91 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), faseAtual(nullp
     jogador1 = new Jogador();
     jogador1->executar();
     pGG->inicializarBarraVida();
-
+    vitoria = false;
+    derrota = false;
+    inicializarTelaFinal();
 }
 
 Jogo::~Jogo() {
     if (faseAtual) delete faseAtual;
     if (pGG) delete pGG;
 }
+
+void Jogo::inicializarTelaFinal() {
+    if (!texturaVitoria.loadFromFile("vitoria.png")) {
+        std::cerr << "Erro: Nao foi possivel carregar vitoria.png" << std::endl;
+    }
+    if (!texturaDerrota.loadFromFile("derrota.png")) {
+        std::cerr << "Erro: Nao foi possivel carregar derrota.png" << std::endl;
+    }
+
+    if (!fonteBotao.loadFromFile("fonteMenu.ttf")) {
+        std::cerr << "Erro ao carregar fonteMenu.ttf" << std::endl;
+        return;
+    }
+
+    botaoSair.setSize(sf::Vector2f(200.f, 60.f));
+    botaoSair.setFillColor(sf::Color(150, 0, 0));
+    botaoSair.setOutlineColor(sf::Color::White);
+    botaoSair.setOutlineThickness(2.f);
+
+    textoBotaoSair.setFont(fonteBotao);
+    textoBotaoSair.setString("Sair");
+    textoBotaoSair.setCharacterSize(30);
+    textoBotaoSair.setFillColor(sf::Color::White);
+}
+
+void Jogo::processarEventosTelaFinal(sf::Event& evento) {
+    if (evento.type == sf::Event::MouseButtonReleased) {
+        if (evento.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2f mousePos = pGG->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseButton.x, evento.mouseButton.y));
+            if (botaoSair.getGlobalBounds().contains(mousePos)) {
+                pGG->fechar();
+            }
+        }
+    }
+    if (evento.type == sf::Event::MouseMoved) {
+        sf::Vector2f mousePos = pGG->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseMove.x, evento.mouseMove.y));
+        if (botaoSair.getGlobalBounds().contains(mousePos)) {
+            botaoSair.setFillColor(sf::Color(200, 0, 0));
+        }
+        else {
+            botaoSair.setFillColor(sf::Color(150, 0, 0));
+        }
+    }
+}
+
+void Jogo::desenharTelaFinal() {
+    if (vitoria) {
+        spriteTelaFinal.setTexture(texturaVitoria);
+    }
+    else if (derrota) {
+        spriteTelaFinal.setTexture(texturaDerrota);
+    }
+    spriteTelaFinal.setScale(5.f, 5.f);
+
+    sf::View view = pGG->getWindow().getView();
+    sf::Vector2f centroView = view.getCenter();
+
+    sf::FloatRect spriteBounds = spriteTelaFinal.getLocalBounds();
+    spriteTelaFinal.setOrigin(spriteBounds.left + spriteBounds.width / 2.0f, spriteBounds.top + spriteBounds.height / 2.0f);
+    spriteTelaFinal.setPosition(centroView.x, centroView.y - 50);
+
+    sf::FloatRect botaoBounds = botaoSair.getLocalBounds();
+    botaoSair.setOrigin(botaoBounds.left + botaoBounds.width / 2.0f, botaoBounds.top + botaoBounds.height / 2.0f);
+    botaoSair.setPosition(centroView.x, spriteTelaFinal.getPosition().y + spriteBounds.height / 2.0f + 130.f);
+
+    sf::FloatRect textoBotaoBounds = textoBotaoSair.getLocalBounds();
+    textoBotaoSair.setOrigin(textoBotaoBounds.left + textoBotaoBounds.width / 2.0f, textoBotaoBounds.top + textoBotaoBounds.height / 2.0f);
+    textoBotaoSair.setPosition(botaoSair.getPosition());
+
+    pGG->getWindow().draw(spriteTelaFinal);
+    pGG->desenha(botaoSair);
+    pGG->getWindow().draw(textoBotaoSair);
+}
 void Jogo::executar() {
-	bool ganhou = false;
-    bool perdeu = false;
     GerenciadorColisoes* pGC = faseAtual->getGerenciadorColisoes();
-    const std::vector<Inimigo*>& inimigos = pGC->getInimigos();
-    ListaEntidades* pListaEnts = faseAtual->getListaEntidades(); 
+    ListaEntidades* pListaEnts = faseAtual->getListaEntidades();
 
     while (pGG->estaAberta()) {
         sf::Event evento;
@@ -32,77 +104,100 @@ void Jogo::executar() {
             if (evento.type == sf::Event::Closed) {
                 pGG->fechar();
             }
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            Elemento<Entidade>* pElementoEntidade = pListaEnts->getPrimeiro();
-            while (pElementoEntidade) {
-				pElementoEntidade->getInfo()->salvar();
-                pElementoEntidade = pElementoEntidade->getProx();
-            }
-            pGG->fechar();
-        }
-
-        jogador1->mover();
-        for (auto* inimigo : inimigos) {
-            if (inimigo) inimigo->mover();
-        }
-        for (auto* inimigo : inimigos) {
-            if (Lancador* pLancador = dynamic_cast<Lancador*>(inimigo)) {
-                pLancador->atacar(jogador1, nullptr, 0.016f, pGG->getView(), pGC, pListaEnts);
+            if (vitoria || derrota) {
+                processarEventosTelaFinal(evento);
             }
         }
 
-    
-        Elemento<Entidade>* pElementoProj = pListaEnts->getPrimeiro();
-        while (pElementoProj) {
-            if (Projetil* pProj = dynamic_cast<Projetil*>(pElementoProj->getInfo())) {
-                if (pProj->getestaAtivo()) {
-                    pProj->executar();
+        if (!vitoria && !derrota) {
+
+            std::vector<Inimigo*> inimigos;
+            Elemento<Entidade>* pElemento = pListaEnts->getPrimeiro();
+            while (pElemento) {
+                if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pElemento->getInfo())) {
+                    inimigos.push_back(pInimigo);
+                }
+                pElemento = pElemento->getProx();
+            }
+
+            if (inimigos.empty()) {
+                vitoria = true;
+            }
+
+            if (!vitoria) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                    Elemento<Entidade>* pElementoEntidade = pListaEnts->getPrimeiro();
+                    while (pElementoEntidade) {
+                        pElementoEntidade->getInfo()->salvar();
+                        pElementoEntidade = pElementoEntidade->getProx();
+                    }
+                    pGG->fechar();
+                }
+
+                jogador1->mover();
+                for (auto* inimigo : inimigos) {
+                    if (inimigo) inimigo->mover();
+                }
+                for (auto* inimigo : inimigos) {
+                    if (Lancador* pLancador = dynamic_cast<Lancador*>(inimigo)) {
+                        pLancador->atacar(jogador1, nullptr, 0.016f, pGG->getView(), pGC, pListaEnts);
+                    }
+                }
+
+                Elemento<Entidade>* pElementoProj = pListaEnts->getPrimeiro();
+                while (pElementoProj) {
+                    if (Projetil* pProj = dynamic_cast<Projetil*>(pElementoProj->getInfo())) {
+                        if (pProj->getestaAtivo()) {
+                            pProj->executar();
+                        }
+                    }
+                    pElementoProj = pElementoProj->getProx();
+                }
+
+                Elemento<Entidade>* pElementoObs = pListaEnts->getPrimeiro();
+                while (pElementoObs) {
+                    Entidade* pEnt = pElementoObs->getInfo();
+                    if (Obstaculo* pObs = dynamic_cast<Obstaculo*>(pEnt)) {
+                        pObs->atualizarFisica();
+                    }
+                    pElementoObs = pElementoObs->getProx();
+                }
+
+                pGC->executar();
+
+                std::vector<Entidade*> aRemover;
+                Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
+                while (pEl) {
+                    Entidade* pEnt = pEl->getInfo();
+                    bool remover = false;
+
+                    if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEnt)) {
+                        if (pInimigo->getVida() <= 0) {
+                            remover = true;
+                        }
+                    }
+                    else if (Projetil* pProj = dynamic_cast<Projetil*>(pEnt)) {
+                        if (!pProj->getestaAtivo()) {
+                            remover = true;
+                        }
+                    }
+
+                    if (remover) {
+                        aRemover.push_back(pEnt);
+                    }
+                    pEl = pEl->getProx();
+                }
+
+                for (auto pEnt : aRemover) {
+                    pGC->removeEntidade(pEnt);
+                    pListaEnts->remover(pEnt);
+                    delete pEnt;
+                }
+
+                if (jogador1->getVida() <= 0) {
+                    derrota = true;
                 }
             }
-            pElementoProj = pElementoProj->getProx();
-        }
-        
-        Elemento<Entidade>* pElemento = pListaEnts->getPrimeiro();
-        while (pElemento) {
-            Entidade* pEnt = pElemento->getInfo();
-            if (Obstaculo* pObs = dynamic_cast<Obstaculo*>(pEnt)) {
-                pObs->atualizarFisica();
-
-            }
-            pElemento = pElemento->getProx();
-        }
-
-        pGC->executar();
-
-        std::vector<Entidade*> aRemover;
-        Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
-        while (pEl) {
-            Entidade* pEnt = pEl->getInfo();
-            bool remover = false;
-
-            if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEnt)) {
-                if (pInimigo->getVida() <= 0) {
-                    remover = true;
-                }
-            }
-        
-            else if (Projetil* pProj = dynamic_cast<Projetil*>(pEnt)) {
-                if (!pProj->getestaAtivo()) {
-                    remover = true;
-                }
-            }
-
-            if (remover) {
-                aRemover.push_back(pEnt);
-            }
-            pEl = pEl->getProx();
-        }
-        for (auto pEnt : aRemover) {
-            pGC->removeEntidade(pEnt);      
-            pListaEnts->remover(pEnt);       
-            delete pEnt;                     
         }
 
         pGG->centralizarCamera(jogador1->getRetangulo().getPosition(), 3840.f, 700.f);
@@ -118,8 +213,14 @@ void Jogo::executar() {
             pAux = pAux->getProx();
         }
         jogador1->desenhar();
+
         pGG->atualizarBarraVida(jogador1->getVida(), 150);
         pGG->desenharBV();
+
+        if (vitoria || derrota) {
+            desenharTelaFinal();
+        }
+
         pGG->mostrar();
     }
 }

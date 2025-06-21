@@ -10,10 +10,21 @@ private:
     GerenciadorGrafico* pGG;
     Jogador* jogador1;
     Fase* faseAtual;
+    bool vitoria;
+    bool derrota;
+    Texture texturaVitoria;
+    Texture texturaDerrota;
+    Sprite spriteTelaFinal;
+    Font fonteBotao;
+    Text textoBotaoSair;
+    RectangleShape botaoSair;
 
 public:
     Jogo();
     ~Jogo();
     void executar();
     void setFaseAtual(int fase);
+    void inicializarTelaFinal();
+    void processarEventosTelaFinal(sf::Event& evento);
+    void desenharTelaFinal();
 };

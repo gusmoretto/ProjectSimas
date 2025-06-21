@@ -29,8 +29,5 @@ namespace Gerenciadores {
 		void verificaObsInim();
 		void verificaObsProjetil();
 		void executar();
-		const std::vector<Inimigo*>& getInimigos() const { return lInimigos; }
-		bool projetilExiste(const Projetil* p) const;
-
 	};
 }
