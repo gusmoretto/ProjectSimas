@@ -220,15 +220,13 @@ void Jogo::executar() {
             }
             pAux = pAux->getProx();
         }
-        if(jogador1->getVida() >0 )
-            jogador1->desenhar();
-		//else 
-            //posiciona imagem morto e tira de todas as listas vira so parte do cenario
+        if(jogador1->getVida() >0 )jogador1->desenhar();
+		else jogador1->~Jogador();
         if (jogador2) {
             if (jogador2->getVida() > 0)
                 jogador2->desenhar();
-            //else
-                //posiciona imagem morto e tira de todas as listas vira so parte do cenario
+            else
+                jogador2->~Jogador();
         }
 
         pGG->atualizarBarraVida(jogador1->getVida(), 150, 1);

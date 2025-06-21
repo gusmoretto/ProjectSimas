@@ -32,7 +32,7 @@ void Jogador::setAtaque(int novoAtaque) {
 	ataque = novoAtaque;
 }
 void Jogador::executar() {
-    if (cont_jogador)
+    if (cont_jogador == 0)
         setId(1);
     else
         setId(2);
