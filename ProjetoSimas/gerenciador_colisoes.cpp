@@ -135,14 +135,14 @@ namespace Gerenciadores {
 				if (obs == nullptr) {
 					continue;
 				}
-				int tipoColisao = verificarColisao(jogador1, obs);
+				int tipoColisao = verificarColisao(jogador2, obs);
 				if (tipoColisao) {
-					obs->obstacular(jogador1, tipoColisao);
+					obs->obstacular(jogador2, tipoColisao);
 
 					if (obs->getId() == 9) {
 						Agua* obstaculoMedio = dynamic_cast<Agua*>(obs);
 						if (obstaculoMedio) {
-							obs->obstacular(jogador1, tipoColisao);
+							obs->obstacular(jogador2, tipoColisao);
 							jogador2_estaLentoPorAguaNesteFrame = true;
 						}
 					}
@@ -150,6 +150,7 @@ namespace Gerenciadores {
 			}
 
 			if (!jogador2_estaLentoPorAguaNesteFrame) {
+				jogador2->setPulo(jogador2->getPuloBase());
 				jogador2->setVelocidade(jogador2->getVelocidadeBase());
 			}
 		}

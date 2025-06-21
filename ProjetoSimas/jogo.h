@@ -9,6 +9,7 @@ class Jogo {
 private:
     GerenciadorGrafico* pGG;
     Jogador* jogador1;
+	Jogador* jogador2;
     Fase* faseAtual;
     bool vitoria;
     bool derrota;

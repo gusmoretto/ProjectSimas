@@ -7,11 +7,13 @@
 #include "projetil.h"
 #include "elemento.h"
 
-Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), faseAtual(nullptr) {
+Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr) {
     Ente::setGerenciadorGrafico(pGG);
     jogador1 = new Jogador();
     jogador1->executar();
-    pGG->inicializarBarraVida();
+    jogador2 = new Jogador();
+    jogador2->executar();
+    pGG->inicializarBarraVida(2);
     vitoria = false;
     derrota = false;
     inicializarTelaFinal();
@@ -135,12 +137,15 @@ void Jogo::executar() {
                 }
 
                 jogador1->mover();
+				if (jogador2) {
+					jogador2->mover();
+				}
                 for (auto* inimigo : inimigos) {
                     if (inimigo) inimigo->mover();
                 }
                 for (auto* inimigo : inimigos) {
                     if (Lancador* pLancador = dynamic_cast<Lancador*>(inimigo)) {
-                        pLancador->atacar(jogador1, nullptr, 0.016f, pGG->getView(), pGC, pListaEnts);
+                        pLancador->atacar(jogador1, jogador2, 0.016f, pGG->getView(), pGC, pListaEnts);
                     }
                 }
 
@@ -194,13 +199,16 @@ void Jogo::executar() {
                     delete pEnt;
                 }
 
-                if (jogador1->getVida() <= 0) {
+                if (jogador1->getVida() <= 0 && (jogador2 != nullptr && jogador2->getVida() <= 0)) {
                     derrota = true;
                 }
             }
         }
-
-        pGG->centralizarCamera(jogador1->getRetangulo().getPosition(), 3840.f, 700.f);
+        Vector2f mediaCamera = jogador1->getRetangulo().getPosition();
+        if (jogador2) {
+            mediaCamera = (jogador1->getRetangulo().getPosition() + jogador2->getRetangulo().getPosition()) / 2.f;
+		}
+        pGG->centralizarCamera(mediaCamera, 3840.f, 700.f);
         pGG->clear();
         pGG->desenhaFundo();
         pGG->desenhaChao();
@@ -213,9 +221,13 @@ void Jogo::executar() {
             pAux = pAux->getProx();
         }
         jogador1->desenhar();
+		if(jogador2)jogador2->desenhar();
 
         pGG->atualizarBarraVida(jogador1->getVida(), 150);
-        pGG->desenharBV();
+		if (jogador2) {
+			pGG->atualizarBarraVida(jogador2->getVida(), 150);
+		}
+        pGG->desenharBV(2);
 
         if (vitoria || derrota) {
             desenharTelaFinal();
@@ -226,9 +238,9 @@ void Jogo::executar() {
 }
 void Jogo::setFaseAtual(int fase) {
     if (fase == 1) {
-        faseAtual = new PrimeiraFase(jogador1, nullptr);
+        faseAtual = new PrimeiraFase(jogador1, jogador2);
     }
     else if (fase == 2) {
-        faseAtual = new SegundaFase(jogador1, nullptr);
+        faseAtual = new SegundaFase(jogador1, jogador2);
     }
 }

@@ -45,7 +45,7 @@ void Jogador::executar() {
         }
 	}
 	else {
-		textura.loadFromFile("jogador2.png");
+		textura.loadFromFile("player2.png");
 	}
     retangulo.setTexture(&textura);
     velocidadeBase = getVelocidade();
@@ -53,10 +53,9 @@ void Jogador::executar() {
 }
 void Jogador::mover() {
     sf::Vector2f movimento(0.f, 0.f);
-    float dt = 0.016f; // Usando o mesmo delta time fixo da gravidade
+    float dt = 0.016f; 
 
-    // --- Movimento horizontal controlado pelo jogador ---
-    if (id_jogador == 1) { // Lógica para o Jogador 2 (setas do teclado)
+    if (id_jogador == 1) { 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {

@@ -14,6 +14,8 @@ namespace Gerenciadores {
 		RectangleShape chao;
 		RectangleShape barraVidaFundo; 
 		RectangleShape barraVidaAtual; 
+		RectangleShape barraVidaFundo2;
+		RectangleShape barraVidaAtual2;
 		Text textoVida;                
 		Font fonteMenu;
 
@@ -37,9 +39,9 @@ namespace Gerenciadores {
 		void iniciaChao(const std::string& caminho, float larguraMapa, float alturaChao);
 		void iniciaFundo(const std::string& caminho);
 		void desenhaChao();
-		void inicializarBarraVida();
+		void inicializarBarraVida(int jgs = 1);
 		void atualizarBarraVida(int vidaAtual, int vidaMaxima);
-		void desenharBV();
+		void desenharBV(int jgs = 1);
 		View& getView() { return camera; }
 	};
 }

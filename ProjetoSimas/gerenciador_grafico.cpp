@@ -35,13 +35,11 @@ void GerenciadorGrafico::centralizarCamera(const sf::Vector2f& centro, float bgW
 
     sf::Vector2f novoCentro = centro;
 
-    // Limite horizontal
     if (novoCentro.x < halfW)
         novoCentro.x = halfW;
     if (novoCentro.x > bgWidth - halfW)
         novoCentro.x = bgWidth - halfW;
 
-    // Limite vertical
     if (novoCentro.y < halfH)
         novoCentro.y = halfH;
     if (novoCentro.y > bgHeight - halfH)
@@ -70,7 +68,7 @@ void GerenciadorGrafico::iniciaFundo(const std::string& caminho) {
 	spriteFundo.setTexture(texturaFundo);
 	spriteFundo.setPosition(0, 0);
 }
-void GerenciadorGrafico::inicializarBarraVida() {
+void GerenciadorGrafico::inicializarBarraVida(int jgs) {
     if (!fonteMenu.loadFromFile("fonteMenu.ttf")) {
         std::cerr << "Erro ao carregar a fonte para a barra de vida." << std::endl;
         return;
@@ -90,6 +88,18 @@ void GerenciadorGrafico::inicializarBarraVida() {
     barraVidaAtual.setSize(sf::Vector2f(200.f, 25.f));
     barraVidaAtual.setFillColor(sf::Color::Red);
     barraVidaAtual.setPosition(15.f, 35.f);
+
+    if (jgs == 2) {
+        barraVidaFundo2.setSize(sf::Vector2f(200.f, 25.f));
+        barraVidaFundo2.setFillColor(sf::Color(50, 50, 50, 200));
+        barraVidaFundo2.setOutlineColor(sf::Color::Black);
+        barraVidaFundo2.setOutlineThickness(2.f);
+        barraVidaFundo2.setPosition(15.f, 65.f);
+
+        barraVidaAtual2.setSize(sf::Vector2f(200.f, 25.f));
+        barraVidaAtual2.setFillColor(sf::Color::Red);
+        barraVidaAtual2.setPosition(15.f, 65.f);
+    }
 }
 
 void GerenciadorGrafico::atualizarBarraVida(int vidaAtual, int vidaMaxima) {
@@ -99,12 +109,17 @@ void GerenciadorGrafico::atualizarBarraVida(int vidaAtual, int vidaMaxima) {
     float proporcaoVida = static_cast<float>(vidaAtual) / static_cast<float>(vidaMaxima);
     float larguraMaxima = barraVidaFundo.getSize().x;
     barraVidaAtual.setSize(sf::Vector2f(larguraMaxima * proporcaoVida, barraVidaAtual.getSize().y));
+
 }
 
-void GerenciadorGrafico::desenharBV() {
+void GerenciadorGrafico::desenharBV(int jgs) {
     window.setView(window.getDefaultView());
     window.draw(barraVidaFundo);
     window.draw(barraVidaAtual);
+	if (jgs == 2) {
+		window.draw(barraVidaFundo2);
+		window.draw(barraVidaAtual2);
+	}
     window.draw(textoVida);
 }
 
