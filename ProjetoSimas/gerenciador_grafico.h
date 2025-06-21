@@ -40,7 +40,7 @@ namespace Gerenciadores {
 		void iniciaFundo(const std::string& caminho);
 		void desenhaChao();
 		void inicializarBarraVida(int jgs = 1);
-		void atualizarBarraVida(int vidaAtual, int vidaMaxima);
+		void atualizarBarraVida(int vidaAtual, int vidaMaxima, int idJogador);
 		void desenharBV(int jgs = 1);
 		View& getView() { return camera; }
 	};

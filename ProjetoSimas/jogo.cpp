@@ -223,9 +223,9 @@ void Jogo::executar() {
         jogador1->desenhar();
 		if(jogador2)jogador2->desenhar();
 
-        pGG->atualizarBarraVida(jogador1->getVida(), 150);
+        pGG->atualizarBarraVida(jogador1->getVida(), 150, jogador1->getId());
 		if (jogador2) {
-			pGG->atualizarBarraVida(jogador2->getVida(), 150);
+			pGG->atualizarBarraVida(jogador2->getVida(), 150, jogador2->getId());
 		}
         pGG->desenharBV(2);
 

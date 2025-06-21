@@ -102,14 +102,20 @@ void GerenciadorGrafico::inicializarBarraVida(int jgs) {
     }
 }
 
-void GerenciadorGrafico::atualizarBarraVida(int vidaAtual, int vidaMaxima) {
+void GerenciadorGrafico::atualizarBarraVida(int vidaAtual, int vidaMaxima, int idJogador) {
     if (vidaAtual < 0) {
         vidaAtual = 0;
     }
     float proporcaoVida = static_cast<float>(vidaAtual) / static_cast<float>(vidaMaxima);
-    float larguraMaxima = barraVidaFundo.getSize().x;
-    barraVidaAtual.setSize(sf::Vector2f(larguraMaxima * proporcaoVida, barraVidaAtual.getSize().y));
 
+    if (idJogador == 1) { 
+        float larguraMaxima = barraVidaFundo.getSize().x;
+        barraVidaAtual.setSize(sf::Vector2f(larguraMaxima * proporcaoVida, barraVidaAtual.getSize().y));
+    }
+    else if (idJogador == 2) { 
+        float larguraMaxima2 = barraVidaFundo2.getSize().x;
+        barraVidaAtual2.setSize(sf::Vector2f(larguraMaxima2 * proporcaoVida, barraVidaAtual2.getSize().y));
+    }
 }
 
 void GerenciadorGrafico::desenharBV(int jgs) {
