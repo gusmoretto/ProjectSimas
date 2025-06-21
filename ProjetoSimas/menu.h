@@ -14,6 +14,8 @@ private:
     sf::Text textoSair;
     sf::RectangleShape botaoNovoFase1;
     sf::RectangleShape botaoNovoFase2;
+    sf::Text textoRanking;
+    sf::RectangleShape botaoRanking;
     sf::RectangleShape botaoSair;
     sf::Texture texturaFundoMenu; 
     sf::Sprite spriteFundoMenu;

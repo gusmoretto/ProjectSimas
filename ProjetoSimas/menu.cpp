@@ -8,7 +8,7 @@ Menu::Menu(Gerenciadores::GerenciadorGrafico* pGG) : pJogo(nullptr), pGG_Menu(pG
         inicializarFundoMenu("fundoMenu.png");
     }
     else {
-        std::cerr << "Erro: GerenciadorGrafico passado para Menu é nulo." << std::endl;
+        std::cerr << "Erro: GerenciadorGrafico passado para Menu ï¿½ nulo." << std::endl;
     }
 }
 
@@ -20,7 +20,7 @@ Menu::~Menu() {
 }
 
 void Menu::inicializarTextos() {
-    if (!font.loadFromFile("fonteMenu.ttf")) {
+    if (!font.loadFromFile("fonteMenu.TTF")) {
         std::cerr << "Erro ao carregar fonte arial.ttf" << std::endl;
     }
 
@@ -38,12 +38,21 @@ void Menu::inicializarTextos() {
     textoNovoFase2.setOrigin(textoNovoFase2.getLocalBounds().width / 2, textoNovoFase2.getLocalBounds().height / 2);
     textoNovoFase2.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2);
 
+    textoRanking.setFont(font);
+    textoRanking.setString("Ranking");
+    textoRanking.setCharacterSize(25);
+    textoRanking.setFillColor(sf::Color::Black);
+    textoRanking.setOrigin(textoRanking.getLocalBounds().width / 2, textoRanking.getLocalBounds().height / 2);
+    // Agora o ranking fica logo abaixo do Novo Fase 2
+    textoRanking.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 100);
+
     textoSair.setFont(font);
     textoSair.setString("Sair do Jogo");
     textoSair.setCharacterSize(30);
     textoSair.setFillColor(sf::Color::Black);
     textoSair.setOrigin(textoSair.getLocalBounds().width / 2, textoSair.getLocalBounds().height / 2);
-    textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 100);
+    // Agora o sair fica abaixo do ranking
+    textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 200);
 }
 
 void Menu::inicializarBotoes() {
@@ -67,6 +76,13 @@ void Menu::inicializarBotoes() {
     botaoSair.setOutlineThickness(2.f); 
     botaoSair.setOrigin(botaoSair.getLocalBounds().width / 2, botaoSair.getLocalBounds().height / 2); 
     botaoSair.setPosition(textoSair.getPosition()); 
+
+    botaoRanking.setSize(sf::Vector2f(300.f, 70.f));
+    botaoRanking.setFillColor(sf::Color::White);
+    botaoRanking.setOutlineColor(sf::Color::Black);
+    botaoRanking.setOutlineThickness(2.f);
+    botaoRanking.setOrigin(botaoRanking.getLocalBounds().width / 2, botaoRanking.getLocalBounds().height / 2);
+    botaoRanking.setPosition(textoRanking.getPosition());
 }
 void Menu::inicializarFundoMenu(const std::string& caminhoTextura) {
     if (!texturaFundoMenu.loadFromFile(caminhoTextura)) {
@@ -86,9 +102,11 @@ void Menu::desenharMenu() {
     pGG_Menu->desenha(botaoNovoFase1); 
     pGG_Menu->desenha(botaoNovoFase2);
     pGG_Menu->desenha(botaoSair); 
+    pGG_Menu->desenha(botaoRanking);
     pGG_Menu->getWindow().draw(textoNovoFase1); 
     pGG_Menu->getWindow().draw(textoNovoFase2);
     pGG_Menu->getWindow().draw(textoSair); 
+    pGG_Menu->getWindow().draw(textoRanking);
     pGG_Menu->mostrar(); 
 }
 
@@ -114,6 +132,9 @@ int Menu::processarEventos() {
                     pGG_Menu->fechar(); 
                     return 0; 
                 }
+                if (botaoRanking.getGlobalBounds().contains(mousePos)) {
+                    return 3; 
+                }
             }
         }
         if (evento.type == sf::Event::MouseMoved) { 
@@ -135,6 +156,11 @@ int Menu::processarEventos() {
             }
             else {
                 botaoSair.setFillColor(sf::Color::White); 
+            }
+            if (botaoRanking.getGlobalBounds().contains(mousePos)) {
+                botaoRanking.setFillColor(sf::Color(100, 100, 100, 150));
+            } else {
+                botaoRanking.setFillColor(sf::Color::White);
             }
         }
     }
@@ -159,6 +185,8 @@ void Menu::executar() {
         pJogo = new Jogo();
         pJogo->setFaseAtual(escolha);
 		pJogo->executar();
+    }
+	else if (escolha == 3) {
     }
 }
 
