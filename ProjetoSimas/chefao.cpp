@@ -18,15 +18,36 @@ void Chefao::danificar(Jogador* p) {
 	}
 }
 void Chefao::executar() {
-	setId(5);
-	retangulo.setSize(sf::Vector2f(128.f, 128.f));
-	if (!textura.loadFromFile("chefao.png")) {
-		std::cout << "Erro ao carregar Chefao.png" << std::endl;
-	}
-	retangulo.setTexture(&textura);
+    setId(5);
+    retangulo.setSize(sf::Vector2f(128.f, 128.f));
+    if (!textura.loadFromFile("chefao.png")) {
+        std::cout << "Erro ao carregar Chefao.png" << std::endl;
+    }
+    retangulo.setTexture(&textura);
+
+    posicaoInicialX = retangulo.getPosition().x;
+    float bloco = retangulo.getSize().x; // tamanho de um bloco
+    limiteEsquerda = posicaoInicialX - bloco;
+    limiteDireita  = posicaoInicialX + bloco;
 }
 void Chefao::mover() {
-	
+    sf::Vector2f posicao = getPosicao();
+    static float direcaoX = 1.f;
+
+    sf::Vector2f proximaPos = posicao;
+    proximaPos.x += direcaoX * (velocidade - 0.50);
+    if (proximaPos.x < limiteEsquerda || proximaPos.x + retangulo.getSize().x > limiteDireita + retangulo.getSize().x) {
+        direcaoX = -direcaoX;
+    } else {
+        posicao.x = proximaPos.x;
+    }
+
+    posicao.y += aplicarGravidade(0.016f);
+    if (posicao.y + retangulo.getSize().y >= 670.f) {
+        posicao.y = 670.f - retangulo.getSize().y;
+    }
+
+    retangulo.setPosition(posicao);
 }
 short int Chefao::getForca() const {
 	return forca;
@@ -76,34 +97,65 @@ bool Chefao::getNochao() {
 	return noChao;
 }
 void Chefao::salvar() {
-	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-		p_sstream->str("");
-		p_sstream->clear();
-	}
-	else {
-		return;
-	}
+    std::ostringstream* p_sstream = dynamic_cast<std::ostringstream*>(buffer);
+    if (p_sstream) {
+        p_sstream->str("");
+        p_sstream->clear();
+    }
+    else {
+        return;
+    }
+    Inimigo::salvarDataBuffer(); 
 
-	Inimigo::salvarDataBuffer();
-	*buffer << forca << std::endl;
+    // Salva os atributos exclusivos do chefão
+    *buffer << forca << " "
+            << posicaoInicialX << " "
+            << limiteEsquerda << " "
+            << limiteDireita << std::endl;
 
-	std::ofstream arquivoChefao("arquivo_chefao.txt", std::ios::app);
-	if (arquivoChefao.is_open()) {
-		arquivoChefao << buffer;
-		arquivoChefao.close();
-	}
+    std::ofstream arquivoChefao("arquivo_chefao.txt", std::ios::app);
+    if (arquivoChefao.is_open()) {
+        arquivoChefao << p_sstream->str();
+        arquivoChefao.close();
+    }
 }
 void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
-	if (tipoColisao == 1) {
-		this->setVida(getVida()-10);
-		jogador->setVelocidadeVertical(-400.f);
-	}
-	else {
-		this->danificar(jogador);
-		sf::Vector2f pos = jogador->getRetangulo().getPosition();
-		pos.x += (tipoColisao == 2) ? -10.f : 10.f;
-		jogador->setPosicao(pos.x, pos.y);
-	}
+    if (!jogador) return;
+
+    float impulsoRepulsaoVertical = 450.f;
+    float impulsoRepulsaoHorizontal = 600.f;
+    float impulsoVerticalCurto = -200.f;
+
+    sf::FloatRect areaJogador = jogador->getRetangulo().getGlobalBounds();
+    sf::FloatRect areaChefao = this->getRetangulo().getGlobalBounds();
+
+    switch (tipoColisao) {
+    case 1: // Por cima
+        jogador->setPosicao(areaJogador.left, areaChefao.top - areaJogador.height);
+        jogador->setVelocidadeVertical(-impulsoRepulsaoVertical);
+        jogador->setNoChao(true);
+        break;
+    case 4: // Por baixo
+        jogador->setPosicao(areaJogador.left, areaChefao.top + areaChefao.height);
+        jogador->setVelocidadeVertical(impulsoRepulsaoVertical);
+        break;
+    case 2: // Pela esquerda
+        jogador->setPosicao(areaChefao.left - areaJogador.width, areaJogador.top);
+        jogador->setVelocidadeHorizontal(-impulsoRepulsaoHorizontal);
+        jogador->setVelocidadeVertical(impulsoVerticalCurto);
+        jogador->setNoChao(false);
+        break;
+    case 3: // Pela direita
+        jogador->setPosicao(areaChefao.left + areaChefao.width, areaJogador.top);
+        jogador->setVelocidadeHorizontal(impulsoRepulsaoHorizontal);
+        jogador->setVelocidadeVertical(impulsoVerticalCurto);
+        jogador->setNoChao(false);
+        break;
+    default:
+        // Dano padrão
+        this->danificar(jogador);
+        break;
+    }
 }
 
 

@@ -5,7 +5,10 @@
 class Chefao : public Inimigo {
 private:
 	short int forca;
-
+	float direcaoX = 1.f;
+	float posicaoInicialX;
+    float limiteEsquerda;
+    float limiteDireita;
 public:
 	Chefao();
 	~Chefao();
