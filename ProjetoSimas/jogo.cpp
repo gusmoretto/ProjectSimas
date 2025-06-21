@@ -10,7 +10,7 @@
 Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), faseAtual(nullptr) {
     Ente::setGerenciadorGrafico(pGG);
     jogador1 = new Jogador();
-    jogador1->executar();\
+    jogador1->executar();
     pGG->inicializarBarraVida();
 
 }
@@ -20,6 +20,8 @@ Jogo::~Jogo() {
     if (pGG) delete pGG;
 }
 void Jogo::executar() {
+	bool ganhou = false;
+    bool perdeu = false;
     GerenciadorColisoes* pGC = faseAtual->getGerenciadorColisoes();
     const std::vector<Inimigo*>& inimigos = pGC->getInimigos();
     ListaEntidades* pListaEnts = faseAtual->getListaEntidades(); 

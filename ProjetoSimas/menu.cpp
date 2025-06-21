@@ -105,6 +105,7 @@ int Menu::processarEventos() {
 
                 if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) { 
                     return 1; 
+
                 }
                 if (botaoNovoFase2.getGlobalBounds().contains(mousePos)) {
                     return 2;
@@ -148,11 +149,13 @@ void Menu::executar() {
     }
 
     if (escolha == 1) { 
+        pGG_Menu->fechar();
         pJogo = new Jogo(); 
         pJogo->setFaseAtual(escolha);
         pJogo->executar(); 
     }
     else if (escolha == 2) {
+        pGG_Menu->fechar();
         pJogo = new Jogo();
         pJogo->setFaseAtual(escolha);
 		pJogo->executar();
