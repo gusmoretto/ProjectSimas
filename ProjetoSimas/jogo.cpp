@@ -10,7 +10,9 @@
 Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), faseAtual(nullptr) {
     Ente::setGerenciadorGrafico(pGG);
     jogador1 = new Jogador();
-    jogador1->executar();
+    jogador1->executar();\
+    pGG->inicializarBarraVida();
+
 }
 
 Jogo::~Jogo() {
