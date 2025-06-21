@@ -70,5 +70,42 @@ void GerenciadorGrafico::iniciaFundo(const std::string& caminho) {
 	spriteFundo.setTexture(texturaFundo);
 	spriteFundo.setPosition(0, 0);
 }
+void GerenciadorGrafico::inicializarBarraVida() {
+    if (!fonteMenu.loadFromFile("fonteMenu.ttf")) {
+        std::cerr << "Erro ao carregar a fonte para a barra de vida." << std::endl;
+        return;
+    }
+    textoVida.setFont(fonteMenu);
+    textoVida.setString("Vida");
+    textoVida.setCharacterSize(20);
+    textoVida.setFillColor(sf::Color::White);
+    textoVida.setPosition(15.f, 10.f);
+
+    barraVidaFundo.setSize(sf::Vector2f(200.f, 25.f));
+    barraVidaFundo.setFillColor(sf::Color(50, 50, 50, 200)); 
+    barraVidaFundo.setOutlineColor(sf::Color::Black);
+    barraVidaFundo.setOutlineThickness(2.f);
+    barraVidaFundo.setPosition(15.f, 35.f);
+
+    barraVidaAtual.setSize(sf::Vector2f(200.f, 25.f));
+    barraVidaAtual.setFillColor(sf::Color::Red);
+    barraVidaAtual.setPosition(15.f, 35.f);
+}
+
+void GerenciadorGrafico::atualizarBarraVida(int vidaAtual, int vidaMaxima) {
+    if (vidaAtual < 0) {
+        vidaAtual = 0;
+    }
+    float proporcaoVida = static_cast<float>(vidaAtual) / static_cast<float>(vidaMaxima);
+    float larguraMaxima = barraVidaFundo.getSize().x;
+    barraVidaAtual.setSize(sf::Vector2f(larguraMaxima * proporcaoVida, barraVidaAtual.getSize().y));
+}
+
+void GerenciadorGrafico::desenharBV() {
+    window.setView(window.getDefaultView());
+    window.draw(barraVidaFundo);
+    window.draw(barraVidaAtual);
+    window.draw(textoVida);
+}
 
 

@@ -114,7 +114,8 @@ void Jogo::executar() {
             pAux = pAux->getProx();
         }
         jogador1->desenhar();
-
+        pGG->atualizarBarraVida(jogador1->getVida(), 150);
+        pGG->desenharBV();
         pGG->mostrar();
     }
 }
