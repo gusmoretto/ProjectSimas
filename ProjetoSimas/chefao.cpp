@@ -6,7 +6,7 @@
 Chefao::Chefao() : Inimigo(), forca(10){
 	nivel_maldade = 3;
 	vida = 500; 
-	ataque = 50; 
+	ataque = 30; 
 }
 Chefao::~Chefao() {
 	forca = -1;
@@ -106,13 +106,7 @@ void Chefao::salvar() {
         return;
     }
     Inimigo::salvarDataBuffer(); 
-
-    // Salva os atributos exclusivos do chefão
-    *buffer << forca << " "
-            << posicaoInicialX << " "
-            << limiteEsquerda << " "
-            << limiteDireita << std::endl;
-
+    *buffer << forca << " " << posicaoInicialX << " " << limiteEsquerda << " " << limiteDireita << " " << getPosicao().x << " " << getPosicao().y << endl;
     std::ofstream arquivoChefao("arquivo_chefao.txt", std::ios::app);
     if (arquivoChefao.is_open()) {
         arquivoChefao << p_sstream->str();
@@ -133,7 +127,8 @@ void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
     case 1: // Por cima
         jogador->setPosicao(areaJogador.left, areaChefao.top - areaJogador.height);
         jogador->setVelocidadeVertical(-impulsoRepulsaoVertical);
-        jogador->setNoChao(true);
+        if (getVida() > 0)setVida(getVida() /2);
+        jogador->setNoChao(false);
         break;
     case 4: // Por baixo
         jogador->setPosicao(areaJogador.left, areaChefao.top + areaChefao.height);
@@ -143,16 +138,17 @@ void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
         jogador->setPosicao(areaChefao.left - areaJogador.width, areaJogador.top);
         jogador->setVelocidadeHorizontal(-impulsoRepulsaoHorizontal);
         jogador->setVelocidadeVertical(impulsoVerticalCurto);
+        this->danificar(jogador);
         jogador->setNoChao(false);
         break;
     case 3: // Pela direita
         jogador->setPosicao(areaChefao.left + areaChefao.width, areaJogador.top);
         jogador->setVelocidadeHorizontal(impulsoRepulsaoHorizontal);
         jogador->setVelocidadeVertical(impulsoVerticalCurto);
+        this->danificar(jogador);
         jogador->setNoChao(false);
         break;
     default:
-        // Dano padrão
         this->danificar(jogador);
         break;
     }

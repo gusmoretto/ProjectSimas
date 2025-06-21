@@ -7,7 +7,7 @@
 Lancador::Lancador() : Inimigo(), tamanho(50), tempoAtaque(0.f), intervaloAtaque(4.f) {
 	nivel_maldade = 2;
 	vida = 200;
-	ataque = 20;
+	ataque = 15;
 	num_vidas = 1;
 }
 Lancador::~Lancador() {
@@ -17,7 +17,6 @@ Lancador::~Lancador() {
 void Lancador::danificar(Jogador* p) {
 	if (p) {
 		p->setVida(p->getVida() - ataque); 
-		std::cout << "Jogador danificado! Vida restante: " << p->getVida() << std::endl;
 	}
 }
 void Lancador::executar() {

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-Projetil::Projetil() : Entidade(), velocidade(0.f, 0.f), destino(0.f, 0.f), ativo(false), dano(10){
+Projetil::Projetil() : Entidade(), velocidade(0.f, 0.f), destino(0.f, 0.f), ativo(false), dano(20){
 	setForcaMitico(-980.f); 
     setId(6);
 	retangulo.setSize(sf::Vector2f(32.f, 32.f));
@@ -64,7 +64,6 @@ void Projetil::checarColisaoComJogador(Jogador* jogador) {
     if (!ativo || !jogador)
         return;
 
-    // Usa o retângulo de colisão de Entidade
     if (getRetangulo().getGlobalBounds().intersects(jogador->getRetangulo().getGlobalBounds())) {
         ativo = false;
         jogador->setVida(jogador->getVida() - dano);
