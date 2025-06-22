@@ -23,6 +23,8 @@ private:
 	RectangleShape corpoMorto2;
     Texture texturaJogador1Morto;
     Texture texturaJogador2Morto;
+    bool jogador1EstaMorto;
+    bool jogador2EstaMorto;
 
 public:
     Jogo();

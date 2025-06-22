@@ -17,6 +17,8 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullpt
     vitoria = false;
     derrota = false;
     inicializarTelaFinal();
+    jogador1EstaMorto = false;
+    jogador2EstaMorto = false;
     if (!texturaJogador1Morto.loadFromFile("playermorto.png")) {
         std::cerr << "Erro: Nao foi possivel carregar player_morto.png" << std::endl;
     }
@@ -28,6 +30,8 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullpt
 Jogo::~Jogo() {
     if (faseAtual) delete faseAtual;
     if (pGG) delete pGG;
+    if (jogador1) delete jogador1;
+    if (jogador2) delete jogador2;
 }
 
 void Jogo::inicializarTelaFinal() {
@@ -119,19 +123,23 @@ void Jogo::executar() {
 
         if (!vitoria && !derrota) {
             if (jogador1 && jogador1->getVida() <= 0) {
-                RectangleShape corpo(sf::Vector2f(64.f, 64.f));
-                corpo.setTexture(&texturaJogador1Morto);
-                corpo.setPosition(jogador1->getPosicao());
+                corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
+                corpoMorto1.setTexture(&texturaJogador1Morto);
+                corpoMorto1.setPosition(jogador1->getPosicao());
                 pGC->removeEntidade(jogador1);
+                delete jogador1; 
                 jogador1 = nullptr;
+                jogador1EstaMorto = true; 
             }
 
             if (jogador2 && jogador2->getVida() <= 0) {
-                RectangleShape corpo(sf::Vector2f(64.f, 64.f));
-                corpo.setTexture(&texturaJogador2Morto);
-                corpo.setPosition(jogador2->getPosicao());
+                corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
+                corpoMorto2.setTexture(&texturaJogador2Morto);
+                corpoMorto2.setPosition(jogador2->getPosicao());
                 pGC->removeEntidade(jogador2);
+                delete jogador2; 
                 jogador2 = nullptr;
+                jogador2EstaMorto = true; 
             }
 
             if (!jogador1 && !jogador2) {
@@ -243,10 +251,10 @@ void Jogo::executar() {
             }
             pAux = pAux->getProx();
         }
-        if (jogador1->getVida() <= 0) {
+        if (jogador1EstaMorto) {
             pGG->desenha(corpoMorto1);
         }
-        if (jogador2->getVida() <= 0) {
+        if (jogador2EstaMorto) {
             pGG->desenha(corpoMorto2);
         }
 

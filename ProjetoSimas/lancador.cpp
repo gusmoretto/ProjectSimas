@@ -35,21 +35,32 @@ void Lancador::mover() {
 	}
 }
 
-void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes, ListaEntidades* pListaEnts) {
-	Jogador* alvo = jogador1;
+void Lancador::atacar(Jogador* jogador1, Jogador* jogador2, float deltaTime, const sf::View& viewAtual, Gerenciadores::GerenciadorColisoes* gerenciadorColisoes, ListaEntidades* pListaEnts) {
+	Jogador* alvo = nullptr;
+	if (jogador1) {
+		alvo = jogador1;
+	}
+	else if (jogador2) {
+		alvo = jogador2;
+	}
+
+	if (!alvo) {
+		return;
+	}
 
 	sf::FloatRect viewRect(
 		viewAtual.getCenter().x - viewAtual.getSize().x / 2.f,
 		viewAtual.getCenter().y - viewAtual.getSize().y / 2.f,
 		viewAtual.getSize().x,
 		viewAtual.getSize().y);
-	if (!viewRect.contains(getPosicao()) || !alvo || !viewRect.contains(alvo->getPosicao()))
+
+	if (!viewRect.contains(getPosicao()) || !viewRect.contains(alvo->getPosicao()))
 		return;
 
 	for (auto it = projeteis.begin(); it != projeteis.end(); ) {
 		Projetil* p = *it;
 		if (!p->getestaAtivo()) {
-			it = projeteis.erase(it); // Apenas remove da lista local
+			it = projeteis.erase(it);
 		}
 		else {
 			++it;
@@ -60,7 +71,7 @@ void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::Vi
 		Projetil* novoProj = new Projetil();
 		novoProj->disparar(getPosicao(), alvo->getPosicao(), 200.f, 0.f, true);
 
-		projeteis.push_back(novoProj); 
+		projeteis.push_back(novoProj);
 
 		if (gerenciadorColisoes)
 			gerenciadorColisoes->inclueEntidade(novoProj);
@@ -70,7 +81,6 @@ void Lancador::atacar(Jogador* jogador1, Jogador*, float deltaTime, const sf::Vi
 		tempoAtaque = 0.f;
 	}
 }
-
 int Lancador::getVida() const {
 	return vida;
 }
