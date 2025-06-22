@@ -19,6 +19,10 @@ private:
     Font fonteBotao;
     Text textoBotaoSair;
     RectangleShape botaoSair;
+    RectangleShape corpoMorto1;
+	RectangleShape corpoMorto2;
+    Texture texturaJogador1Morto;
+    Texture texturaJogador2Morto;
 
 public:
     Jogo();

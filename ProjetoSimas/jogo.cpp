@@ -17,6 +17,12 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullpt
     vitoria = false;
     derrota = false;
     inicializarTelaFinal();
+    if (!texturaJogador1Morto.loadFromFile("playermorto.png")) {
+        std::cerr << "Erro: Nao foi possivel carregar player_morto.png" << std::endl;
+    }
+    if (!texturaJogador2Morto.loadFromFile("player2morto.png")) {
+        std::cerr << "Erro: Nao foi possivel carregar player2_morto.png" << std::endl;
+    }
 }
 
 Jogo::~Jogo() {
@@ -112,6 +118,25 @@ void Jogo::executar() {
         }
 
         if (!vitoria && !derrota) {
+            if (jogador1 && jogador1->getVida() <= 0) {
+                RectangleShape corpo(sf::Vector2f(64.f, 64.f));
+                corpo.setTexture(&texturaJogador1Morto);
+                corpo.setPosition(jogador1->getPosicao());
+                pGC->removeEntidade(jogador1);
+                jogador1 = nullptr;
+            }
+
+            if (jogador2 && jogador2->getVida() <= 0) {
+                RectangleShape corpo(sf::Vector2f(64.f, 64.f));
+                corpo.setTexture(&texturaJogador2Morto);
+                corpo.setPosition(jogador2->getPosicao());
+                pGC->removeEntidade(jogador2);
+                jogador2 = nullptr;
+            }
+
+            if (!jogador1 && !jogador2) {
+                derrota = true;
+            }
 
             std::vector<Inimigo*> inimigos;
             Elemento<Entidade>* pElemento = pListaEnts->getPrimeiro();
@@ -126,7 +151,7 @@ void Jogo::executar() {
                 vitoria = true;
             }
 
-            if (!vitoria) {
+            if (!vitoria && !derrota) { 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                     Elemento<Entidade>* pElementoEntidade = pListaEnts->getPrimeiro();
                     while (pElementoEntidade) {
@@ -136,16 +161,16 @@ void Jogo::executar() {
                     pGG->fechar();
                 }
 
-                jogador1->mover();
-				if (jogador2) {
-					jogador2->mover();
-				}
+                if (jogador1) jogador1->mover();
+                if (jogador2) jogador2->mover();
+
                 for (auto* inimigo : inimigos) {
                     if (inimigo) inimigo->mover();
                 }
                 for (auto* inimigo : inimigos) {
                     if (Lancador* pLancador = dynamic_cast<Lancador*>(inimigo)) {
                         pLancador->atacar(jogador1, jogador2, 0.016f, pGG->getView(), pGC, pListaEnts);
+                        
                     }
                 }
 
@@ -177,19 +202,13 @@ void Jogo::executar() {
                     bool remover = false;
 
                     if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEnt)) {
-                        if (pInimigo->getVida() <= 0) {
-                            remover = true;
-                        }
+                        if (pInimigo->getVida() <= 0) remover = true;
                     }
                     else if (Projetil* pProj = dynamic_cast<Projetil*>(pEnt)) {
-                        if (!pProj->getestaAtivo()) {
-                            remover = true;
-                        }
+                        if (!pProj->getestaAtivo()) remover = true;
                     }
 
-                    if (remover) {
-                        aRemover.push_back(pEnt);
-                    }
+                    if (remover) aRemover.push_back(pEnt);
                     pEl = pEl->getProx();
                 }
 
@@ -198,17 +217,21 @@ void Jogo::executar() {
                     pListaEnts->remover(pEnt);
                     delete pEnt;
                 }
-
-                if (jogador1->getVida() <= 0 && (jogador2 != nullptr && jogador2->getVida() <= 0)) {
-                    derrota = true;
-                }
             }
         }
-        Vector2f mediaCamera = jogador1->getRetangulo().getPosition();
-        if (jogador2) {
+
+        sf::Vector2f mediaCamera(1920.f, 350.f); 
+        if (jogador1 && jogador2) {
             mediaCamera = (jogador1->getRetangulo().getPosition() + jogador2->getRetangulo().getPosition()) / 2.f;
-		}
+        }
+        else if (jogador1) {
+            mediaCamera = jogador1->getRetangulo().getPosition();
+        }
+        else if (jogador2) {
+            mediaCamera = jogador2->getRetangulo().getPosition();
+        }
         pGG->centralizarCamera(mediaCamera, 3840.f, 700.f);
+
         pGG->clear();
         pGG->desenhaFundo();
         pGG->desenhaChao();
@@ -220,21 +243,18 @@ void Jogo::executar() {
             }
             pAux = pAux->getProx();
         }
-        if(jogador1->getVida() >0 )
-            jogador1->desenhar();
-		//else 
-            //posiciona imagem morto e tira de todas as listas vira so parte do cenario
-        if (jogador2) {
-            if (jogador2->getVida() > 0)
-                jogador2->desenhar();
-            //else
-                //posiciona imagem morto e tira de todas as listas vira so parte do cenario
+        if (jogador1->getVida() <= 0) {
+            pGG->desenha(corpoMorto1);
+        }
+        if (jogador2->getVida() <= 0) {
+            pGG->desenha(corpoMorto2);
         }
 
-        pGG->atualizarBarraVida(jogador1->getVida(), 150, 1);
-		if (jogador2) {
-			pGG->atualizarBarraVida(jogador2->getVida(), 150, 2);
-		}
+        if (jogador1) jogador1->desenhar();
+        if (jogador2) jogador2->desenhar();
+
+        pGG->atualizarBarraVida(jogador1 ? jogador1->getVida() : 0, 150, 1);
+        pGG->atualizarBarraVida(jogador2 ? jogador2->getVida() : 0, 150, 2);
         pGG->desenharBV(2);
 
         if (vitoria || derrota) {
