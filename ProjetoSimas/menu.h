@@ -21,6 +21,13 @@ private:
     Sprite spriteFundoMenu;
     Text textoCarregar; 
     RectangleShape botaoCarregar;
+    Text textoEscolhaJogadores;
+    bool mostrarEscolhaJogadores = false;
+    sf::Vector2f posicaoEscolhaJogadores;
+    RectangleShape botao1Jogador;
+    RectangleShape botao2Jogadores;
+    Text texto1Jogador;
+    Text texto2Jogadores;
 
 public:
     Menu(Gerenciadores::GerenciadorGrafico* pGG);

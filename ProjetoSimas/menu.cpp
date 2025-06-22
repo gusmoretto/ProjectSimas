@@ -57,6 +57,13 @@ void Menu::inicializarTextos() {
     textoSair.setFillColor(sf::Color::Black);
     textoSair.setOrigin(textoSair.getLocalBounds().width / 2, textoSair.getLocalBounds().height / 2);
     textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 250);
+
+    textoEscolhaJogadores.setFont(font);
+    textoEscolhaJogadores.setString("Escolha: 1 ou 2 Jogadores");
+    textoEscolhaJogadores.setCharacterSize(22);
+    textoEscolhaJogadores.setFillColor(sf::Color::Black);
+    textoEscolhaJogadores.setOrigin(0, textoEscolhaJogadores.getLocalBounds().height / 2);
+    // A posição será definida dinamicamente ao clicar nos botões
 }
 
 void Menu::inicializarBotoes() {
@@ -94,6 +101,30 @@ void Menu::inicializarBotoes() {
     botaoRanking.setOutlineThickness(2.f);
     botaoRanking.setOrigin(botaoRanking.getLocalBounds().width / 2, botaoRanking.getLocalBounds().height / 2);
     botaoRanking.setPosition(textoRanking.getPosition());
+
+    // Botão 1 Jogador
+    botao1Jogador.setSize(sf::Vector2f(180.f, 40.f)); // <-- aumente aqui
+    botao1Jogador.setFillColor(sf::Color::White);
+    botao1Jogador.setOutlineColor(sf::Color::Black);
+    botao1Jogador.setOutlineThickness(2.f);
+
+    texto1Jogador.setFont(font);
+    texto1Jogador.setString("1 Jogador");
+    texto1Jogador.setCharacterSize(18);
+    texto1Jogador.setFillColor(sf::Color::Black);
+    texto1Jogador.setOrigin(texto1Jogador.getLocalBounds().width / 2, texto1Jogador.getLocalBounds().height / 2);
+
+    // Botão 2 Jogadores
+    botao2Jogadores.setSize(sf::Vector2f(180.f, 40.f)); // <-- aumente aqui
+    botao2Jogadores.setFillColor(sf::Color::White);
+    botao2Jogadores.setOutlineColor(sf::Color::Black);
+    botao2Jogadores.setOutlineThickness(2.f);
+
+    texto2Jogadores.setFont(font);
+    texto2Jogadores.setString("2 Jogadores");
+    texto2Jogadores.setCharacterSize(18);
+    texto2Jogadores.setFillColor(sf::Color::Black);
+    texto2Jogadores.setOrigin(texto2Jogadores.getLocalBounds().width / 2, texto2Jogadores.getLocalBounds().height / 2);
 }
 void Menu::inicializarFundoMenu(const std::string& caminhoTextura) {
     if (!texturaFundoMenu.loadFromFile(caminhoTextura)) {
@@ -120,6 +151,14 @@ void Menu::desenharMenu() {
     pGG_Menu->getWindow().draw(textoCarregar); 
     pGG_Menu->getWindow().draw(textoSair);
     pGG_Menu->getWindow().draw(textoRanking);
+
+    if (mostrarEscolhaJogadores) {
+        pGG_Menu->desenha(botao1Jogador);
+        pGG_Menu->desenha(botao2Jogadores);
+        pGG_Menu->getWindow().draw(texto1Jogador);
+        pGG_Menu->getWindow().draw(texto2Jogadores);
+    }
+
     pGG_Menu->mostrar();
 }
 
@@ -135,11 +174,22 @@ int Menu::processarEventos() {
                 sf::Vector2f mousePos = pGG_Menu->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseButton.x, evento.mouseButton.y)); 
 
                 if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) { 
-                    return 1; 
-
+                    mostrarEscolhaJogadores = true;
+                    sf::Vector2f basePos = botaoNovoFase1.getPosition() + sf::Vector2f(botaoNovoFase1.getSize().x / 2.f + 20.f, -25.f);
+                    botao1Jogador.setPosition(basePos);
+                    texto1Jogador.setPosition(basePos + sf::Vector2f(botao1Jogador.getSize().x / 2.f, botao1Jogador.getSize().y / 2.f));
+                    botao2Jogadores.setPosition(basePos + sf::Vector2f(0.f, botao1Jogador.getSize().y + 10.f));
+                    texto2Jogadores.setPosition(botao2Jogadores.getPosition() + sf::Vector2f(botao2Jogadores.getSize().x / 2.f, botao2Jogadores.getSize().y / 2.f));
+                    return -1;
                 }
                 if (botaoNovoFase2.getGlobalBounds().contains(mousePos)) {
-                    return 2;
+                    mostrarEscolhaJogadores = true;
+                    sf::Vector2f basePos = botaoNovoFase2.getPosition() + sf::Vector2f(botaoNovoFase2.getSize().x / 2.f + 20.f, -25.f);
+                    botao1Jogador.setPosition(basePos);
+                    texto1Jogador.setPosition(basePos + sf::Vector2f(botao1Jogador.getSize().x / 2.f, botao1Jogador.getSize().y / 2.f));
+                    botao2Jogadores.setPosition(basePos + sf::Vector2f(0.f, botao1Jogador.getSize().y + 10.f));
+                    texto2Jogadores.setPosition(botao2Jogadores.getPosition() + sf::Vector2f(botao2Jogadores.getSize().x / 2.f, botao2Jogadores.getSize().y / 2.f));
+                    return -1;
                 }
                 if (botaoSair.getGlobalBounds().contains(mousePos)) { 
                     pGG_Menu->fechar(); 
@@ -150,6 +200,12 @@ int Menu::processarEventos() {
                 }
                 if (botaoCarregar.getGlobalBounds().contains(mousePos)) {
                     return 4; 
+                }
+                if (botao1Jogador.getGlobalBounds().contains(mousePos)) {
+                    return 1; // Inicia o jogo com 1 jogador
+                }
+                if (botao2Jogadores.getGlobalBounds().contains(mousePos)) {
+                    return 2; // Inicia o jogo com 2 jogadores
                 }
             }
         }
