@@ -175,6 +175,7 @@ int Menu::processarEventos() {
 
                 if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) { 
                     mostrarEscolhaJogadores = true;
+                    faseEscolhida = 1; // Salva a fase escolhida
                     sf::Vector2f basePos = botaoNovoFase1.getPosition() + sf::Vector2f(botaoNovoFase1.getSize().x / 2.f + 20.f, -25.f);
                     botao1Jogador.setPosition(basePos);
                     texto1Jogador.setPosition(basePos + sf::Vector2f(botao1Jogador.getSize().x / 2.f, botao1Jogador.getSize().y / 2.f));
@@ -184,6 +185,7 @@ int Menu::processarEventos() {
                 }
                 if (botaoNovoFase2.getGlobalBounds().contains(mousePos)) {
                     mostrarEscolhaJogadores = true;
+                    faseEscolhida = 2; // Salva a fase escolhida
                     sf::Vector2f basePos = botaoNovoFase2.getPosition() + sf::Vector2f(botaoNovoFase2.getSize().x / 2.f + 20.f, -25.f);
                     botao1Jogador.setPosition(basePos);
                     texto1Jogador.setPosition(basePos + sf::Vector2f(botao1Jogador.getSize().x / 2.f, botao1Jogador.getSize().y / 2.f));
@@ -253,9 +255,10 @@ void Menu::executar() {
     }
 
     if (escolha == 1 || escolha == 2) { 
+        int numJogadores = escolha;
         pGG_Menu->fechar();
-        pJogo = new Jogo();
-        pJogo->setFaseAtual(escolha, false);
+        pJogo = new Jogo(numJogadores);
+        pJogo->setFaseAtual(faseEscolhida, false); // Use a fase salva
         pJogo->executar();
     }
     else if (escolha == 3) { 

@@ -30,9 +30,10 @@ private:
     Text textoBotaoSalvarSair;
     RectangleShape fundoPausa; 
     Text textoPausa;
+    int numJogadores;
 
 public:
-    Jogo();
+    Jogo(int numJogadores = 1);
     ~Jogo();
     void executar();
 	void setFaseAtual(int fase, bool carregarJogo);

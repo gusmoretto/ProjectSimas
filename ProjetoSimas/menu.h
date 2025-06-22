@@ -28,6 +28,7 @@ private:
     RectangleShape botao2Jogadores;
     Text texto1Jogador;
     Text texto2Jogadores;
+    int faseEscolhida = 0; // Adicione isso
 
 public:
     Menu(Gerenciadores::GerenciadorGrafico* pGG);

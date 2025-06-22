@@ -23,13 +23,19 @@ int determinarFaseSalva() {
     return 1;
 }
 
-Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr) {
+Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr), numJogadores(numJogadores) {
     Ente::setGerenciadorGrafico(pGG);
-    jogador1 = new Jogador();
-    jogador1->executar();
-    jogador2 = new Jogador();
-    jogador2->executar();
-    pGG->inicializarBarraVida(2);
+
+    if (numJogadores >= 1) {
+        jogador1 = new Jogador();
+        jogador1->executar();
+    }
+    if (numJogadores == 2) {
+        jogador2 = new Jogador();
+        jogador2->executar();
+    }
+
+    pGG->inicializarBarraVida(numJogadores);
     vitoria = false;
     derrota = false;
     inicializarTelaFinal();
@@ -173,12 +179,12 @@ void Jogo::executar() {
                 jogador2EstaMorto = true;
             }
 
-            // Verifica condição de derrota
+            // Verifica condiï¿½ï¿½o de derrota
             if (!jogador1 && !jogador2) {
                 derrota = true;
             }
 
-            // Verifica condição de vitória
+            // Verifica condiï¿½ï¿½o de vitï¿½ria
             vector<Inimigo*> inimigos;
             Elemento<Entidade>* pElementoInim = pListaEnts->getPrimeiro();
             while (pElementoInim) {
@@ -224,7 +230,7 @@ void Jogo::executar() {
 
                 pGC->executar();
 
-                // Remove entidades que precisam ser destruídas
+                // Remove entidades que precisam ser destruï¿½das
                 std::vector<Entidade*> aRemover;
                 Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
                 while (pEl) {
@@ -560,7 +566,7 @@ void Jogo::processarEventosMenuPausa(sf::Event& evento) {
                 pGG->fechar();
             }
             if (botaoSalvarSair.getGlobalBounds().contains(mousePos)) {
-                // Lógica de salvar o jogo (copiada do seu código original)
+                // Lï¿½gica de salvar o jogo (copiada do seu cï¿½digo original)
                 std::ofstream arqJogadores("arquivo_jogador.txt", std::ios::trunc);
                 std::ofstream arqAranhas("arquivo_aranha.txt", std::ios::trunc);
                 std::ofstream arqLancadores("arquivo_lancador.txt", std::ios::trunc);
