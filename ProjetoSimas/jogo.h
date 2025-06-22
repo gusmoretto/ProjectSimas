@@ -34,4 +34,5 @@ public:
     void inicializarTelaFinal();
     void processarEventosTelaFinal(sf::Event& evento);
     void desenharTelaFinal();
+    void rodarSave();
 };

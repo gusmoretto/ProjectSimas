@@ -109,6 +109,8 @@ void Jogo::desenharTelaFinal() {
 void Jogo::executar() {
     GerenciadorColisoes* pGC = faseAtual->getGerenciadorColisoes();
     ListaEntidades* pListaEnts = faseAtual->getListaEntidades();
+    pListaEnts->incluir(jogador1);
+    pListaEnts->incluir(jogador2);
 
     while (pGG->estaAberta()) {
         sf::Event evento;
@@ -146,7 +148,7 @@ void Jogo::executar() {
                 derrota = true;
             }
 
-            std::vector<Inimigo*> inimigos;
+            vector<Inimigo*> inimigos;
             Elemento<Entidade>* pElemento = pListaEnts->getPrimeiro();
             while (pElemento) {
                 if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pElemento->getInfo())) {
@@ -271,6 +273,9 @@ void Jogo::executar() {
 
         pGG->mostrar();
     }
+}
+void Jogo::rodarSave() {
+
 }
 void Jogo::setFaseAtual(int fase) {
     if (fase == 1) {
