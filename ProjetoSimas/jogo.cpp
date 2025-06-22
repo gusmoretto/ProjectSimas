@@ -585,7 +585,6 @@ void Jogo::processarEventosMenuPausa(sf::Event& evento) {
                     }
                     pElemento = pElemento->getProx();
                 }
-
                 arqJogadores.close();
                 arqAranhas.close();
                 arqLancadores.close();
