@@ -8,8 +8,9 @@ PrimeiraFase::PrimeiraFase(Jogador* j1, Jogador* j2, bool carregarJogo) : Fase(j
     fase = 1;
     criarCenario(fase);
     Fase::executar();
+    criarCenario(fase);
     if (!carregarJogo) {
-        criarCenario(fase);
+        executar();
     }
 }
 

@@ -8,9 +8,9 @@
 SegundaFase::SegundaFase(Jogador* j1, Jogador* j2, bool carregarJogo) : Fase(j1, j2, carregarJogo), maxEspinhos(4), maxChefoes(3) {
 	fase = 2;
 	criarCenario(fase);
-	Fase::executar();
+	criarCenario(fase);
 	if (!carregarJogo) {
-		criarCenario(fase);
+		executar();
 	}
 }
 SegundaFase::~SegundaFase() {}

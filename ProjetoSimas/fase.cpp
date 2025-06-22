@@ -19,9 +19,9 @@ Fase::Fase(Jogador* j1, Jogador* j2, bool carregarJogo) : jogador1(j1), jogador2
     }
     if (jogador1) GC.inclueEntidade(jogador1);
     if (jogador2) GC.inclueEntidade(jogador2);
-    if (!carregarJogo) {
-        executar();
-    }
+    //if (!carregarJogo) {
+      //  executar();
+    //}
 
 }
 
