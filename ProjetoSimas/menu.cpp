@@ -170,7 +170,8 @@ void Menu::desenharMenu() {
 
     if (inserindoNome) {
         campoNomeJogador.setPosition(posicaoCampoNomeJogador);
-        textoNomeJogador.setString(nomeJogador.empty() ? "Nome" : nomeJogador);
+        std::string nomeExibido = (indiceJogadorInserindoNome == 0) ? nomeJogador1 : nomeJogador2;
+        textoNomeJogador.setString(nomeExibido.empty() ? "Nome" : nomeExibido);
         textoNomeJogador.setPosition(posicaoCampoNomeJogador + sf::Vector2f(10.f, 10.f));
         pGG_Menu->desenha(campoNomeJogador);
         pGG_Menu->getWindow().draw(textoNomeJogador);
@@ -189,15 +190,24 @@ int Menu::processarEventos() {
 
         // TRATE O EVENTO DE TEXTO AQUI, FORA DO BLOCO DE MOUSE
         if (inserindoNome && evento.type == sf::Event::TextEntered) {
+            std::string* nomeAtual = (indiceJogadorInserindoNome == 0) ? &nomeJogador1 : &nomeJogador2;
             if (evento.text.unicode == '\b') { // Backspace
-                if (!nomeJogador.empty())
-                    nomeJogador.pop_back();
+                if (!nomeAtual->empty())
+                    nomeAtual->pop_back();
             } else if (evento.text.unicode == '\r' || evento.text.unicode == '\n') { // Enter
-                inserindoNome = false;
-                return numJogadoresEscolhido; // Agora inicia o jogo
+                if (numJogadoresEscolhido == 2 && indiceJogadorInserindoNome == 0) {
+                    // Passa para o segundo jogador
+                    indiceJogadorInserindoNome = 1;
+                    // NÃO altere a posição do campo aqui!
+                    // posicaoCampoNomeJogador = ...;  // Remova ou comente esta linha
+                    return -1;
+                } else {
+                    inserindoNome = false;
+                    return numJogadoresEscolhido; // Agora inicia o jogo
+                }
             } else if (evento.text.unicode < 128 && evento.text.unicode != '\t') {
-                if (nomeJogador.size() < 16)
-                    nomeJogador += static_cast<char>(evento.text.unicode);
+                if (nomeAtual->size() < 16)
+                    *nomeAtual += static_cast<char>(evento.text.unicode);
             }
             return -1;
         }
@@ -238,14 +248,17 @@ int Menu::processarEventos() {
                 }
                 if (botao1Jogador.getGlobalBounds().contains(mousePos)) {
                     numJogadoresEscolhido = 1;
-                    nomeJogador.clear();
+                    nomeJogador1.clear();
+                    indiceJogadorInserindoNome = 0;
                     inserindoNome = true;
                     posicaoCampoNomeJogador = botao1Jogador.getPosition() + sf::Vector2f(botao1Jogador.getSize().x + 20.f, 0.f);
                     return -1;
                 }
                 if (botao2Jogadores.getGlobalBounds().contains(mousePos)) {
                     numJogadoresEscolhido = 2;
-                    nomeJogador.clear();
+                    nomeJogador1.clear();
+                    nomeJogador2.clear();
+                    indiceJogadorInserindoNome = 0;
                     inserindoNome = true;
                     posicaoCampoNomeJogador = botao2Jogadores.getPosition() + sf::Vector2f(botao2Jogadores.getSize().x + 20.f, 0.f);
                     return -1;
@@ -295,11 +308,11 @@ void Menu::executar() {
         escolha = processarEventos(); 
     }
 
-    if ((escolha == 1 || escolha == 2) && !nomeJogador.empty()) { 
+    if ((escolha == 1 && !nomeJogador1.empty()) || (escolha == 2 && !nomeJogador1.empty() && !nomeJogador2.empty())) { 
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
-        // Aqui você pode passar nomeJogador para o Jogo, se quiser
+        // Passe nomeJogador1 e nomeJogador2 para o Jogo, se quiser
         pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }

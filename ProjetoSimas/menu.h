@@ -29,12 +29,13 @@ private:
     Text texto1Jogador;
     Text texto2Jogadores;
     int faseEscolhida = 0; // Adicione isso
-    std::string nomeJogador;
+    std::string nomeJogador1, nomeJogador2;
     sf::Text textoNomeJogador;
     sf::RectangleShape campoNomeJogador;
     bool inserindoNome = false;
     int numJogadoresEscolhido = 1;
     sf::Vector2f posicaoCampoNomeJogador; // Adicione esta linha
+    int indiceJogadorInserindoNome = 0; // 0 para jogador 1, 1 para jogador 2
 
 public:
     Menu(Gerenciadores::GerenciadorGrafico* pGG);
