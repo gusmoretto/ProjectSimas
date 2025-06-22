@@ -64,6 +64,10 @@ void Menu::inicializarTextos() {
     textoEscolhaJogadores.setFillColor(sf::Color::Black);
     textoEscolhaJogadores.setOrigin(0, textoEscolhaJogadores.getLocalBounds().height / 2);
     // A posição será definida dinamicamente ao clicar nos botões
+
+    textoNomeJogador.setFont(font);
+    textoNomeJogador.setCharacterSize(22);
+    textoNomeJogador.setFillColor(sf::Color::Black);
 }
 
 void Menu::inicializarBotoes() {
@@ -125,6 +129,11 @@ void Menu::inicializarBotoes() {
     texto2Jogadores.setCharacterSize(18);
     texto2Jogadores.setFillColor(sf::Color::Black);
     texto2Jogadores.setOrigin(texto2Jogadores.getLocalBounds().width / 2, texto2Jogadores.getLocalBounds().height / 2);
+
+    campoNomeJogador.setSize(sf::Vector2f(220.f, 40.f));
+    campoNomeJogador.setFillColor(sf::Color::White);
+    campoNomeJogador.setOutlineColor(sf::Color::Black);
+    campoNomeJogador.setOutlineThickness(2.f);
 }
 void Menu::inicializarFundoMenu(const std::string& caminhoTextura) {
     if (!texturaFundoMenu.loadFromFile(caminhoTextura)) {
@@ -159,6 +168,14 @@ void Menu::desenharMenu() {
         pGG_Menu->getWindow().draw(texto2Jogadores);
     }
 
+    if (inserindoNome) {
+        campoNomeJogador.setPosition(posicaoCampoNomeJogador);
+        textoNomeJogador.setString(nomeJogador.empty() ? "Nome" : nomeJogador);
+        textoNomeJogador.setPosition(posicaoCampoNomeJogador + sf::Vector2f(10.f, 10.f));
+        pGG_Menu->desenha(campoNomeJogador);
+        pGG_Menu->getWindow().draw(textoNomeJogador);
+    }
+
     pGG_Menu->mostrar();
 }
 
@@ -169,13 +186,29 @@ int Menu::processarEventos() {
             pGG_Menu->fechar(); 
             return 0; 
         }
+
+        // TRATE O EVENTO DE TEXTO AQUI, FORA DO BLOCO DE MOUSE
+        if (inserindoNome && evento.type == sf::Event::TextEntered) {
+            if (evento.text.unicode == '\b') { // Backspace
+                if (!nomeJogador.empty())
+                    nomeJogador.pop_back();
+            } else if (evento.text.unicode == '\r' || evento.text.unicode == '\n') { // Enter
+                inserindoNome = false;
+                return numJogadoresEscolhido; // Agora inicia o jogo
+            } else if (evento.text.unicode < 128 && evento.text.unicode != '\t') {
+                if (nomeJogador.size() < 16)
+                    nomeJogador += static_cast<char>(evento.text.unicode);
+            }
+            return -1;
+        }
+
         if (evento.type == sf::Event::MouseButtonReleased) { 
             if (evento.mouseButton.button == sf::Mouse::Left) { 
                 sf::Vector2f mousePos = pGG_Menu->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseButton.x, evento.mouseButton.y)); 
 
                 if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) { 
                     mostrarEscolhaJogadores = true;
-                    faseEscolhida = 1; // Salva a fase escolhida
+                    faseEscolhida = 1;
                     sf::Vector2f basePos = botaoNovoFase1.getPosition() + sf::Vector2f(botaoNovoFase1.getSize().x / 2.f + 20.f, -25.f);
                     botao1Jogador.setPosition(basePos);
                     texto1Jogador.setPosition(basePos + sf::Vector2f(botao1Jogador.getSize().x / 2.f, botao1Jogador.getSize().y / 2.f));
@@ -185,7 +218,7 @@ int Menu::processarEventos() {
                 }
                 if (botaoNovoFase2.getGlobalBounds().contains(mousePos)) {
                     mostrarEscolhaJogadores = true;
-                    faseEscolhida = 2; // Salva a fase escolhida
+                    faseEscolhida = 2;
                     sf::Vector2f basePos = botaoNovoFase2.getPosition() + sf::Vector2f(botaoNovoFase2.getSize().x / 2.f + 20.f, -25.f);
                     botao1Jogador.setPosition(basePos);
                     texto1Jogador.setPosition(basePos + sf::Vector2f(botao1Jogador.getSize().x / 2.f, botao1Jogador.getSize().y / 2.f));
@@ -204,10 +237,18 @@ int Menu::processarEventos() {
                     return 4; 
                 }
                 if (botao1Jogador.getGlobalBounds().contains(mousePos)) {
-                    return 1; // Inicia o jogo com 1 jogador
+                    numJogadoresEscolhido = 1;
+                    nomeJogador.clear();
+                    inserindoNome = true;
+                    posicaoCampoNomeJogador = botao1Jogador.getPosition() + sf::Vector2f(botao1Jogador.getSize().x + 20.f, 0.f);
+                    return -1;
                 }
                 if (botao2Jogadores.getGlobalBounds().contains(mousePos)) {
-                    return 2; // Inicia o jogo com 2 jogadores
+                    numJogadoresEscolhido = 2;
+                    nomeJogador.clear();
+                    inserindoNome = true;
+                    posicaoCampoNomeJogador = botao2Jogadores.getPosition() + sf::Vector2f(botao2Jogadores.getSize().x + 20.f, 0.f);
+                    return -1;
                 }
             }
         }
@@ -254,11 +295,12 @@ void Menu::executar() {
         escolha = processarEventos(); 
     }
 
-    if (escolha == 1 || escolha == 2) { 
+    if ((escolha == 1 || escolha == 2) && !nomeJogador.empty()) { 
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
-        pJogo->setFaseAtual(faseEscolhida, false); // Use a fase salva
+        // Aqui você pode passar nomeJogador para o Jogo, se quiser
+        pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }
     else if (escolha == 3) { 
