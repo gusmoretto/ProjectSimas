@@ -7,7 +7,6 @@
 PrimeiraFase::PrimeiraFase(Jogador* j1, Jogador* j2, bool carregarJogo) : Fase(j1, j2, carregarJogo) , maxLancadores(4), maxAguas(12){
     fase = 1;
     criarCenario(fase);
-    Fase::executar();
     criarCenario(fase);
     if (!carregarJogo) {
         executar();

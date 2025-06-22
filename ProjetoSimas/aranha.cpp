@@ -27,9 +27,9 @@ void Aranha::executar() {
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
     if (!textura.loadFromFile("aranha.png")) {
         std::cerr << "Erro fatal: Nao foi possivel carregar a textura aranha.png" << std::endl;
- 
         return;
     }
+	retangulo.setTexture(&textura);
 }
 
 void Aranha::mover() {
