@@ -15,10 +15,8 @@
 #include <sstream>
 #include <string>
 
-// Função auxiliar para determinar qual fase foi salva
 int determinarFaseSalva() {
     std::ifstream arqChefao("arquivo_chefao.txt");
-    // Verifica se o arquivo pode ser aberto e não está vazio
     if (arqChefao.good() && arqChefao.peek() != std::ifstream::traits_type::eof()) {
         return 2;
     }
@@ -35,6 +33,7 @@ Jogo::Jogo() : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullpt
     vitoria = false;
     derrota = false;
     inicializarTelaFinal();
+    inicializarMenuPausa();
     jogador1EstaMorto = false;
     jogador2EstaMorto = false;
     if (!texturaJogador1Morto.loadFromFile("playermorto.png")) {
@@ -133,51 +132,26 @@ void Jogo::executar() {
             if (evento.type == sf::Event::Closed) {
                 pGG->fechar();
             }
+
             if (vitoria || derrota) {
                 processarEventosTelaFinal(evento);
             }
+            else if (jogoPausado) {
+                processarEventosMenuPausa(evento);
+                if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
+                    jogoPausado = false; 
+                }
+            }
+            else {
+                if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
+                    jogoPausado = true; // Pausa o jogo
+                }
+            }
         }
 
-        if (!vitoria && !derrota) {
+        if (!vitoria && !derrota && !jogoPausado) {
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-                std::ofstream arqJogadores("arquivo_jogador.txt", std::ios::trunc);
-                std::ofstream arqAranhas("arquivo_aranha.txt", std::ios::trunc);
-                std::ofstream arqLancadores("arquivo_lancador.txt", std::ios::trunc);
-                std::ofstream arqChefoes("arquivo_chefao.txt", std::ios::trunc);
-                std::ofstream arqPlataformas("arquivo_plataforma.txt", std::ios::trunc);
-                std::ofstream arqAguas("arquivo_agua.txt", std::ios::trunc);
-                std::ofstream arqEspinhos("arquivo_espinho.txt", std::ios::trunc);
-                std::ofstream arqProjeteis("arquivo_projetil.txt", std::ios::trunc);
-
-                Elemento<Entidade>* pElemento = pListaEnts->getPrimeiro();
-                while (pElemento != nullptr) {
-                    Entidade* pEnt = pElemento->getInfo();
-                    if (pEnt) {
-                        if (Jogador* p = dynamic_cast<Jogador*>(pEnt)) { p->salvar(arqJogadores); }
-                        else if (Aranha* p = dynamic_cast<Aranha*>(pEnt)) { p->salvar(arqAranhas); }
-                        else if (Lancador* p = dynamic_cast<Lancador*>(pEnt)) { p->salvar(arqLancadores); }
-                        else if (Chefao* p = dynamic_cast<Chefao*>(pEnt)) { p->salvar(arqChefoes); }
-                        else if (Plataforma* p = dynamic_cast<Plataforma*>(pEnt)) { p->salvar(arqPlataformas); }
-                        else if (Agua* p = dynamic_cast<Agua*>(pEnt)) { p->salvar(arqAguas); }
-                        else if (Espinho* p = dynamic_cast<Espinho*>(pEnt)) { p->salvar(arqEspinhos); }
-                        else if (Projetil* p = dynamic_cast<Projetil*>(pEnt)) { p->salvar(arqProjeteis); }
-                    }
-                    pElemento = pElemento->getProx();
-                }
-
-                arqJogadores.close();
-                arqAranhas.close();
-                arqLancadores.close();
-                arqChefoes.close();
-                arqPlataformas.close();
-                arqAguas.close();
-                arqEspinhos.close();
-                arqProjeteis.close();
-
-                pGG->fechar();
-            }
-
+            // Verifica se os jogadores morreram
             if (jogador1 && jogador1->getVida() <= 0) {
                 corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto1.setTexture(&texturaJogador1Morto);
@@ -199,10 +173,12 @@ void Jogo::executar() {
                 jogador2EstaMorto = true;
             }
 
+            // Verifica condição de derrota
             if (!jogador1 && !jogador2) {
                 derrota = true;
             }
 
+            // Verifica condição de vitória
             vector<Inimigo*> inimigos;
             Elemento<Entidade>* pElementoInim = pListaEnts->getPrimeiro();
             while (pElementoInim) {
@@ -248,6 +224,7 @@ void Jogo::executar() {
 
                 pGC->executar();
 
+                // Remove entidades que precisam ser destruídas
                 std::vector<Entidade*> aRemover;
                 Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
                 while (pEl) {
@@ -268,10 +245,11 @@ void Jogo::executar() {
                     pListaEnts->remover(pEnt);
                     delete pEnt;
                 }
-            } // FIM DA CORREÇÃO DE CHAVEAMENTO
-        }
+            }
+        } 
 
-        // Lógica de Câmera e Desenho (executada mesmo em vitória/derrota para mostrar a tela final)
+
+
         sf::Vector2f mediaCamera(1920.f, 350.f);
         if (jogador1 && jogador2) {
             mediaCamera = (jogador1->getRetangulo().getPosition() + jogador2->getRetangulo().getPosition()) / 2.f;
@@ -288,6 +266,7 @@ void Jogo::executar() {
         pGG->desenhaFundo();
         pGG->desenhaChao();
 
+        // Desenha todas as entidades da lista
         Elemento<Entidade>* pAux = pListaEnts->getPrimeiro();
         while (pAux) {
             if (pAux->getInfo()) {
@@ -295,12 +274,14 @@ void Jogo::executar() {
             }
             pAux = pAux->getProx();
         }
+
         if (jogador1EstaMorto) {
             pGG->desenha(corpoMorto1);
         }
         if (jogador2EstaMorto) {
             pGG->desenha(corpoMorto2);
         }
+
         if (jogador1) jogador1->desenhar();
         if (jogador2) jogador2->desenhar();
 
@@ -310,6 +291,9 @@ void Jogo::executar() {
 
         if (vitoria || derrota) {
             desenharTelaFinal();
+        }
+        else if (jogoPausado) {
+            desenharMenuPausa(); 
         }
 
         pGG->mostrar();
@@ -498,5 +482,136 @@ void Jogo::setFaseAtual(int fase, bool carregarJogo) {
     }
     else if (fase == 2) {
         faseAtual = new SegundaFase(jogador1, jogador2, carregarJogo);
+    }
+}
+void Jogo::inicializarMenuPausa() {
+    if (!fonteBotao.loadFromFile("fonteMenu.ttf")) {
+        std::cerr << "Erro ao carregar fonteMenu.ttf para o menu de pausa." << std::endl;
+        return;
+    }
+
+    fundoPausa.setSize(sf::Vector2f(pGG->getTamanhoJanelax(), pGG->getTamanhoJanelay()));
+    fundoPausa.setFillColor(sf::Color(0, 0, 0, 150));
+
+    textoPausa.setFont(fonteBotao);
+    textoPausa.setString("JOGO PAUSADO");
+    textoPausa.setCharacterSize(50);
+    textoPausa.setFillColor(sf::Color::White);
+
+    botaoSalvarSair.setSize(sf::Vector2f(300.f, 70.f));
+    botaoSalvarSair.setFillColor(sf::Color(150, 0, 0));
+    botaoSalvarSair.setOutlineColor(sf::Color::White);
+    botaoSalvarSair.setOutlineThickness(2.f);
+
+    textoBotaoSalvarSair.setFont(fonteBotao);
+    textoBotaoSalvarSair.setString("Salvar e Sair");
+    textoBotaoSalvarSair.setCharacterSize(25);
+    textoBotaoSalvarSair.setFillColor(sf::Color::White);
+
+    botaoSair.setSize(sf::Vector2f(300.f, 70.f));
+    botaoSair.setFillColor(sf::Color(150, 0, 0));
+    textoBotaoSair.setCharacterSize(30);
+    textoBotaoSair.setString("Sair");
+}
+void Jogo::desenharMenuPausa() {
+    sf::View view = pGG->getWindow().getView();
+    sf::Vector2f centroView = view.getCenter();
+    sf::Vector2f tamanhoView = view.getSize();
+
+    fundoPausa.setSize(tamanhoView);
+    fundoPausa.setOrigin(tamanhoView / 2.f);
+    fundoPausa.setPosition(centroView);
+
+    sf::FloatRect textoPausaBounds = textoPausa.getLocalBounds();
+    textoPausa.setOrigin(textoPausaBounds.left + textoPausaBounds.width / 2.0f, textoPausaBounds.top + textoPausaBounds.height / 2.0f);
+    textoPausa.setPosition(centroView.x, centroView.y - 150);
+
+    sf::FloatRect botaoSalvarSairBounds = botaoSalvarSair.getLocalBounds();
+    botaoSalvarSair.setOrigin(botaoSalvarSairBounds.width / 2.0f, botaoSalvarSairBounds.height / 2.0f);
+    botaoSalvarSair.setPosition(centroView.x, centroView.y);
+
+    sf::FloatRect textoBotaoSalvarSairBounds = textoBotaoSalvarSair.getLocalBounds();
+    textoBotaoSalvarSair.setOrigin(textoBotaoSalvarSairBounds.left + textoBotaoSalvarSairBounds.width / 2.0f, textoBotaoSalvarSairBounds.top + textoBotaoSalvarSairBounds.height / 2.0f);
+    textoBotaoSalvarSair.setPosition(botaoSalvarSair.getPosition());
+
+    sf::FloatRect botaoSairBounds = botaoSair.getLocalBounds();
+    botaoSair.setOrigin(botaoSairBounds.width / 2.0f, botaoSairBounds.height / 2.0f);
+    botaoSair.setPosition(centroView.x, centroView.y + 100);
+
+    sf::FloatRect textoBotaoSairBounds = textoBotaoSair.getLocalBounds();
+    textoBotaoSair.setOrigin(textoBotaoSairBounds.left + textoBotaoSairBounds.width / 2.0f, textoBotaoSairBounds.top + textoBotaoSairBounds.height / 2.0f);
+    textoBotaoSair.setPosition(botaoSair.getPosition());
+
+    pGG->getWindow().setView(pGG->getWindow().getDefaultView()); 
+    pGG->getWindow().draw(fundoPausa);
+    pGG->getWindow().draw(textoPausa);
+    pGG->desenha(botaoSalvarSair);
+    pGG->getWindow().draw(textoBotaoSalvarSair);
+    pGG->desenha(botaoSair);
+    pGG->getWindow().draw(textoBotaoSair);
+    pGG->getWindow().setView(view); 
+}
+void Jogo::processarEventosMenuPausa(sf::Event& evento) {
+    if (evento.type == sf::Event::MouseButtonReleased) {
+        if (evento.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2f mousePos = pGG->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseButton.x, evento.mouseButton.y), pGG->getWindow().getView());
+
+            if (botaoSair.getGlobalBounds().contains(mousePos)) {
+                pGG->fechar();
+            }
+            if (botaoSalvarSair.getGlobalBounds().contains(mousePos)) {
+                // Lógica de salvar o jogo (copiada do seu código original)
+                std::ofstream arqJogadores("arquivo_jogador.txt", std::ios::trunc);
+                std::ofstream arqAranhas("arquivo_aranha.txt", std::ios::trunc);
+                std::ofstream arqLancadores("arquivo_lancador.txt", std::ios::trunc);
+                std::ofstream arqChefoes("arquivo_chefao.txt", std::ios::trunc);
+                std::ofstream arqPlataformas("arquivo_plataforma.txt", std::ios::trunc);
+                std::ofstream arqAguas("arquivo_agua.txt", std::ios::trunc);
+                std::ofstream arqEspinhos("arquivo_espinho.txt", std::ios::trunc);
+                std::ofstream arqProjeteis("arquivo_projetil.txt", std::ios::trunc);
+
+                Elemento<Entidade>* pElemento = faseAtual->getListaEntidades()->getPrimeiro();
+                while (pElemento != nullptr) {
+                    Entidade* pEnt = pElemento->getInfo();
+                    if (pEnt) {
+                        if (Jogador* p = dynamic_cast<Jogador*>(pEnt)) { p->salvar(arqJogadores); }
+                        else if (Aranha* p = dynamic_cast<Aranha*>(pEnt)) { p->salvar(arqAranhas); }
+                        else if (Lancador* p = dynamic_cast<Lancador*>(pEnt)) { p->salvar(arqLancadores); }
+                        else if (Chefao* p = dynamic_cast<Chefao*>(pEnt)) { p->salvar(arqChefoes); }
+                        else if (Plataforma* p = dynamic_cast<Plataforma*>(pEnt)) { p->salvar(arqPlataformas); }
+                        else if (Agua* p = dynamic_cast<Agua*>(pEnt)) { p->salvar(arqAguas); }
+                        else if (Espinho* p = dynamic_cast<Espinho*>(pEnt)) { p->salvar(arqEspinhos); }
+                        else if (Projetil* p = dynamic_cast<Projetil*>(pEnt)) { p->salvar(arqProjeteis); }
+                    }
+                    pElemento = pElemento->getProx();
+                }
+
+                arqJogadores.close();
+                arqAranhas.close();
+                arqLancadores.close();
+                arqChefoes.close();
+                arqPlataformas.close();
+                arqAguas.close();
+                arqEspinhos.close();
+                arqProjeteis.close();
+
+                pGG->fechar();
+            }
+        }
+    }
+    if (evento.type == sf::Event::MouseMoved) {
+        sf::Vector2f mousePos = pGG->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseMove.x, evento.mouseMove.y), pGG->getWindow().getView());
+        if (botaoSair.getGlobalBounds().contains(mousePos)) {
+            botaoSair.setFillColor(sf::Color(200, 0, 0));
+        }
+        else {
+            botaoSair.setFillColor(sf::Color(150, 0, 0));
+        }
+        if (botaoSalvarSair.getGlobalBounds().contains(mousePos)) {
+            botaoSalvarSair.setFillColor(sf::Color(200, 0, 0));
+        }
+        else {
+            botaoSalvarSair.setFillColor(sf::Color(150, 0, 0));
+        }
     }
 }

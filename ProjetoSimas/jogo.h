@@ -25,6 +25,11 @@ private:
     Texture texturaJogador2Morto;
     bool jogador1EstaMorto;
     bool jogador2EstaMorto;
+    bool jogoPausado;
+    RectangleShape botaoSalvarSair;
+    Text textoBotaoSalvarSair;
+    RectangleShape fundoPausa; 
+    Text textoPausa;
 
 public:
     Jogo();
@@ -35,4 +40,7 @@ public:
     void processarEventosTelaFinal(sf::Event& evento);
     void desenharTelaFinal();
     void rodarSave();
+    void inicializarMenuPausa();
+    void processarEventosMenuPausa(sf::Event& evento);
+    void desenharMenuPausa();
 };
