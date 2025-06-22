@@ -7,8 +7,9 @@ Espinho::~Espinho() {
 void Espinho::executar() {
 	setId(10);
 	retangulo.setSize(sf::Vector2f(60.f, 60.f));
-	if (!textura.loadFromFile("cacto.png")) {
-		std::cout << "Erro ao carregar espinho.png" << std::endl;
+	if (!textura.loadFromFile("cacto.png")) { // Verifique se o nome do arquivo está correto
+		std::cerr << "Erro fatal: Nao foi possivel carregar a textura cacto.png" << std::endl;
+		return;
 	}
 	retangulo.setTexture(&textura);
 }
@@ -89,21 +90,8 @@ void Espinho::atualizarFisica(float dt) {
 		}
 	}
 }
-void Espinho::salvar() {
-	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-		p_sstream->str("");
-		p_sstream->clear();
-	}
-	else {
-		return;
-	}
-
-	Obstaculo::salvarDataBuffer();
-	*buffer << elasticidade << std::endl;
-
-	std::ofstream arquivoEspinhos("arquivo_espinho.txt", std::ios::app);
-	if (arquivoEspinhos.is_open()) {
-		arquivoEspinhos << buffer;
-		arquivoEspinhos.close();
-	}
+void Espinho::salvar(std::ostream& os) {
+	os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+		<< danoso << " " << gravidadeAtiva << " " << elasticidade << " "
+		<< getPosicao().x << " " << getPosicao().y << std::endl;
 }

@@ -39,14 +39,11 @@ void Jogador::executar() {
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
     retangulo.setOrigin(0.f, 0.f); 
     retangulo.setPosition(x, y);
-	if (id_jogador == 0) {
-        if (!textura.loadFromFile("player.png")) {
-            std::cout << "Erro ao carregar jogador1.png" << std::endl;
-        }
-	}
-	else {
-		textura.loadFromFile("player2.png");
-	}
+    std::string caminhoTextura = (id_jogador == 0) ? "player.png" : "player2.png";
+    if (!textura.loadFromFile(caminhoTextura)) {
+        std::cerr << "Erro fatal: Nao foi possivel carregar a textura " << caminhoTextura << std::endl;
+        return;
+    }
     retangulo.setTexture(&textura);
     velocidadeBase = getVelocidade();
     puloBase = getPulo();
@@ -182,23 +179,11 @@ float Jogador::getVelocidadeVertical() const {
 float Jogador::getPuloBase() const {
     return puloBase;
 }
-void Jogador::salvar() {
-    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-        p_sstream->str("");
-        p_sstream->clear();
-    }
-    else {
-        return;
-    }
-
-    Personagem::salvarDataBuffer();
-    *buffer << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " " << velocidadeBase << " " << puloBase << std::endl;
-
-    std::ofstream arquivoJogador("arquivo_jogador.txt");
-    if (arquivoJogador.is_open()) {
-        arquivoJogador << buffer;
-        arquivoJogador.close();
-    }
+void Jogador::salvar(std::ostream& os) {
+    os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+        << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
+        << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " "
+        << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
 
 

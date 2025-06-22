@@ -8,17 +8,19 @@ private:
     Jogo* pJogo;
     Gerenciadores::GerenciadorGrafico* pGG_Menu;
 
-    sf::Font font;
-    sf::Text textoNovoFase1;
-    sf::Text textoNovoFase2;
-    sf::Text textoSair;
-    sf::RectangleShape botaoNovoFase1;
-    sf::RectangleShape botaoNovoFase2;
-    sf::Text textoRanking;
-    sf::RectangleShape botaoRanking;
-    sf::RectangleShape botaoSair;
-    sf::Texture texturaFundoMenu; 
-    sf::Sprite spriteFundoMenu;
+    Font font;
+    Text textoNovoFase1;
+    Text textoNovoFase2;
+    Text textoSair;
+    RectangleShape botaoNovoFase1;
+    RectangleShape botaoNovoFase2;
+    Text textoRanking;
+    RectangleShape botaoRanking;
+    RectangleShape botaoSair;
+    Texture texturaFundoMenu; 
+    Sprite spriteFundoMenu;
+    Text textoCarregar; 
+    RectangleShape botaoCarregar;
 
 public:
     Menu(Gerenciadores::GerenciadorGrafico* pGG);

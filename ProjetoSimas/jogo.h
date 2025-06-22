@@ -30,7 +30,7 @@ public:
     Jogo();
     ~Jogo();
     void executar();
-    void setFaseAtual(int fase);
+	void setFaseAtual(int fase, bool carregarJogo);
     void inicializarTelaFinal();
     void processarEventosTelaFinal(sf::Event& evento);
     void desenharTelaFinal();

@@ -73,23 +73,23 @@ void Projetil::desenhar(){
     if (pGG)
         pGG->desenha(retangulo);
 }
-void Projetil::salvar() {
-    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-        p_sstream->str("");
-        p_sstream->clear();
-    }
-    else {
-        return;
-    }
+void Projetil::salvar(std::ostream& os) {
+    os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+        << velocidade.x << " " << velocidade.y << " " << ativo << " " << dano << " "
+        << getPosicao().x << " " << getPosicao().y << std::endl;
+}
+void Projetil::restaurar(sf::Vector2f pos, sf::Vector2f vel, bool isAtivo, float danoProjetil, bool anularGravidade) {
+    setPosicao(pos.x, pos.y);
+    velocidade = vel;
+    ativo = isAtivo;
+    dano = danoProjetil;
+    forcaMiticaAtiva = anularGravidade; 
 
-    Entidade::salvarDataBuffer();
-    *buffer << velocidade.x << " " << velocidade.y << " " << ativo << " " << dano << " " << getPosicao().x << " " << getPosicao().y << std::endl;
-
-    std::ofstream arquivoProjetil("arquivo_projetil.txt", std::ios::app);
-    if (arquivoProjetil.is_open()) {
-        arquivoProjetil << buffer;
-        arquivoProjetil.close();
+    if (textura.getSize().x == 0) {
+        if (!textura.loadFromFile("pedraazul.png")) {
+            std::cout << "Erro ao carregar pedraazul.png" << std::endl;
+        }
+        retangulo.setTexture(&textura);
     }
 }
-
 

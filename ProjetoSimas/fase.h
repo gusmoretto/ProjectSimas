@@ -18,11 +18,11 @@ protected:
 
     virtual void criarInimigos() = 0;
     virtual void criarObstaculos() = 0;
-
     void criarCenario(int fase);
 
+
 public:
-    Fase(Jogador* j1, Jogador* j2);
+    Fase(Jogador* j1, Jogador* j2, bool carregarJogo = false);
     virtual ~Fase();
     virtual void executar();
     Gerenciadores::GerenciadorColisoes* getGerenciadorColisoes() { return &GC; }

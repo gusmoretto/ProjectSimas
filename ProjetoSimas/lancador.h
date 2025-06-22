@@ -16,7 +16,7 @@ public:
 	Lancador();
 	~Lancador();
 	void executar();
-	void salvar();
+	void salvar(std::ostream& os);
 	void danificar(Jogador* p);
 	void mover();
 	int getVida() const;

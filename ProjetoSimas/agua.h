@@ -11,7 +11,7 @@ public:
 	Agua();
 	~Agua();
 	void executar();
-	void salvar();
+	void salvar(std::ostream& os);
 	void obstacular(Jogador* p, int tipoColisao = 0);
 	float getLargura() const;
 	void setLargura(float l);

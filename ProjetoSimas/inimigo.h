@@ -9,7 +9,7 @@ public:
 	Inimigo();
 	~Inimigo();
 	void salvarDataBuffer();
-	virtual void salvar() = 0;
+	virtual void salvar(std::ostream& os) = 0;
 	virtual void executar() = 0;
 	virtual void danificar(Jogador* p) = 0;
 	virtual void mover() = 0;

@@ -4,10 +4,13 @@
 #include <fstream>
 #include <iostream>
 
-PrimeiraFase::PrimeiraFase(Jogador* j1, Jogador* j2) : Fase(j1, j2) , maxLancadores(4), maxAguas(12){
+PrimeiraFase::PrimeiraFase(Jogador* j1, Jogador* j2, bool carregarJogo) : Fase(j1, j2, carregarJogo) , maxLancadores(4), maxAguas(12){
     fase = 1;
     criarCenario(fase);
     Fase::executar();
+    if (!carregarJogo) {
+        criarCenario(fase);
+    }
 }
 
 PrimeiraFase::~PrimeiraFase() {}

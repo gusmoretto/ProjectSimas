@@ -21,7 +21,8 @@ void Chefao::executar() {
     setId(5);
     retangulo.setSize(sf::Vector2f(128.f, 128.f));
     if (!textura.loadFromFile("chefao.png")) {
-        std::cout << "Erro ao carregar Chefao.png" << std::endl;
+        std::cerr << "Erro fatal: Nao foi possivel carregar a textura chefao.png" << std::endl;
+        return;
     }
     retangulo.setTexture(&textura);
 
@@ -96,22 +97,11 @@ void Chefao::setNoChao(bool NC) {
 bool Chefao::getNochao() {
 	return noChao;
 }
-void Chefao::salvar() {
-    std::ostringstream* p_sstream = dynamic_cast<std::ostringstream*>(buffer);
-    if (p_sstream) {
-        p_sstream->str("");
-        p_sstream->clear();
-    }
-    else {
-        return;
-    }
-    Inimigo::salvarDataBuffer(); 
-    *buffer << forca << " " << posicaoInicialX << " " << limiteEsquerda << " " << limiteDireita << " " << getPosicao().x << " " << getPosicao().y << endl;
-    std::ofstream arquivoChefao("arquivo_chefao.txt", std::ios::app);
-    if (arquivoChefao.is_open()) {
-        arquivoChefao << p_sstream->str();
-        arquivoChefao.close();
-    }
+void Chefao::salvar(std::ostream& os) {
+    os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+        << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
+        << nivel_maldade << " " << forca << " " << posicaoInicialX << " " << limiteEsquerda << " "
+        << limiteDireita << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
 void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
     if (!jogador) return;

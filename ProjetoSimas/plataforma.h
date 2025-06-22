@@ -11,7 +11,7 @@ public:
 	Plataforma();
 	~Plataforma();
 	void executar();
-	void salvar();
+	void salvar(std::ostream& os);
 	void obstacular(Jogador* p, int tipoColisao = 0);
 	void desenhar();
 	void setId(int novoId);

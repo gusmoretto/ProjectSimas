@@ -26,9 +26,10 @@ void Aranha::executar() {
     setId(3);
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
     if (!textura.loadFromFile("aranha.png")) {
-        std::cout << "Erro ao carregar jogador1.png" << std::endl;
+        std::cerr << "Erro fatal: Nao foi possivel carregar a textura aranha.png" << std::endl;
+ 
+        return;
     }
-    retangulo.setTexture(&textura);  
 }
 
 void Aranha::mover() {
@@ -105,22 +106,10 @@ void Aranha::setNoChao(bool NC) {
 bool Aranha::getNochao() {
     return noChao;
 }
-void Aranha::salvar() {
-    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-        p_sstream->str("");
-        p_sstream->clear();
-    }
-    else {
-        return; 
-    }
-
-    Inimigo::salvarDataBuffer();
-    *buffer << direcaoX << " " << getPosicao().x << " " << getPosicao().y << endl;
-
-    std::ofstream arquivoAranha("arquivo_aranha.txt", std::ios::app);
-    if (arquivoAranha.is_open()) {
-        arquivoAranha << buffer;
-        arquivoAranha.close();
-    }
+void Aranha::salvar(std::ostream& os) {
+    // Escreve todos os dados da aranha
+    os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+        << num_vidas << " " << getVida() << " " << velocidade << " " << noChao << " " << ataque << " "
+        << nivel_maldade << " " << direcaoX << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
 

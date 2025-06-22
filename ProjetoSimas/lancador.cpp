@@ -23,7 +23,8 @@ void Lancador::executar() {
 	setId(4);
 	retangulo.setSize(sf::Vector2f(64.f, 64.f));
 	if (!textura.loadFromFile("lancador.png")) {
-		std::cout << "Erro ao carregar lancador.png" << std::endl;
+		std::cerr << "Erro fatal: Nao foi possivel carregar a textura lancador.png" << std::endl;
+		return;
 	}
 	retangulo.setTexture(&textura);
 }
@@ -138,21 +139,10 @@ void Lancador::setNoChao(bool NC) {
 bool Lancador::getNochao() {
 	return noChao;
 }
-void Lancador::salvar() {
-	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-		p_sstream->str("");
-		p_sstream->clear();
-	}
-	else {
-		return;
-	}
-
-	Inimigo::salvarDataBuffer();
-	*buffer << tamanho << " " << tempoAtaque << " " << intervaloAtaque << " " << getPosicao().x << " " << getPosicao().y << endl;
-
-	std::ofstream arquivoLancador("arquivo_lancador.txt", std::ios::app);
-	if (arquivoLancador.is_open()) {
-		arquivoLancador << buffer;
-		arquivoLancador.close();
-	}
+void Lancador::salvar(std::ostream& os) {
+	// Escreve todos os dados do lançador
+	os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+		<< num_vidas << " " << getVida() << " " << velocidade << " " << noChao << " " << ataque << " "
+		<< nivel_maldade << " " << tamanho << " " << tempoAtaque << " " << intervaloAtaque << " "
+		<< getPosicao().x << " " << getPosicao().y << std::endl;
 }

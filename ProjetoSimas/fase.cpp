@@ -6,11 +6,23 @@
 #include <cstdlib>
 #include <ctime>
 
-Fase::Fase(Jogador* j1, Jogador* j2) : jogador1(j1), jogador2(j2), fase(0) {
+Fase::Fase(Jogador* j1, Jogador* j2, bool carregarJogo) : jogador1(j1), jogador2(j2), fase(0) {
     srand(time(NULL));
     GC.setJogadores(jogador1, jogador2);
+    if (jogador1) {
+        lista_ents.incluir(jogador1);
+        GC.inclueEntidade(jogador1);
+    }
+    if (jogador2) {
+        lista_ents.incluir(jogador2);
+        GC.inclueEntidade(jogador2);
+    }
     if (jogador1) GC.inclueEntidade(jogador1);
     if (jogador2) GC.inclueEntidade(jogador2);
+    if (!carregarJogo) {
+        executar();
+    }
+
 }
 
 Fase::~Fase() {
@@ -27,16 +39,16 @@ void Fase::criarCenario(int fase) {
         pGG->iniciaChao("chao2.png", 3840.f, 300.f);
     }
     else {
-        std::cerr << "Fase invalida!" << std::endl; //
+        std::cerr << "Fase invalida!" << std::endl; 
     }
 }
 
 void Fase::criarPlataformas(int fase) {
     if (fase == 1) {
-        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; //
+        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; 
         std::ifstream arquivo("coordPlataformas.txt");
         if (!arquivo.is_open()) {
-            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas.txt" << std::endl; //
+            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas.txt" << std::endl; 
             return;
         }
 
@@ -44,24 +56,24 @@ void Fase::criarPlataformas(int fase) {
         for (int i = 0; i < numPlataformasParaCriar; ++i) {
             if (arquivo >> x >> y) {
                 Plataforma* p = new Plataforma();
-                p->setPosicao(x, y); //
-                p->executar(); //
+                p->setPosicao(x, y); 
+                p->executar(); 
 				p->setarTexturaFase(fase);
-                GC.inclueEntidade(p); //
+                GC.inclueEntidade(p); 
                 lista_ents.incluir(dynamic_cast<Entidade*>(p));
          }
             else {
-                break; //
+                break; 
             }
         }
-        arquivo.close(); //
+        arquivo.close(); 
     }
     else if(fase == 2) {
-        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; //
+        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; 
 		if (numPlataformasParaCriar == 40) numPlataformasParaCriar = 39; 
         std::ifstream arquivo("coordPlataformas2.txt");
         if (!arquivo.is_open()) {
-            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas2.txt" << std::endl; //
+            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas2.txt" << std::endl; 
             return;
         }
 
@@ -69,17 +81,17 @@ void Fase::criarPlataformas(int fase) {
         for (int i = 0; i < numPlataformasParaCriar; ++i) {
             if (arquivo >> x >> y) {
                 Plataforma* p = new Plataforma();
-                p->setPosicao(x, y); //
-                p->executar(); //
+                p->setPosicao(x, y); 
+                p->executar(); 
 				p->setarTexturaFase(fase);
-                GC.inclueEntidade(p); //
+                GC.inclueEntidade(p); 
                 lista_ents.incluir(dynamic_cast<Entidade*>(p));
             }
             else {
-                break; //
+                break; 
             }
         }
-        arquivo.close(); //
+        arquivo.close(); 
     }
 }
 

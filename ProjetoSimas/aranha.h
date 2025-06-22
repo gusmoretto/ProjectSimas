@@ -9,7 +9,7 @@ private:
 public:
 	Aranha();
 	~Aranha();
-	void salvar();
+	void salvar(std::ostream& os);
 	void executar();
 	void danificar(Jogador* p) ;
 	void mover();

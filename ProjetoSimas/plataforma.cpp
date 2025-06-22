@@ -11,17 +11,12 @@ void Plataforma::executar() {
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
 }
 void Plataforma::setarTexturaFase(int fase) {
-	if (fase == 1) {
-		if (!textura.loadFromFile("plataforma2.png")) {
-			std::cout << "Erro ao carregar plataforma1.png" << std::endl;
-		}
-	}
-	else if (fase == 2) {
-		if (!textura.loadFromFile("plataforma.png")) {
-			std::cout << "Erro ao carregar plataforma2.png" << std::endl;
-		}
-	}
-	retangulo.setTexture(&textura);
+    std::string caminhoTextura = (fase == 1) ? "plataforma2.png" : "plataforma.png";
+    if (!textura.loadFromFile(caminhoTextura)) {
+        std::cerr << "Erro fatal: Nao foi possivel carregar a textura " << caminhoTextura << std::endl;
+        return;
+    }
+    retangulo.setTexture(&textura);
 }
 
 void Plataforma::obstacular(Jogador* p, int tipoColisao) {
@@ -114,22 +109,9 @@ void Plataforma::atualizarFisica(float dt) {
         retangulo.setPosition(pos);
     }
 }
-void Plataforma::salvar() {
-    if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-        p_sstream->str("");
-        p_sstream->clear();
-    }
-    else {
-        return;
-    }
-
-    Obstaculo::salvarDataBuffer();
-    *buffer << altura << " " << velocidadeVertical << std::endl;
-
-    std::ofstream arquivoPlataforma("arquivo_plataforma.txt", std::ios::app);
-    if (arquivoPlataforma.is_open()) {
-        arquivoPlataforma << buffer;
-        arquivoPlataforma.close();
-    }
+void Plataforma::salvar(std::ostream& os) {
+    os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+        << danoso << " " << gravidadeAtiva << " " << altura << " " << velocidadeVertical << " "
+        << getPosicao().x << " " << getPosicao().y << std::endl;
 }
 

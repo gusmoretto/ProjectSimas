@@ -14,7 +14,6 @@ Menu::Menu(Gerenciadores::GerenciadorGrafico* pGG) : pJogo(nullptr), pGG_Menu(pG
 
 Menu::~Menu() {
     if (pJogo) {
-        delete pJogo;
         pJogo = nullptr;
     }
 }
@@ -29,30 +28,35 @@ void Menu::inicializarTextos() {
     textoNovoFase1.setCharacterSize(25);
     textoNovoFase1.setFillColor(sf::Color::Black);
     textoNovoFase1.setOrigin(textoNovoFase1.getLocalBounds().width / 2, textoNovoFase1.getLocalBounds().height / 2);
-    textoNovoFase1.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 - 100);
+    textoNovoFase1.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 - 150);
 
     textoNovoFase2.setFont(font);
     textoNovoFase2.setString("Novo Fase 2");
     textoNovoFase2.setCharacterSize(25);
     textoNovoFase2.setFillColor(sf::Color::Black);
     textoNovoFase2.setOrigin(textoNovoFase2.getLocalBounds().width / 2, textoNovoFase2.getLocalBounds().height / 2);
-    textoNovoFase2.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2);
+    textoNovoFase2.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 - 50);
+
+    textoCarregar.setFont(font);
+    textoCarregar.setString("Carregar Jogo");
+    textoCarregar.setCharacterSize(25);
+    textoCarregar.setFillColor(sf::Color::Black);
+    textoCarregar.setOrigin(textoCarregar.getLocalBounds().width / 2, textoCarregar.getLocalBounds().height / 2);
+    textoCarregar.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 50);
 
     textoRanking.setFont(font);
     textoRanking.setString("Ranking");
     textoRanking.setCharacterSize(25);
     textoRanking.setFillColor(sf::Color::Black);
     textoRanking.setOrigin(textoRanking.getLocalBounds().width / 2, textoRanking.getLocalBounds().height / 2);
-    // Agora o ranking fica logo abaixo do Novo Fase 2
-    textoRanking.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 100);
+    textoRanking.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 150);
 
     textoSair.setFont(font);
     textoSair.setString("Sair do Jogo");
     textoSair.setCharacterSize(30);
     textoSair.setFillColor(sf::Color::Black);
     textoSair.setOrigin(textoSair.getLocalBounds().width / 2, textoSair.getLocalBounds().height / 2);
-    // Agora o sair fica abaixo do ranking
-    textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 200);
+    textoSair.setPosition(pGG_Menu->getTamanhoJanelax() / 2, pGG_Menu->getTamanhoJanelay() / 2 + 250);
 }
 
 void Menu::inicializarBotoes() {
@@ -69,6 +73,13 @@ void Menu::inicializarBotoes() {
     botaoNovoFase2.setOutlineThickness(2.f);
     botaoNovoFase2.setOrigin(botaoNovoFase2.getLocalBounds().width / 2, botaoNovoFase2.getLocalBounds().height / 2);
     botaoNovoFase2.setPosition(textoNovoFase2.getPosition());
+
+    botaoCarregar.setSize(sf::Vector2f(300.f, 70.f));
+    botaoCarregar.setFillColor(sf::Color::White);
+    botaoCarregar.setOutlineColor(sf::Color::Black);
+    botaoCarregar.setOutlineThickness(2.f);
+    botaoCarregar.setOrigin(botaoCarregar.getLocalBounds().width / 2, botaoCarregar.getLocalBounds().height / 2);
+    botaoCarregar.setPosition(textoCarregar.getPosition());
 
     botaoSair.setSize(sf::Vector2f(300.f, 70.f)); 
     botaoSair.setFillColor(sf::Color::White); 
@@ -97,17 +108,19 @@ void Menu::inicializarFundoMenu(const std::string& caminhoTextura) {
 }
 
 void Menu::desenharMenu() {
-    pGG_Menu->clear(); 
+    pGG_Menu->clear();
     pGG_Menu->getWindow().draw(spriteFundoMenu);
-    pGG_Menu->desenha(botaoNovoFase1); 
+    pGG_Menu->desenha(botaoNovoFase1);
     pGG_Menu->desenha(botaoNovoFase2);
-    pGG_Menu->desenha(botaoSair); 
+    pGG_Menu->desenha(botaoCarregar); 
+    pGG_Menu->desenha(botaoSair);
     pGG_Menu->desenha(botaoRanking);
-    pGG_Menu->getWindow().draw(textoNovoFase1); 
+    pGG_Menu->getWindow().draw(textoNovoFase1);
     pGG_Menu->getWindow().draw(textoNovoFase2);
-    pGG_Menu->getWindow().draw(textoSair); 
+    pGG_Menu->getWindow().draw(textoCarregar); 
+    pGG_Menu->getWindow().draw(textoSair);
     pGG_Menu->getWindow().draw(textoRanking);
-    pGG_Menu->mostrar(); 
+    pGG_Menu->mostrar();
 }
 
 int Menu::processarEventos() {
@@ -134,6 +147,9 @@ int Menu::processarEventos() {
                 }
                 if (botaoRanking.getGlobalBounds().contains(mousePos)) {
                     return 3; 
+                }
+                if (botaoCarregar.getGlobalBounds().contains(mousePos)) {
+                    return 4; 
                 }
             }
         }
@@ -162,6 +178,12 @@ int Menu::processarEventos() {
             } else {
                 botaoRanking.setFillColor(sf::Color::White);
             }
+            if (botaoCarregar.getGlobalBounds().contains(mousePos)) {
+                botaoCarregar.setFillColor(sf::Color(100, 100, 100, 150));
+            }
+            else {
+                botaoCarregar.setFillColor(sf::Color::White);
+            }
         }
     }
     return -1; 
@@ -174,19 +196,18 @@ void Menu::executar() {
         escolha = processarEventos(); 
     }
 
-    if (escolha == 1) { 
-        pGG_Menu->fechar();
-        pJogo = new Jogo(); 
-        pJogo->setFaseAtual(escolha);
-        pJogo->executar(); 
-    }
-    else if (escolha == 2) {
+    if (escolha == 1 || escolha == 2) { 
         pGG_Menu->fechar();
         pJogo = new Jogo();
-        pJogo->setFaseAtual(escolha);
-		pJogo->executar();
+        pJogo->setFaseAtual(escolha, false);
+        pJogo->executar();
     }
-	else if (escolha == 3) {
+    else if (escolha == 3) { 
+    }
+    else if (escolha == 4) { 
+        pGG_Menu->fechar();
+        pJogo = new Jogo();
+        pJogo->rodarSave(); 
     }
 }
 

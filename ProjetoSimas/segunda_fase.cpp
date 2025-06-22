@@ -5,10 +5,13 @@
 #include <fstream>
 #include <iostream>
 
-SegundaFase::SegundaFase(Jogador* j1, Jogador* j2) : Fase(j1, j2), maxEspinhos(4), maxChefoes(3) {
+SegundaFase::SegundaFase(Jogador* j1, Jogador* j2, bool carregarJogo) : Fase(j1, j2, carregarJogo), maxEspinhos(4), maxChefoes(3) {
 	fase = 2;
 	criarCenario(fase);
 	Fase::executar();
+	if (!carregarJogo) {
+		criarCenario(fase);
+	}
 }
 SegundaFase::~SegundaFase() {}
 
@@ -55,7 +58,7 @@ void SegundaFase::criarObstaculos() {
 			break;
 		}
 	}
-	arqEspinhos.close();\
+	arqEspinhos.close();
 }
 void SegundaFase::setId(int novoId) {
 	id = novoId;

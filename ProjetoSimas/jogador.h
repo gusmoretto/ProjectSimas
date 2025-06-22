@@ -15,7 +15,7 @@ private:
 public:
 	Jogador();
 	 ~Jogador();
-	 void salvar();
+	void salvar(std::ostream& os);
 	int getVida() const;
 	int getAtaque() const;
 	void setVida(int vida);

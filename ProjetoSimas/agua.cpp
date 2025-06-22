@@ -64,21 +64,8 @@ void Agua::atualizarFisica(float dt) {
 		retangulo.setPosition(pos);
 	}
 }
-void Agua::salvar() {
-	if (auto* p_sstream = dynamic_cast<std::ostringstream*>(buffer)) {
-		p_sstream->str("");
-		p_sstream->clear();
-	}
-	else {
-		return; 
-	}
-
-	Obstaculo::salvarDataBuffer();
-	*buffer << largura << " " << lentidao << std::endl;
-
-	ofstream arquivoAgua("arquivo_agua.txt", std::ios::app);
-	if (arquivoAgua.is_open()) {
-		arquivoAgua << buffer;
-		arquivoAgua.close();
-	}
+void Agua::salvar(std::ostream& os) {
+	os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
+		<< danoso << " " << gravidadeAtiva << " " << largura << " " << lentidao << " "
+		<< getPosicao().x << " " << getPosicao().y << std::endl;
 }
