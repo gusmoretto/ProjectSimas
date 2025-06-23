@@ -11,14 +11,11 @@ private:
 	int id_jogador;
 	static int cont_jogador;
 	float velocidadeHorizontal;
-	string nome;
 
 public:
 	Jogador();
 	~Jogador();
 	void salvar(std::ostream& os);
-	void setNome(const std::string& novoNome); 
-	string getNome() const;
 	int getVida() const;
 	int getAtaque() const;
 	void setVida(int vida);

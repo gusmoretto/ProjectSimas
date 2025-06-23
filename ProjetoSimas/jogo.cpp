@@ -182,7 +182,7 @@ void Jogo::executar() {
             }
             else {
                 if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-                    jogoPausado = true;
+                    jogoPausado = true; 
                 }
             }
         }
@@ -211,7 +211,7 @@ void Jogo::executar() {
             }
 
             if (!jogador1 && !jogador2) {
-                if (!derrota) {
+                if (!derrota) { 
                     derrota = true;
                     atualizarRanking(jogador1->getNome(), jogador1->getPontos());
                     atualizarRanking(jogador2->getNome(), jogador2->getPontos());
@@ -362,37 +362,21 @@ void Jogo::rodarSave() {
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
             iss1 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            if (jogador1 && id_j == 0) {
-                jogador1->setVida(vida);
-                jogador1->setPosicao(x, y);
-                pListaEnts->incluir(jogador1);
-                pGC->inclueEntidade(jogador1);
-            }
-            else if (jogador2 && id_j == 1) {
-                jogador2->setVida(vida);
-                jogador2->setPosicao(x, y);
-                pListaEnts->incluir(jogador2);
-                pGC->inclueEntidade(jogador2);
-            }
+            jogador1->setVida(vida);
+            jogador1->setPosicao(x, y);
+            pListaEnts->incluir(jogador1);
+            pGC->inclueEntidade(jogador1);
         }
-        if (getline(arquivo, linha2)) {
-            std::istringstream iss2(linha2);
+        if (getline(arquivo, linha) && jogador2) {
+            std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
-            iss2 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            if (jogador1 && id_j == 0) {
-                jogador1->setVida(vida);
-                jogador1->setPosicao(x, y);
-                pListaEnts->incluir(jogador1);
-                pGC->inclueEntidade(jogador1);
-            }
-            else if (jogador2 && id_j == 1) {
-                jogador2->setVida(vida);
-                jogador2->setPosicao(x, y);
-                pListaEnts->incluir(jogador2);
-                pGC->inclueEntidade(jogador2);
-            }
+            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            jogador2->setVida(vida);
+            jogador2->setPosicao(x, y);
+            pListaEnts->incluir(jogador2);
+            pGC->inclueEntidade(jogador2);
         }
         arquivo.close();
     }
@@ -531,6 +515,7 @@ void Jogo::rodarSave() {
 
     executar();
 }
+
 void Jogo::setFaseAtual(int fase, bool carregarJogo) {
     if (faseAtual) {
         delete faseAtual;
