@@ -312,7 +312,6 @@ void Menu::executar() {
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
-        // Passe nomeJogador1 e nomeJogador2 para o Jogo, se quiser
         pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }
