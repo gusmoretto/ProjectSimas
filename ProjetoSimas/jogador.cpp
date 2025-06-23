@@ -66,7 +66,7 @@ void Jogador::mover() {
             }
         }
     }
-    else if (id_jogador == 0) { 
+    else if (id_jogador == 0) { // L�gica para o Jogador 1 (teclas A e D)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
