@@ -319,8 +319,14 @@ void Menu::executar() {
     else if (escolha == 3) { 
     }
     else if (escolha == 4) { 
-        pGG_Menu->fechar();
-        pJogo = new Jogo();
+        int numJogadoresSalvos = 1; 
+        std::ifstream arqJogadores("arquivo_jogador.txt");
+        if (arqJogadores.is_open()) {
+            arqJogadores >> numJogadoresSalvos;
+            arqJogadores.close();
+        }
+
+        pJogo = new Jogo(numJogadoresSalvos, true);
         pJogo->rodarSave(); 
     }
 }

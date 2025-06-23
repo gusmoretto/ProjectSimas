@@ -23,7 +23,7 @@ int determinarFaseSalva() {
     return 1;
 }
 
-Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr), numJogadores(numJogadores) {
+Jogo::Jogo(int numJogadores, int fase_inicial) : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr), numJogadores(numJogadores) {
     Ente::setGerenciadorGrafico(pGG);
 
     if (numJogadores >= 1) {
@@ -33,6 +33,12 @@ Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr),
     if (numJogadores == 2) {
         jogador2 = new Jogador();
         jogador2->executar();
+    }
+    if (fase_inicial == 2) {
+        faseAtual = new SegundaFase(jogador1, jogador2);
+    }
+    else { 
+        faseAtual = new PrimeiraFase(jogador1, jogador2);
     }
 
     pGG->inicializarBarraVida(numJogadores);
@@ -48,6 +54,7 @@ Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr),
     if (!texturaJogador2Morto.loadFromFile("player2morto.png")) {
         std::cerr << "Erro: Nao foi possivel carregar player2_morto.png" << std::endl;
     }
+
 }
 
 Jogo::~Jogo() {
@@ -318,6 +325,8 @@ void Jogo::rodarSave() {
 
     arquivo.open("arquivo_jogador.txt");
     if (arquivo.is_open()) {
+        std::getline(arquivo, linha); 
+        arquivo.close();
         if (getline(arquivo, linha) && jogador1) {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
@@ -575,6 +584,10 @@ void Jogo::processarEventosMenuPausa(sf::Event& evento) {
                 std::ofstream arqAguas("arquivo_agua.txt", std::ios::trunc);
                 std::ofstream arqEspinhos("arquivo_espinho.txt", std::ios::trunc);
                 std::ofstream arqProjeteis("arquivo_projetil.txt", std::ios::trunc);
+                
+                if (arqJogadores.is_open()) {
+                    arqJogadores << numJogadores << std::endl;
+                }
 
                 Elemento<Entidade>* pElemento = faseAtual->getListaEntidades()->getPrimeiro();
                 while (pElemento != nullptr) {
