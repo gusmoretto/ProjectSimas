@@ -318,27 +318,42 @@ void Jogo::rodarSave() {
 
     arquivo.open("arquivo_jogador.txt");
     if (arquivo.is_open()) {
-        if (getline(arquivo, linha) && jogador1) {
-            std::istringstream iss(linha);
+        std::string linha1, linha2;
+        if (getline(arquivo, linha1)) {
+            std::istringstream iss1(linha1);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            jogador1->setVida(vida);
-            jogador1->setPosicao(x, y);
-            pListaEnts->incluir(jogador1);
-            pGC->inclueEntidade(jogador1);
+            iss1 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            if (jogador1 && id_j == 0) {
+                jogador1->setVida(vida);
+                jogador1->setPosicao(x, y);
+                pListaEnts->incluir(jogador1);
+                pGC->inclueEntidade(jogador1);
+            } else if (jogador2 && id_j == 1) {
+                jogador2->setVida(vida);
+                jogador2->setPosicao(x, y);
+                pListaEnts->incluir(jogador2);
+                pGC->inclueEntidade(jogador2);
+            }
         }
-        if (getline(arquivo, linha) && jogador2) {
-            std::istringstream iss(linha);
+        if (getline(arquivo, linha2)) {
+            std::istringstream iss2(linha2);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            jogador2->setVida(vida);
-            jogador2->setPosicao(x, y);
-            pListaEnts->incluir(jogador2);
-            pGC->inclueEntidade(jogador2);
+            iss2 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            if (jogador1 && id_j == 0) {
+                jogador1->setVida(vida);
+                jogador1->setPosicao(x, y);
+                pListaEnts->incluir(jogador1);
+                pGC->inclueEntidade(jogador1);
+            } else if (jogador2 && id_j == 1) {
+                jogador2->setVida(vida);
+                jogador2->setPosicao(x, y);
+                pListaEnts->incluir(jogador2);
+                pGC->inclueEntidade(jogador2);
+            }
         }
         arquivo.close();
     }
