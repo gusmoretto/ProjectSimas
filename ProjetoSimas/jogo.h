@@ -9,7 +9,7 @@ class Jogo {
 private:
     GerenciadorGrafico* pGG;
     Jogador* jogador1;
-	Jogador* jogador2;
+    Jogador* jogador2;
     Fase* faseAtual;
     bool vitoria;
     bool derrota;
@@ -20,7 +20,7 @@ private:
     Text textoBotaoSair;
     RectangleShape botaoSair;
     RectangleShape corpoMorto1;
-	RectangleShape corpoMorto2;
+    RectangleShape corpoMorto2;
     Texture texturaJogador1Morto;
     Texture texturaJogador2Morto;
     bool jogador1EstaMorto;
@@ -28,15 +28,15 @@ private:
     bool jogoPausado;
     RectangleShape botaoSalvarSair;
     Text textoBotaoSalvarSair;
-    RectangleShape fundoPausa; 
+    RectangleShape fundoPausa;
     Text textoPausa;
     int numJogadores;
 
 public:
-    Jogo(int numJogadores = 1, int fase_inicial = 1);
+    Jogo(int numJogadores = 1);
     ~Jogo();
     void executar();
-	void setFaseAtual(int fase, bool carregarJogo);
+    void setFaseAtual(int fase, bool carregarJogo);
     void inicializarTelaFinal();
     void processarEventosTelaFinal(sf::Event& evento);
     void desenharTelaFinal();

@@ -4,32 +4,32 @@
 
 int Jogador::cont_jogador = 0;
 
-Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f), velocidadeHorizontal(0.f), nome("Jogador") {
-	vida = 150;
-	ataque = 10;
-	pontos = 0;
-	id_jogador = cont_jogador++;
+Jogador::Jogador() : Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f), velocidadeHorizontal(0.f) {
+    vida = 150;
+    ataque = 10;
+    pontos = 0;
+    id_jogador = cont_jogador++;
     noChao = true;
     velocidadeVertical = 0.f;
-	olhandoDireita = true; 
+    olhandoDireita = true;
     num_vidas = 5;
     velocidade = 2.2f;
 }
 Jogador::~Jogador() {
-	vida = -1;
-	ataque = -1;
+    vida = -1;
+    ataque = -1;
 }
 int Jogador::getVida() const {
-	return vida;
+    return vida;
 }
 int Jogador::getAtaque() const {
-	return ataque;
+    return ataque;
 }
 void Jogador::setVida(int novaVida) {
-	vida = novaVida;
+    vida = novaVida;
 }
 void Jogador::setAtaque(int novoAtaque) {
-	ataque = novoAtaque;
+    ataque = novoAtaque;
 }
 void Jogador::executar() {
     if (cont_jogador == 0)
@@ -37,7 +37,7 @@ void Jogador::executar() {
     else
         setId(2);
     retangulo.setSize(sf::Vector2f(64.f, 64.f));
-    retangulo.setOrigin(0.f, 0.f); 
+    retangulo.setOrigin(0.f, 0.f);
     retangulo.setPosition(x, y);
     std::string caminhoTextura = (id_jogador == 0) ? "player.png" : "player2.png";
     if (!textura.loadFromFile(caminhoTextura)) {
@@ -50,9 +50,9 @@ void Jogador::executar() {
 }
 void Jogador::mover() {
     sf::Vector2f movimento(0.f, 0.f);
-    float dt = 0.016f; 
+    float dt = 0.016f;
 
-    if (id_jogador == 1) { 
+    if (id_jogador == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
@@ -66,7 +66,7 @@ void Jogador::mover() {
             }
         }
     }
-    else if (id_jogador == 0) { // Lï¿½gica para o Jogador 1 (teclas A e D)
+    else if (id_jogador == 0) { // Lógica para o Jogador 1 (teclas A e D)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
@@ -81,11 +81,11 @@ void Jogador::mover() {
         }
     }
 
-    // --- Movimento horizontal externo (repulsï¿½o/knockback) ---
+    // --- Movimento horizontal externo (repulsão/knockback) ---
     movimento.x += velocidadeHorizontal * dt;
 
-    // Aplica um "atrito" para que a velocidade de repulsï¿½o diminua com o tempo
-    velocidadeHorizontal *= 0.92f; // Fator de atrito, ajuste se necessï¿½rio
+    // Aplica um "atrito" para que a velocidade de repulsão diminua com o tempo
+    velocidadeHorizontal *= 0.92f; // Fator de atrito, ajuste se necessário
     if (std::abs(velocidadeHorizontal) < 1.0f) {
         velocidadeHorizontal = 0.f;
     }
@@ -111,7 +111,7 @@ void Jogador::mover() {
 
     retangulo.move(movimento);
 
-    // --- Verificaï¿½ï¿½o de limites (lï¿½gica original com melhorias) ---
+    // --- Verificação de limites (lógica original com melhorias) ---
     sf::Vector2f pos = retangulo.getPosition();
     sf::Vector2f size = retangulo.getSize();
 
@@ -142,9 +142,9 @@ void Jogador::mover() {
     retangulo.setPosition(pos);
 }
 void Jogador::desenhar() {
-	if (pGG) {
-		pGG->desenha(retangulo);
-	}
+    if (pGG) {
+        pGG->desenha(retangulo);
+    }
 }
 void Jogador::setId(int novoId) {
     id = novoId;
@@ -153,10 +153,10 @@ int Jogador::getId() const {
     return id;
 }
 void Jogador::setVelocidade(float nvVelocidade) {
-	velocidade = nvVelocidade;
+    velocidade = nvVelocidade;
 }
 float Jogador::getVelocidade() {
-	return velocidade;
+    return velocidade;
 }
 void Jogador::setVelocidadeHorizontal(float nvVelocidadeHorizontal) {
     velocidadeHorizontal = nvVelocidadeHorizontal;
@@ -168,30 +168,20 @@ void Jogador::setNoChao(bool NC) {
     noChao = NC;
 }
 bool Jogador::getNochao() {
-	return noChao;
+    return noChao;
 }
 void Jogador::setVelocidadeVertical(float nvVelocidadeVertical) {
-	velocidadeVertical = nvVelocidadeVertical;
+    velocidadeVertical = nvVelocidadeVertical;
 }
 float Jogador::getVelocidadeVertical() const {
-	return velocidadeVertical;
+    return velocidadeVertical;
 }
 float Jogador::getPuloBase() const {
     return puloBase;
 }
 void Jogador::salvar(std::ostream& os) {
     os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
-       << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
-       << id_jogador << " " << impulsoPulo << " " << olhandoDireita << " "
-       << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
+        << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
+        << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " "
+        << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
-void Jogador::setNome(const std::string& novoNome) {
-    nome = novoNome;
-}
-
-const std::string& Jogador::getNome() const {
-    return nome;
-}
-
-
-

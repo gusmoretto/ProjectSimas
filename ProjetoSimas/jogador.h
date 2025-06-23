@@ -1,21 +1,20 @@
 #pragma once
 #include "personagem.h"
 
-class Jogador: public Personagem{
+class Jogador : public Personagem {
 private:
 	int pontos;
-	std::string nome; // <-- Adicione esta linha
 	float impulsoPulo;
 	bool olhandoDireita;
 	float velocidadeBase;
 	float puloBase;
 	int id_jogador;
-	static int cont_jogador; 
+	static int cont_jogador;
 	float velocidadeHorizontal;
 
 public:
 	Jogador();
-	 ~Jogador();
+	~Jogador();
 	void salvar(std::ostream& os);
 	int getVida() const;
 	int getAtaque() const;
@@ -44,10 +43,4 @@ public:
 		return forcaMitico;
 	};
 	float getVelocidadeBase() const { return velocidadeBase; }
-	void adicionarPontos(int valor) { pontos += valor; }
-    int getPontos() const { return pontos; }
-    void setPontos(int valor) { pontos = valor; }
-    void setNome(const std::string& novoNome); // Apenas declaração
-    const std::string& getNome() const;        // Apenas declaração
 };
-

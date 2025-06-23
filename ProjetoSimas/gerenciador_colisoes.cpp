@@ -12,41 +12,41 @@ namespace Gerenciadores {
 		jogador1 = nullptr;
 		jogador2 = nullptr;
 	}
-    void GerenciadorColisoes::setJogadores(Jogador* j1, Jogador* j2) {
-        jogador1 = j1;
-        jogador2 = j2;
-    }
-    const int GerenciadorColisoes::verificarColisao(Entidade* pe1, Entidade* pe2) const{
-        if (!pe1 || !pe2)
-            return 0;
+	void GerenciadorColisoes::setJogadores(Jogador* j1, Jogador* j2) {
+		jogador1 = j1;
+		jogador2 = j2;
+	}
+	const int GerenciadorColisoes::verificarColisao(Entidade* pe1, Entidade* pe2) const {
+		if (!pe1 || !pe2)
+			return 0;
 
-        sf::FloatRect ent1 = pe1->getRetangulo().getGlobalBounds();
-        sf::FloatRect ent2 = pe2->getRetangulo().getGlobalBounds();
+		sf::FloatRect ent1 = pe1->getRetangulo().getGlobalBounds();
+		sf::FloatRect ent2 = pe2->getRetangulo().getGlobalBounds();
 
-        if (!ent1.intersects(ent2))
-            return 0; 
+		if (!ent1.intersects(ent2))
+			return 0;
 
-        float sobreposicaoEsquerda = (ent1.left + ent1.width) - ent2.left;
-        float sobreposicaoDireita = (ent2.left + ent2.width) - ent1.left;
-        float sobreposicaoCima = (ent1.top + ent1.height) - ent2.top;
-        float sobreposicaoBaixo = (ent2.top + ent2.height) - ent1.top;
+		float sobreposicaoEsquerda = (ent1.left + ent1.width) - ent2.left;
+		float sobreposicaoDireita = (ent2.left + ent2.width) - ent1.left;
+		float sobreposicaoCima = (ent1.top + ent1.height) - ent2.top;
+		float sobreposicaoBaixo = (ent2.top + ent2.height) - ent1.top;
 
-        float menorSobreposicaoX = std::min(sobreposicaoEsquerda, sobreposicaoDireita);
-        float menorSobreposicaoY = std::min(sobreposicaoCima, sobreposicaoBaixo);
+		float menorSobreposicaoX = std::min(sobreposicaoEsquerda, sobreposicaoDireita);
+		float menorSobreposicaoY = std::min(sobreposicaoCima, sobreposicaoBaixo);
 
-        if (menorSobreposicaoX < menorSobreposicaoY) {
-            if (sobreposicaoEsquerda < sobreposicaoDireita)
-                return 2; 
-            else
-                return 3; 
-        }
-        else {
-            if (sobreposicaoCima < sobreposicaoBaixo)
-                return 1; 
-            else
-                return 4; 
-        }
-    }
+		if (menorSobreposicaoX < menorSobreposicaoY) {
+			if (sobreposicaoEsquerda < sobreposicaoDireita)
+				return 2;
+			else
+				return 3;
+		}
+		else {
+			if (sobreposicaoCima < sobreposicaoBaixo)
+				return 1;
+			else
+				return 4;
+		}
+	}
 	void GerenciadorColisoes::inclueEntidade(Entidade* ent) {
 		if (ent->getId() == 1 || ent->getId() == 2) {
 			if (jogador1 == nullptr) {
@@ -109,16 +109,16 @@ namespace Gerenciadores {
 
 			for (auto obs : lObstaculos) {
 				if (obs == nullptr) {
-					continue; 
+					continue;
 				}
 				int tipoColisao = verificarColisao(jogador1, obs);
 				if (tipoColisao) {
 					obs->obstacular(jogador1, tipoColisao);
 					if (obs->getId() == 9) {
 						Agua* obstaculoMedio = dynamic_cast<Agua*>(obs);
-						if (obstaculoMedio) { 
+						if (obstaculoMedio) {
 							obs->obstacular(jogador1, tipoColisao);
-							jogador1_estaLentoPorAguaNesteFrame = true; 
+							jogador1_estaLentoPorAguaNesteFrame = true;
 						}
 					}
 				}
@@ -166,10 +166,6 @@ namespace Gerenciadores {
 					inim->tratarColisaoComJogador(jogador1, tipoColisao);
 
 					bool inimigoFoiMortoPorCima = (inim->getVida() <= 0 && vidaInimigoAntesColisao > 0 && tipoColisao == 1);
-
-					if (inimigoFoiMortoPorCima) {
-    jogador1->adicionarPontos(100); // ajuste o valor conforme desejar
-}
 					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
 					sf::FloatRect areaJogador = jogador1->getRetangulo().getGlobalBounds();
 
@@ -181,11 +177,11 @@ namespace Gerenciadores {
 
 					sf::Vector2f pos = jogador1->getRetangulo().getPosition();
 
-					if (intersectX < intersectY) { 
+					if (intersectX < intersectY) {
 						if (dx > 0) {
 							pos.x = areaInimigo.left + areaInimigo.width;
 						}
-						else { 
+						else {
 							pos.x = areaInimigo.left - areaJogador.width;
 						}
 						if (Aranha* pAranha = dynamic_cast<Aranha*>(inim)) {
@@ -194,14 +190,14 @@ namespace Gerenciadores {
 							pAranha->setPosicao(posAranha.x + (dx > 0 ? -pAranha->getVelocidade() * 0.05f : pAranha->getVelocidade() * 0.05f), posAranha.y);
 						}
 					}
-					else { 
-						if (dy > 0) { 
+					else {
+						if (dy > 0) {
 							pos.y = areaInimigo.top + areaInimigo.height;
 							jogador1->setVelocidadeVertical(0.f);
 						}
-						else { 
+						else {
 							pos.y = areaInimigo.top - areaJogador.height;
-							if (!inimigoFoiMortoPorCima) { 
+							if (!inimigoFoiMortoPorCima) {
 								jogador1->setVelocidadeVertical(0.f);
 							}
 							jogador1->setNoChao(true);
@@ -264,8 +260,8 @@ namespace Gerenciadores {
 	void GerenciadorColisoes::verificaProjetil() {
 		for (auto proj : lProjetis) {
 			if (jogador1 && verificarColisao(proj, jogador1)) {
-				jogador1->setVida(jogador1->getVida() - 10); 
-				proj->setAtivo(false); 
+				jogador1->setVida(jogador1->getVida() - 10);
+				proj->setAtivo(false);
 			}
 			if (jogador2 && verificarColisao(proj, jogador2)) {
 				jogador2->setVida(jogador2->getVida() - 10);
@@ -312,7 +308,7 @@ namespace Gerenciadores {
 						pAranha->setPosicao(pos.x + (tipoColisao == 2 ? -1.f : 1.f), pos.y);
 					}
 				}
-				else if (tipoColisao == 4) { 
+				else if (tipoColisao == 4) {
 					if (inim->getVelocidadeVertical() < 0) {
 						inim->setVelocidadeVertical(0.f);
 					}
@@ -327,12 +323,12 @@ namespace Gerenciadores {
 				continue;
 			for (auto obs : lObstaculos) {
 				if (verificarColisao(proj, obs)) {
-					proj->setAtivo(false); 
-					break; 
+					proj->setAtivo(false);
+					break;
 				}
 			}
 		}
-		
+
 		for (auto it = lProjetis.begin(); it != lProjetis.end(); ) {
 			Projetil* proj = *it;
 			if (!proj->getestaAtivo()) {
@@ -352,4 +348,3 @@ namespace Gerenciadores {
 		verificaObsProjetil();
 	}
 }
-

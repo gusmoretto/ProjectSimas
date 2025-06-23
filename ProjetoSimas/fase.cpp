@@ -22,15 +22,10 @@ Fase::Fase(Jogador* j1, Jogador* j2, bool carregarJogo) : jogador1(j1), jogador2
     //if (!carregarJogo) {
       //  executar();
     //}
+
 }
 
 Fase::~Fase() {
-    if (jogador1) {
-        lista_ents.remover(static_cast<Entidade*>(jogador1));
-    }
-    if (jogador2) {
-        lista_ents.remover(static_cast<Entidade*>(jogador2));
-    }
 
 }
 
@@ -44,16 +39,16 @@ void Fase::criarCenario(int fase) {
         pGG->iniciaChao("chao2.png", 3840.f, 300.f);
     }
     else {
-        std::cerr << "Fase invalida!" << std::endl; 
+        std::cerr << "Fase invalida!" << std::endl;
     }
 }
 
 void Fase::criarPlataformas(int fase) {
     if (fase == 1) {
-        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; 
+        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38;
         std::ifstream arquivo("coordPlataformas.txt");
         if (!arquivo.is_open()) {
-            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas.txt" << std::endl; 
+            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas.txt" << std::endl;
             return;
         }
 
@@ -61,24 +56,24 @@ void Fase::criarPlataformas(int fase) {
         for (int i = 0; i < numPlataformasParaCriar; ++i) {
             if (arquivo >> x >> y) {
                 Plataforma* p = new Plataforma();
-                p->setPosicao(x, y); 
-                p->executar(); 
-				p->setarTexturaFase(fase);
-                GC.inclueEntidade(p); 
+                p->setPosicao(x, y);
+                p->executar();
+                p->setarTexturaFase(fase);
+                GC.inclueEntidade(p);
                 lista_ents.incluir(dynamic_cast<Entidade*>(p));
-         }
+            }
             else {
-                break; 
+                break;
             }
         }
-        arquivo.close(); 
+        arquivo.close();
     }
-    else if(fase == 2) {
-        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38; 
-		if (numPlataformasParaCriar == 40) numPlataformasParaCriar = 39; 
+    else if (fase == 2) {
+        int numPlataformasParaCriar = rand() % (41 - 38 + 1) + 38;
+        if (numPlataformasParaCriar == 40) numPlataformasParaCriar = 39;
         std::ifstream arquivo("coordPlataformas2.txt");
         if (!arquivo.is_open()) {
-            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas2.txt" << std::endl; 
+            std::cerr << "Erro: Nao foi possivel abrir o arquivo de plataformas: " << "plataformas2.txt" << std::endl;
             return;
         }
 
@@ -86,22 +81,22 @@ void Fase::criarPlataformas(int fase) {
         for (int i = 0; i < numPlataformasParaCriar; ++i) {
             if (arquivo >> x >> y) {
                 Plataforma* p = new Plataforma();
-                p->setPosicao(x, y); 
-                p->executar(); 
-				p->setarTexturaFase(fase);
-                GC.inclueEntidade(p); 
+                p->setPosicao(x, y);
+                p->executar();
+                p->setarTexturaFase(fase);
+                GC.inclueEntidade(p);
                 lista_ents.incluir(dynamic_cast<Entidade*>(p));
             }
             else {
-                break; 
+                break;
             }
         }
-        arquivo.close(); 
+        arquivo.close();
     }
 }
 
 void Fase::criarAranhas(int fase) {
-    if (fase == 1){
+    if (fase == 1) {
         int numInimigosFaceis = rand() % (5 - 3 + 1) + 3; //
         std::ifstream arquivo("coordAranhas.txt");
         if (!arquivo.is_open()) {
@@ -124,7 +119,7 @@ void Fase::criarAranhas(int fase) {
         }
         arquivo.close();
     }
-    else if(fase == 2){
+    else if (fase == 2) {
         int numInimigosFaceis = rand() % (3 - 3 + 1) + 3; //
         std::ifstream arquivo("coordAranhas2.txt");
         if (!arquivo.is_open()) {
@@ -152,6 +147,6 @@ void Fase::criarAranhas(int fase) {
 void Fase::executar() {
     criarPlataformas(getFase());
     criarAranhas(getFase());
-    criarInimigos(); 
+    criarInimigos();
     criarObstaculos();
 }

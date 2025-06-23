@@ -71,7 +71,7 @@ void Menu::inicializarTextos() {
 }
 
 void Menu::inicializarBotoes() {
-    botaoNovoFase1.setSize(sf::Vector2f(300.f, 70.f)); 
+    botaoNovoFase1.setSize(sf::Vector2f(300.f, 70.f));
     botaoNovoFase1.setFillColor(sf::Color::White);
     botaoNovoFase1.setOutlineColor(sf::Color::Black);
     botaoNovoFase1.setOutlineThickness(2.f);
@@ -92,12 +92,12 @@ void Menu::inicializarBotoes() {
     botaoCarregar.setOrigin(botaoCarregar.getLocalBounds().width / 2, botaoCarregar.getLocalBounds().height / 2);
     botaoCarregar.setPosition(textoCarregar.getPosition());
 
-    botaoSair.setSize(sf::Vector2f(300.f, 70.f)); 
-    botaoSair.setFillColor(sf::Color::White); 
-    botaoSair.setOutlineColor(sf::Color::Black); 
-    botaoSair.setOutlineThickness(2.f); 
-    botaoSair.setOrigin(botaoSair.getLocalBounds().width / 2, botaoSair.getLocalBounds().height / 2); 
-    botaoSair.setPosition(textoSair.getPosition()); 
+    botaoSair.setSize(sf::Vector2f(300.f, 70.f));
+    botaoSair.setFillColor(sf::Color::White);
+    botaoSair.setOutlineColor(sf::Color::Black);
+    botaoSair.setOutlineThickness(2.f);
+    botaoSair.setOrigin(botaoSair.getLocalBounds().width / 2, botaoSair.getLocalBounds().height / 2);
+    botaoSair.setPosition(textoSair.getPosition());
 
     botaoRanking.setSize(sf::Vector2f(300.f, 70.f));
     botaoRanking.setFillColor(sf::Color::White);
@@ -152,12 +152,12 @@ void Menu::desenharMenu() {
     pGG_Menu->getWindow().draw(spriteFundoMenu);
     pGG_Menu->desenha(botaoNovoFase1);
     pGG_Menu->desenha(botaoNovoFase2);
-    pGG_Menu->desenha(botaoCarregar); 
+    pGG_Menu->desenha(botaoCarregar);
     pGG_Menu->desenha(botaoSair);
     pGG_Menu->desenha(botaoRanking);
     pGG_Menu->getWindow().draw(textoNovoFase1);
     pGG_Menu->getWindow().draw(textoNovoFase2);
-    pGG_Menu->getWindow().draw(textoCarregar); 
+    pGG_Menu->getWindow().draw(textoCarregar);
     pGG_Menu->getWindow().draw(textoSair);
     pGG_Menu->getWindow().draw(textoRanking);
 
@@ -181,11 +181,11 @@ void Menu::desenharMenu() {
 }
 
 int Menu::processarEventos() {
-    sf::Event evento; 
-    while (pGG_Menu->getWindow().pollEvent(evento)) { 
-        if (evento.type == sf::Event::Closed) { 
-            pGG_Menu->fechar(); 
-            return 0; 
+    sf::Event evento;
+    while (pGG_Menu->getWindow().pollEvent(evento)) {
+        if (evento.type == sf::Event::Closed) {
+            pGG_Menu->fechar();
+            return 0;
         }
 
         // TRATE O EVENTO DE TEXTO AQUI, FORA DO BLOCO DE MOUSE
@@ -194,29 +194,32 @@ int Menu::processarEventos() {
             if (evento.text.unicode == '\b') { // Backspace
                 if (!nomeAtual->empty())
                     nomeAtual->pop_back();
-            } else if (evento.text.unicode == '\r' || evento.text.unicode == '\n') { // Enter
+            }
+            else if (evento.text.unicode == '\r' || evento.text.unicode == '\n') { // Enter
                 if (numJogadoresEscolhido == 2 && indiceJogadorInserindoNome == 0) {
                     // Passa para o segundo jogador
                     indiceJogadorInserindoNome = 1;
                     // NÃO altere a posição do campo aqui!
                     // posicaoCampoNomeJogador = ...;  // Remova ou comente esta linha
                     return -1;
-                } else {
+                }
+                else {
                     inserindoNome = false;
                     return numJogadoresEscolhido; // Agora inicia o jogo
                 }
-            } else if (evento.text.unicode < 128 && evento.text.unicode != '\t') {
+            }
+            else if (evento.text.unicode < 128 && evento.text.unicode != '\t') {
                 if (nomeAtual->size() < 16)
                     *nomeAtual += static_cast<char>(evento.text.unicode);
             }
             return -1;
         }
 
-        if (evento.type == sf::Event::MouseButtonReleased) { 
-            if (evento.mouseButton.button == sf::Mouse::Left) { 
-                sf::Vector2f mousePos = pGG_Menu->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseButton.x, evento.mouseButton.y)); 
+        if (evento.type == sf::Event::MouseButtonReleased) {
+            if (evento.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f mousePos = pGG_Menu->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseButton.x, evento.mouseButton.y));
 
-                if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) { 
+                if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) {
                     mostrarEscolhaJogadores = true;
                     faseEscolhida = 1;
                     sf::Vector2f basePos = botaoNovoFase1.getPosition() + sf::Vector2f(botaoNovoFase1.getSize().x / 2.f + 20.f, -25.f);
@@ -236,15 +239,15 @@ int Menu::processarEventos() {
                     texto2Jogadores.setPosition(botao2Jogadores.getPosition() + sf::Vector2f(botao2Jogadores.getSize().x / 2.f, botao2Jogadores.getSize().y / 2.f));
                     return -1;
                 }
-                if (botaoSair.getGlobalBounds().contains(mousePos)) { 
-                    pGG_Menu->fechar(); 
-                    return 0; 
+                if (botaoSair.getGlobalBounds().contains(mousePos)) {
+                    pGG_Menu->fechar();
+                    return 0;
                 }
                 if (botaoRanking.getGlobalBounds().contains(mousePos)) {
-                    return 3; 
+                    return 3;
                 }
                 if (botaoCarregar.getGlobalBounds().contains(mousePos)) {
-                    return 4; 
+                    return 4;
                 }
                 if (botao1Jogador.getGlobalBounds().contains(mousePos)) {
                     numJogadoresEscolhido = 1;
@@ -265,10 +268,10 @@ int Menu::processarEventos() {
                 }
             }
         }
-        if (evento.type == sf::Event::MouseMoved) { 
-            sf::Vector2f mousePos = pGG_Menu->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseMove.x, evento.mouseMove.y)); 
+        if (evento.type == sf::Event::MouseMoved) {
+            sf::Vector2f mousePos = pGG_Menu->getWindow().mapPixelToCoords(sf::Vector2i(evento.mouseMove.x, evento.mouseMove.y));
             if (botaoNovoFase1.getGlobalBounds().contains(mousePos)) {
-                botaoNovoFase1.setFillColor(sf::Color(100, 100, 100, 150)); 
+                botaoNovoFase1.setFillColor(sf::Color(100, 100, 100, 150));
             }
             else {
                 botaoNovoFase1.setFillColor(sf::Color::White);
@@ -280,14 +283,15 @@ int Menu::processarEventos() {
                 botaoNovoFase2.setFillColor(sf::Color::White);
             }
             if (botaoSair.getGlobalBounds().contains(mousePos)) {
-                botaoSair.setFillColor(sf::Color(100, 100, 100, 150)); 
+                botaoSair.setFillColor(sf::Color(100, 100, 100, 150));
             }
             else {
-                botaoSair.setFillColor(sf::Color::White); 
+                botaoSair.setFillColor(sf::Color::White);
             }
             if (botaoRanking.getGlobalBounds().contains(mousePos)) {
                 botaoRanking.setFillColor(sf::Color(100, 100, 100, 150));
-            } else {
+            }
+            else {
                 botaoRanking.setFillColor(sf::Color::White);
             }
             if (botaoCarregar.getGlobalBounds().contains(mousePos)) {
@@ -298,42 +302,37 @@ int Menu::processarEventos() {
             }
         }
     }
-    return -1; 
+    return -1;
 }
 
 void Menu::executar() {
     int escolha = -1;
-    while (pGG_Menu->estaAberta() && escolha == -1) { 
-        desenharMenu(); 
-        escolha = processarEventos(); 
+    while (pGG_Menu->estaAberta() && escolha == -1) {
+        desenharMenu();
+        escolha = processarEventos();
     }
 
-    if ((escolha == 1 && !nomeJogador1.empty()) || (escolha == 2 && !nomeJogador1.empty() && !nomeJogador2.empty())) { 
+    if ((escolha == 1 && !nomeJogador1.empty()) || (escolha == 2 && !nomeJogador1.empty() && !nomeJogador2.empty())) {
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
+        // Passe nomeJogador1 e nomeJogador2 para o Jogo, se quiser
         pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }
-    else if (escolha == 3) { 
+    else if (escolha == 3) {
     }
-    else if (escolha == 4) { 
-        int numJogadoresSalvos = 1; 
-        std::ifstream arqJogadores("arquivo_jogador.txt");
-        if (arqJogadores.is_open()) {
-            arqJogadores >> numJogadoresSalvos;
-            arqJogadores.close();
-        }
-
-        pJogo = new Jogo(numJogadoresSalvos, true);
-        pJogo->rodarSave(); 
+    else if (escolha == 4) {
+        pGG_Menu->fechar();
+        pJogo = new Jogo();
+        pJogo->rodarSave();
     }
 }
 
 void Menu::setId(int novoId) {
-    id = novoId; 
+    id = novoId;
 }
 
 int Menu::getId() const {
-    return id; 
+    return id;
 }
