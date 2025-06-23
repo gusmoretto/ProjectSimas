@@ -322,8 +322,8 @@ void Jogo::rodarSave() {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
-            int nVidas, vida, ataque, id_j, pontos;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            int nVidas, vida, ataque, id_j;
+            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pulo >> olhando >> velBase >> puloBase >> x >> y;
             jogador1->setVida(vida);
             jogador1->setPosicao(x, y);
             pListaEnts->incluir(jogador1);
@@ -333,8 +333,8 @@ void Jogo::rodarSave() {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
-            int nVidas, vida, ataque, id_j, pontos;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            int nVidas, vida, ataque, id_j;
+            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pulo >> olhando >> velBase >> puloBase >> x >> y;
             jogador2->setVida(vida);
             jogador2->setPosicao(x, y);
             pListaEnts->incluir(jogador2);

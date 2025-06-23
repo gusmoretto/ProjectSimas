@@ -180,7 +180,6 @@ float Jogador::getPuloBase() const {
     return puloBase;
 }
 void Jogador::salvar(std::ostream& os) {
-    os << nome << " " << pontos << " "; // <-- Adicione esta linha
     os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
        << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
        << id_jogador << " " << impulsoPulo << " " << olhandoDireita << " "
