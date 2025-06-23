@@ -39,8 +39,7 @@ void Lista<TL>::remover(TL* pInfo) {
     // Se não encontrou, não faz nada
     if (pAux == nullptr) return;
 
-    // Se encontrou, ajusta os ponteiros
-    if (pAnt == nullptr) { // Era o primeiro elemento
+    if (pAnt == nullptr) { 
         pPrimeiro = pAux->getProx();
     }
     else {
@@ -50,8 +49,6 @@ void Lista<TL>::remover(TL* pInfo) {
     if (pAux == pUltimo) {
         pUltimo = pAnt;
     }
-
-    // Deleta apenas o NÓ da lista (Elemento), não a informação (Entidade)
     delete pAux;
 }
 
@@ -77,13 +74,15 @@ void Lista<TL>::incluir(TL* p) { // Recebe PONTEIRO
 }
 
 template <typename TL>
-void Lista<TL>::limpar() {
+void Lista<TL>::limpar(bool deletarConteudos) {
     Elemento<TL>* atual = pPrimeiro;
     Elemento<TL>* proximo = nullptr;
 
     while (atual != nullptr) {
         proximo = atual->getProx();
-        delete atual->getInfo();
+        if (deletarConteudos) { 
+            delete atual->getInfo();
+        }
         delete atual; 
         atual = proximo;
     }

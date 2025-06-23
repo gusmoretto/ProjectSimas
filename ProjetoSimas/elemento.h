@@ -4,27 +4,22 @@ template <typename TE>
 class Elemento {
 private:
     Elemento<TE>* pProx;
-    TE* info; // Agora armazena um PONTEIRO para TE
+    TE* info; 
 
 public:
-    // Construtor: recebe um ponteiro para TE
-    Elemento(TE* pInfo = nullptr); // Recebe ponteiro
+    Elemento(TE* pInfo = nullptr); 
 
-    // Destrutor: CUIDADO com a propriedade da memória
     ~Elemento();
 
-    // Métodos set
     void setProx(Elemento<TE>* PE);
-    void setInfo(TE* pInfo); // Recebe ponteiro
+    void setInfo(TE* pInfo); 
 
-    // Métodos get
     Elemento<TE>* getProx() const;
-    TE* getInfo() const; // Retorna ponteiro
+    TE* getInfo() const; 
 };
 
 template <typename TE>
 Elemento<TE>::Elemento(TE* pInfo) : pProx(nullptr), info(pInfo) {
-    // Para depuração: std::cout << "Elemento criado." << std::endl;
 }
 
 template <typename TE>

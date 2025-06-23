@@ -190,6 +190,7 @@ void Jogo::executar() {
         if (!vitoria && !derrota && !jogoPausado) {
 
             if (jogador1 && jogador1->getVida() <= 0) {
+                atualizarRanking(jogador1->getNome(), jogador1->getPontos());
                 corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto1.setTexture(&texturaJogador1Morto);
                 corpoMorto1.setPosition(jogador1->getPosicao());
@@ -200,6 +201,7 @@ void Jogo::executar() {
                 jogador1EstaMorto = true;
             }
             if (jogador2 && jogador2->getVida() <= 0) {
+                atualizarRanking(jogador2->getNome(), jogador2->getPontos());
                 corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto2.setTexture(&texturaJogador2Morto);
                 corpoMorto2.setPosition(jogador2->getPosicao());
@@ -213,8 +215,6 @@ void Jogo::executar() {
             if (!jogador1 && !jogador2) {
                 if (!derrota) { 
                     derrota = true;
-                    atualizarRanking(jogador1->getNome(), jogador1->getPontos());
-                    atualizarRanking(jogador2->getNome(), jogador2->getPontos());
                 }
             }
 
