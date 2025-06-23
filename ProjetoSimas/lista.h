@@ -83,7 +83,6 @@ void Lista<TL>::limpar() {
 
     while (atual != nullptr) {
         proximo = atual->getProx();
-        delete atual->getInfo();
         delete atual; 
         atual = proximo;
     }

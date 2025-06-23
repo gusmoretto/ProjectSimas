@@ -179,11 +179,11 @@ float Jogador::getVelocidadeVertical() const {
 float Jogador::getPuloBase() const {
     return puloBase;
 }
-void Jogador::salvar(std::ostream& os) {
+void Jogador::salvar(ostream& os) {
     os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
         << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
         << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " "
-        << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
+        << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << endl;
 }
 void Jogador::setPontos(int p) {
     pontos = p;
@@ -191,4 +191,11 @@ void Jogador::setPontos(int p) {
 
 int Jogador::getPontos() const {
     return pontos;
+}
+void Jogador::setNome(const string& novoNome) {
+    this->nome = novoNome;
+}
+
+string Jogador::getNome() const {
+    return this->nome;
 }

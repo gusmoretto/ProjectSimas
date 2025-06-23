@@ -84,9 +84,12 @@ Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr),
 
 Jogo::~Jogo() {
     if (faseAtual) delete faseAtual;
+
+    if (jogador1) delete jogador1;
+    if (jogador2) delete jogador2;
+
     if (pGG) delete pGG;
 }
-
 void Jogo::inicializarTelaFinal() {
     if (!texturaVitoria.loadFromFile("vitoria.png")) {
         std::cerr << "Erro: Nao foi possivel carregar vitoria.png" << std::endl;
@@ -190,6 +193,7 @@ void Jogo::executar() {
         if (!vitoria && !derrota && !jogoPausado) {
 
             if (jogador1 && jogador1->getVida() <= 0) {
+                atualizarRanking(jogador1->getNome(), jogador1->getPontos());
                 corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto1.setTexture(&texturaJogador1Morto);
                 corpoMorto1.setPosition(jogador1->getPosicao());
@@ -200,6 +204,7 @@ void Jogo::executar() {
                 jogador1EstaMorto = true;
             }
             if (jogador2 && jogador2->getVida() <= 0) {
+                atualizarRanking(jogador2->getNome(), jogador2->getPontos());
                 corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto2.setTexture(&texturaJogador2Morto);
                 corpoMorto2.setPosition(jogador2->getPosicao());
@@ -213,8 +218,6 @@ void Jogo::executar() {
             if (!jogador1 && !jogador2) {
                 if (!derrota) { 
                     derrota = true;
-                    atualizarRanking(jogador1->getNome(), jogador1->getPontos());
-                    atualizarRanking(jogador2->getNome(), jogador2->getPontos());
                 }
             }
 
@@ -364,8 +367,6 @@ void Jogo::rodarSave() {
             iss1 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
             jogador1->setVida(vida);
             jogador1->setPosicao(x, y);
-            pListaEnts->incluir(jogador1);
-            pGC->inclueEntidade(jogador1);
         }
         if (getline(arquivo, linha) && jogador2) {
             std::istringstream iss(linha);
@@ -375,8 +376,6 @@ void Jogo::rodarSave() {
             iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
             jogador2->setVida(vida);
             jogador2->setPosicao(x, y);
-            pListaEnts->incluir(jogador2);
-            pGC->inclueEntidade(jogador2);
         }
         arquivo.close();
     }
@@ -516,16 +515,28 @@ void Jogo::rodarSave() {
     executar();
 }
 
-void Jogo::setFaseAtual(int fase, bool carregarJogo) {
-    if (faseAtual) {
-        delete faseAtual;
-        faseAtual = nullptr;
+void Jogo::setFaseAtual(int num_fase, bool carregar) {
+    if (num_fase == 1) {
+        faseAtual = static_cast<Fase*>(new PrimeiraFase(jogador1, jogador2, carregar));
     }
-    if (fase == 1) {
-        faseAtual = new PrimeiraFase(jogador1, jogador2, carregarJogo);
+    else if (num_fase == 2) {
+        faseAtual = static_cast<Fase*>(new SegundaFase(jogador1, jogador2, carregar));
     }
-    else if (fase == 2) {
-        faseAtual = new SegundaFase(jogador1, jogador2, carregarJogo);
+
+    GerenciadorColisoes* pGC = faseAtual->getGerenciadorColisoes();
+    ListaEntidades* pListaEnts = faseAtual->getListaEntidades();
+
+    if (jogador1) {
+        pListaEnts->incluir(static_cast<Entidade*>(jogador1));
+        pGC->inclueEntidade(static_cast<Entidade*>(jogador1));
+    }
+    if (jogador2) {
+        pListaEnts->incluir(static_cast<Entidade*>(jogador2));
+        pGC->inclueEntidade(static_cast<Entidade*>(jogador2));
+    }
+
+    if (!carregar) {
+        faseAtual->executar();
     }
 }
 void Jogo::inicializarMenuPausa() {
