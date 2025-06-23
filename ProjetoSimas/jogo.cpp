@@ -566,7 +566,11 @@ void Jogo::processarEventosMenuPausa(sf::Event& evento) {
                 pGG->fechar();
             }
             if (botaoSalvarSair.getGlobalBounds().contains(mousePos)) {
-                // L�gica de salvar o jogo (copiada do seu c�digo original)
+                std::ofstream arqJogo("arquivo_jogo.txt", std::ios::trunc);
+                if (arqJogo.is_open()) {
+                    arqJogo << numJogadores << std::endl;
+                    arqJogo.close();
+                }
                 std::ofstream arqJogadores("arquivo_jogador.txt", std::ios::trunc);
                 std::ofstream arqAranhas("arquivo_aranha.txt", std::ios::trunc);
                 std::ofstream arqLancadores("arquivo_lancador.txt", std::ios::trunc);
