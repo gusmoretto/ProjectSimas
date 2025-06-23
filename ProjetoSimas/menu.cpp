@@ -179,6 +179,7 @@ void Menu::desenharMenu() {
     pGG_Menu->mostrar();
 }
 
+
 int Menu::processarEventos() {
     sf::Event evento;
     while (pGG_Menu->getWindow().pollEvent(evento)) {
