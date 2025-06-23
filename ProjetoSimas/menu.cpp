@@ -176,7 +176,6 @@ void Menu::desenharMenu() {
         pGG_Menu->desenha(campoNomeJogador);
         pGG_Menu->getWindow().draw(textoNomeJogador);
     }
-
     pGG_Menu->mostrar();
 }
 
