@@ -83,9 +83,12 @@ float Aranha::getVelocidade() {
 	return velocidade;
 }
 void Aranha::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
-    if (tipoColisao == 1) { 
-        this->setVida(0); 
-        jogador->setVelocidadeVertical(-400.f); 
+    if (tipoColisao == 1) {
+        if (this->getVida() > 0) {
+            jogador->setPontos(jogador->getPontos() + 10); 
+        }
+        this->setVida(0);
+        jogador->setVelocidadeVertical(-400.f);
     }
     else {
         this->danificar(jogador);

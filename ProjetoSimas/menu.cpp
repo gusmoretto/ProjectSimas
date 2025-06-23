@@ -304,6 +304,64 @@ int Menu::processarEventos() {
     }
     return -1;
 }
+void Menu::mostrarTelaRanking() {
+    std::vector<std::pair<std::string, int>> ranking;
+    std::ifstream arqRanking("ranking.txt");
+    std::string nome;
+    int pontos;
+
+    if (arqRanking.is_open()) {
+        while (arqRanking >> nome >> pontos) {
+            ranking.push_back({ nome, pontos });
+        }
+        arqRanking.close();
+    }
+
+    std::sort(ranking.begin(), ranking.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+        });
+    Text textoTitulo("Ranking", font, 40);
+    textoTitulo.setFillColor(sf::Color::White);
+    textoTitulo.setOrigin(textoTitulo.getLocalBounds().width / 2, 0);
+    textoTitulo.setPosition(pGG_Menu->getTamanhoJanelax() / 2, 50);
+
+    Text textoVoltar("Voltar (ESC)", font, 20);
+    textoVoltar.setFillColor(sf::Color::White);
+    textoVoltar.setPosition(50, pGG_Menu->getTamanhoJanelay() - 70);
+
+    bool mostrando = true;
+    while (mostrando && pGG_Menu->estaAberta()) {
+        sf::Event evento;
+        while (pGG_Menu->getWindow().pollEvent(evento)) {
+            if (evento.type == sf::Event::Closed) {
+                pGG_Menu->fechar();
+            }
+            if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
+                mostrando = false;
+            }
+        }
+
+        pGG_Menu->clear();
+        pGG_Menu->getWindow().draw(spriteFundoMenu);
+        pGG_Menu->getWindow().draw(textoTitulo);
+        pGG_Menu->getWindow().draw(textoVoltar);
+
+        float posY = 120.f;
+        int count = 0;
+        for (const auto& entrada : ranking) {
+            if (count >= 10) break; 
+
+            Text textoEntrada(std::to_string(count + 1) + ". " + entrada.first + " - " + std::to_string(entrada.second) + " pts", font, 24);
+            textoEntrada.setFillColor(sf::Color::White);
+            textoEntrada.setPosition(150, posY);
+            pGG_Menu->getWindow().draw(textoEntrada);
+            posY += 40.f;
+            count++;
+        }
+
+        pGG_Menu->mostrar();
+    }
+}
 
 void Menu::executar() {
     int escolha = -1;
@@ -316,11 +374,12 @@ void Menu::executar() {
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
-        // Passe nomeJogador1 e nomeJogador2 para o Jogo, se quiser
         pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }
     else if (escolha == 3) {
+        mostrarTelaRanking(); 
+        escolha = -1; 
     }
     else if (escolha == 4) {
         pGG_Menu->fechar();
@@ -329,6 +388,16 @@ void Menu::executar() {
         if (arqJogo.is_open()) {
             arqJogo >> numJogadoresSalvos;
             arqJogo.close();
+        }
+        std::ofstream arqRanking("ranking.txt", std::ios::app);
+        if (arqRanking.is_open()) {
+            if (!nomeJogador1.empty()) {
+                arqRanking << nomeJogador1 << " 0" << std::endl;
+            }
+            if (numJogadoresSalvos == 2 && !nomeJogador2.empty()) {
+                arqRanking << nomeJogador2 << " 0" << std::endl;
+            }
+            arqRanking.close();
         }
         pJogo = new Jogo(numJogadoresSalvos);
         pJogo->rodarSave();

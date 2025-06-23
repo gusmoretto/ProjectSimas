@@ -185,3 +185,10 @@ void Jogador::salvar(std::ostream& os) {
         << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " "
         << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
+void Jogador::setPontos(int p) {
+    pontos = p;
+}
+
+int Jogador::getPontos() const {
+    return pontos;
+}

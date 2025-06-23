@@ -116,9 +116,12 @@ void Lancador::desenhar() {
 	}
 }
 void Lancador::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
-	if (tipoColisao == 1) { 
-		this->setVida(0); 
-		jogador->setVelocidadeVertical(-400.f); 
+	if (tipoColisao == 1) {
+		if (this->getVida() > 0) {
+			jogador->setPontos(jogador->getPontos() + 25); 
+		}
+		this->setVida(0);
+		jogador->setVelocidadeVertical(-400.f);
 	}
 	else {
 		this->danificar(jogador);

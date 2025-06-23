@@ -43,4 +43,6 @@ public:
 		return forcaMitico;
 	};
 	float getVelocidadeBase() const { return velocidadeBase; }
+	void setPontos(int p);
+	int getPontos() const;
 };

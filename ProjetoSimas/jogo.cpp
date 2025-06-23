@@ -22,7 +22,39 @@ int determinarFaseSalva() {
     }
     return 1;
 }
+void atualizarRanking(const std::string& nome, int pontuacao) {
+    if (nome.empty()) return;
 
+    std::map<std::string, int> scores;
+    std::ifstream arqEntrada("ranking.txt");
+    std::string linha;
+    std::string nomeArq;
+    int pontosArq;
+
+    if (arqEntrada.is_open()) {
+        while (std::getline(arqEntrada, linha)) {
+            std::istringstream iss(linha);
+            if (iss >> nomeArq >> pontosArq) {
+                if (scores.find(nomeArq) == scores.end() || pontosArq > scores[nomeArq]) {
+                    scores[nomeArq] = pontosArq;
+                }
+            }
+        }
+        arqEntrada.close();
+    }
+
+    if (scores.find(nome) == scores.end() || pontuacao > scores[nome]) {
+        scores[nome] = pontuacao;
+    }
+
+    std::ofstream arqSaida("ranking.txt", std::ios::trunc);
+    if (arqSaida.is_open()) {
+        for (const auto& pair : scores) {
+            arqSaida << pair.first << " " << pair.second << std::endl;
+        }
+        arqSaida.close();
+    }
+}
 Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr), numJogadores(numJogadores) {
     Ente::setGerenciadorGrafico(pGG);
 
@@ -150,14 +182,13 @@ void Jogo::executar() {
             }
             else {
                 if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-                    jogoPausado = true; // Pausa o jogo
+                    jogoPausado = true; 
                 }
             }
         }
 
         if (!vitoria && !derrota && !jogoPausado) {
 
-            // Verifica se os jogadores morreram
             if (jogador1 && jogador1->getVida() <= 0) {
                 corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto1.setTexture(&texturaJogador1Morto);
@@ -179,12 +210,14 @@ void Jogo::executar() {
                 jogador2EstaMorto = true;
             }
 
-            // Verifica condi��o de derrota
             if (!jogador1 && !jogador2) {
-                derrota = true;
+                if (!derrota) { 
+                    derrota = true;
+                    atualizarRanking(jogador1->getNome(), jogador1->getPontos());
+                    atualizarRanking(jogador2->getNome(), jogador2->getPontos());
+                }
             }
 
-            // Verifica condi��o de vit�ria
             vector<Inimigo*> inimigos;
             Elemento<Entidade>* pElementoInim = pListaEnts->getPrimeiro();
             while (pElementoInim) {
@@ -195,6 +228,12 @@ void Jogo::executar() {
             }
             if (inimigos.empty() && faseAtual && faseAtual->getFase() > 0) {
                 vitoria = true;
+                if (jogador1) {
+                    atualizarRanking(jogador1->getNome(), jogador1->getPontos());
+                }
+                if (jogador2) {
+                    atualizarRanking(jogador2->getNome(), jogador2->getPontos());
+                }
             }
 
             if (!vitoria && !derrota) {
@@ -253,8 +292,6 @@ void Jogo::executar() {
                 }
             }
         }
-
-
 
         sf::Vector2f mediaCamera(1920.f, 350.f);
         if (jogador1 && jogador2) {
@@ -318,27 +355,44 @@ void Jogo::rodarSave() {
 
     arquivo.open("arquivo_jogador.txt");
     if (arquivo.is_open()) {
-        if (getline(arquivo, linha) && jogador1) {
-            std::istringstream iss(linha);
+        std::string linha1, linha2;
+        if (getline(arquivo, linha1)) {
+            std::istringstream iss1(linha1);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            jogador1->setVida(vida);
-            jogador1->setPosicao(x, y);
-            pListaEnts->incluir(jogador1);
-            pGC->inclueEntidade(jogador1);
+            iss1 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            if (jogador1 && id_j == 0) {
+                jogador1->setVida(vida);
+                jogador1->setPosicao(x, y);
+                pListaEnts->incluir(jogador1);
+                pGC->inclueEntidade(jogador1);
+            }
+            else if (jogador2 && id_j == 1) {
+                jogador2->setVida(vida);
+                jogador2->setPosicao(x, y);
+                pListaEnts->incluir(jogador2);
+                pGC->inclueEntidade(jogador2);
+            }
         }
-        if (getline(arquivo, linha) && jogador2) {
-            std::istringstream iss(linha);
+        if (getline(arquivo, linha2)) {
+            std::istringstream iss2(linha2);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            jogador2->setVida(vida);
-            jogador2->setPosicao(x, y);
-            pListaEnts->incluir(jogador2);
-            pGC->inclueEntidade(jogador2);
+            iss2 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            if (jogador1 && id_j == 0) {
+                jogador1->setVida(vida);
+                jogador1->setPosicao(x, y);
+                pListaEnts->incluir(jogador1);
+                pGC->inclueEntidade(jogador1);
+            }
+            else if (jogador2 && id_j == 1) {
+                jogador2->setVida(vida);
+                jogador2->setPosicao(x, y);
+                pListaEnts->incluir(jogador2);
+                pGC->inclueEntidade(jogador2);
+            }
         }
         arquivo.close();
     }
@@ -566,6 +620,12 @@ void Jogo::processarEventosMenuPausa(sf::Event& evento) {
                 pGG->fechar();
             }
             if (botaoSalvarSair.getGlobalBounds().contains(mousePos)) {
+                if (jogador1) {
+                    atualizarRanking(jogador1->getNome(), jogador1->getPontos());
+                }
+                if (jogador2) {
+                    atualizarRanking(jogador2->getNome(), jogador2->getPontos());
+                }
                 std::ofstream arqJogo("arquivo_jogo.txt", std::ios::trunc);
                 if (arqJogo.is_open()) {
                     arqJogo << numJogadores << std::endl;

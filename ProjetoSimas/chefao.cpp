@@ -115,10 +115,15 @@ void Chefao::tratarColisaoComJogador(Jogador* jogador, int tipoColisao) {
 
     switch (tipoColisao) {
     case 1: 
-        jogador->setPosicao(areaJogador.left, areaChefao.top - areaJogador.height);
-        jogador->setVelocidadeVertical(-impulsoRepulsaoVertical);
-        if (getVida() > 0)setVida(getVida() /2);
-        jogador->setNoChao(false);
+        if (getVida() > 0) {
+            jogador->setNoChao(false);
+            jogador->setPosicao(areaJogador.left, areaChefao.top - areaJogador.height);
+            jogador->setVelocidadeVertical(-impulsoRepulsaoVertical);
+            if (getVida() == 250.f) {
+                jogador->setPontos(jogador->getPontos() + 50);
+            }
+            setVida(getVida() - 250.f);
+        }
         break;
     case 4: 
         jogador->setPosicao(areaJogador.left, areaChefao.top + areaChefao.height);
