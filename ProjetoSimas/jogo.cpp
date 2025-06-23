@@ -175,8 +175,8 @@ void Jogo::executar() {
                 if (pEnt) {
                     pEnt->executar(); 
 
-                    if (Jogador* pJogador = dynamic_cast<Jogador*>(pEnt)) {
-                        pJogador->mover();
+                    if (Personagem* pPersonagem = dynamic_cast<Personagem*>(pEnt)) {
+                        pPersonagem->mover();
                     }
                     if (Lancador* pLancador = dynamic_cast<Lancador*>(pEnt)) {
                         pLancador->atacar(jogador1, jogador2, 0.016f, pGG->getView(), pGC, pListaEnts);
@@ -218,6 +218,7 @@ void Jogo::executar() {
                     if (remover) {
                         pGC->removeEntidade(pEnt);
                         pListaEnts->remover(pEnt);
+						delete pEnt;
                     }
                 }
                 pEl = pProx;
