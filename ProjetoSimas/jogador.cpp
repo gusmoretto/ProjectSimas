@@ -186,6 +186,13 @@ void Jogador::salvar(std::ostream& os) {
        << id_jogador << " " << impulsoPulo << " " << olhandoDireita << " "
        << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
+void Jogador::setNome(const std::string& novoNome) {
+    nome = novoNome;
+}
+
+const std::string& Jogador::getNome() const {
+    return nome;
+}
 
 
 

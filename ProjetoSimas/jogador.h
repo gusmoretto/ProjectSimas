@@ -47,7 +47,7 @@ public:
 	void adicionarPontos(int valor) { pontos += valor; }
     int getPontos() const { return pontos; }
     void setPontos(int valor) { pontos = valor; }
-    void setNome(const std::string& n) { nome = n; }
-    std::string getNome() const { return nome; }
+    void setNome(const std::string& novoNome) { nome = novoNome; }
+    const std::string& getNome() const { return nome; }
 };
 
