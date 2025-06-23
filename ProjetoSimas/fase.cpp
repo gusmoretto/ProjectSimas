@@ -22,15 +22,10 @@ Fase::Fase(Jogador* j1, Jogador* j2, bool carregarJogo) : jogador1(j1), jogador2
     //if (!carregarJogo) {
       //  executar();
     //}
+
 }
 
 Fase::~Fase() {
-    if (jogador1) {
-        lista_ents.remover(static_cast<Entidade*>(jogador1));
-    }
-    if (jogador2) {
-        lista_ents.remover(static_cast<Entidade*>(jogador2));
-    }
 
 }
 

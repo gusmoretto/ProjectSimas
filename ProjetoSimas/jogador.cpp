@@ -4,7 +4,7 @@
 
 int Jogador::cont_jogador = 0;
 
-Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f), velocidadeHorizontal(0.f), nome("Jogador") {
+Jogador::Jogador(): Personagem(), impulsoPulo(-650.f), velocidadeBase(0.f), puloBase(0.f) , velocidadeHorizontal(0.f) {
 	vida = 150;
 	ataque = 10;
 	pontos = 0;
@@ -66,7 +66,7 @@ void Jogador::mover() {
             }
         }
     }
-    else if (id_jogador == 0) { 
+    else if (id_jogador == 0) { // Lógica para o Jogador 1 (teclas A e D)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             movimento.x += velocidade;
             if (!olhandoDireita) {
@@ -81,11 +81,11 @@ void Jogador::mover() {
         }
     }
 
-    // --- Movimento horizontal externo (repulsï¿½o/knockback) ---
+    // --- Movimento horizontal externo (repulsão/knockback) ---
     movimento.x += velocidadeHorizontal * dt;
 
-    // Aplica um "atrito" para que a velocidade de repulsï¿½o diminua com o tempo
-    velocidadeHorizontal *= 0.92f; // Fator de atrito, ajuste se necessï¿½rio
+    // Aplica um "atrito" para que a velocidade de repulsão diminua com o tempo
+    velocidadeHorizontal *= 0.92f; // Fator de atrito, ajuste se necessário
     if (std::abs(velocidadeHorizontal) < 1.0f) {
         velocidadeHorizontal = 0.f;
     }
@@ -111,7 +111,7 @@ void Jogador::mover() {
 
     retangulo.move(movimento);
 
-    // --- Verificaï¿½ï¿½o de limites (lï¿½gica original com melhorias) ---
+    // --- Verificação de limites (lógica original com melhorias) ---
     sf::Vector2f pos = retangulo.getPosition();
     sf::Vector2f size = retangulo.getSize();
 
@@ -181,16 +181,9 @@ float Jogador::getPuloBase() const {
 }
 void Jogador::salvar(std::ostream& os) {
     os << gravidade << " " << forcaMitico << " " << forcaMiticaAtiva << " "
-       << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
-       << id_jogador << " " << impulsoPulo << " " << olhandoDireita << " "
-       << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
-}
-void Jogador::setNome(const std::string& novoNome) {
-    nome = novoNome;
-}
-
-const std::string& Jogador::getNome() const {
-    return nome;
+        << num_vidas << " " << vida << " " << velocidade << " " << noChao << " " << ataque << " "
+        << id_jogador << " " << pontos << " " << impulsoPulo << " " << olhandoDireita << " "
+        << velocidadeBase << " " << puloBase << " " << getPosicao().x << " " << getPosicao().y << std::endl;
 }
 
 

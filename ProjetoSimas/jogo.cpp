@@ -23,7 +23,7 @@ int determinarFaseSalva() {
     return 1;
 }
 
-Jogo::Jogo(int numJogadores, int fase_inicial) : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr), numJogadores(numJogadores) {
+Jogo::Jogo(int numJogadores) : pGG(new GerenciadorGrafico()), jogador1(nullptr), jogador2(nullptr), faseAtual(nullptr), numJogadores(numJogadores) {
     Ente::setGerenciadorGrafico(pGG);
 
     if (numJogadores >= 1) {
@@ -33,12 +33,6 @@ Jogo::Jogo(int numJogadores, int fase_inicial) : pGG(new GerenciadorGrafico()), 
     if (numJogadores == 2) {
         jogador2 = new Jogador();
         jogador2->executar();
-    }
-    if (fase_inicial == 2) {
-        faseAtual = new SegundaFase(jogador1, jogador2);
-    }
-    else { 
-        faseAtual = new PrimeiraFase(jogador1, jogador2);
     }
 
     pGG->inicializarBarraVida(numJogadores);
@@ -54,7 +48,6 @@ Jogo::Jogo(int numJogadores, int fase_inicial) : pGG(new GerenciadorGrafico()), 
     if (!texturaJogador2Morto.loadFromFile("player2morto.png")) {
         std::cerr << "Erro: Nao foi possivel carregar player2_morto.png" << std::endl;
     }
-
 }
 
 Jogo::~Jogo() {
@@ -70,8 +63,8 @@ void Jogo::inicializarTelaFinal() {
         std::cerr << "Erro: Nao foi possivel carregar derrota.png" << std::endl;
     }
 
-    if (!fonteBotao.loadFromFile("fonteMenu.ttf")) {
-        std::cerr << "Erro ao carregar fonteMenu.ttf" << std::endl;
+    if (!fonteBotao.loadFromFile("fonteMenu.TTF")) {
+        std::cerr << "Erro ao carregar fonteMenu.TTF" << std::endl;
         return;
     }
 
@@ -145,121 +138,169 @@ void Jogo::executar() {
             if (evento.type == sf::Event::Closed) {
                 pGG->fechar();
             }
+
             if (vitoria || derrota) {
                 processarEventosTelaFinal(evento);
             }
             else if (jogoPausado) {
                 processarEventosMenuPausa(evento);
                 if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-                    jogoPausado = false;
+                    jogoPausado = false; 
                 }
             }
             else {
                 if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-                    jogoPausado = true;
+                    jogoPausado = true; // Pausa o jogo
                 }
             }
         }
 
-        if (vitoria || derrota || jogoPausado) {
-        }
-        else {
-           
-            int num_inimigos_vivos = 0;
+        if (!vitoria && !derrota && !jogoPausado) {
 
-            Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
-            while (pEl) {
-                Entidade* pEnt = pEl->getInfo();
-                Elemento<Entidade>* pProx = pEl->getProx(); 
+            // Verifica se os jogadores morreram
+            if (jogador1 && jogador1->getVida() <= 0) {
+                corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
+                corpoMorto1.setTexture(&texturaJogador1Morto);
+                corpoMorto1.setPosition(jogador1->getPosicao());
+                pGC->removeEntidade(jogador1);
+                pListaEnts->remover(jogador1);
+                delete jogador1;
+                jogador1 = nullptr;
+                jogador1EstaMorto = true;
+            }
+            if (jogador2 && jogador2->getVida() <= 0) {
+                corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
+                corpoMorto2.setTexture(&texturaJogador2Morto);
+                corpoMorto2.setPosition(jogador2->getPosicao());
+                pGC->removeEntidade(jogador2);
+                pListaEnts->remover(jogador2);
+                delete jogador2;
+                jogador2 = nullptr;
+                jogador2EstaMorto = true;
+            }
 
-                if (pEnt) {
-                    pEnt->executar(); 
+            // Verifica condi��o de derrota
+            if (!jogador1 && !jogador2) {
+                derrota = true;
+            }
 
-                    if (Personagem* pPersonagem = dynamic_cast<Personagem*>(pEnt)) {
-                        pPersonagem->mover();
-                    }
-                    if (Lancador* pLancador = dynamic_cast<Lancador*>(pEnt)) {
+            // Verifica condi��o de vit�ria
+            vector<Inimigo*> inimigos;
+            Elemento<Entidade>* pElementoInim = pListaEnts->getPrimeiro();
+            while (pElementoInim) {
+                if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pElementoInim->getInfo())) {
+                    inimigos.push_back(pInimigo);
+                }
+                pElementoInim = pElementoInim->getProx();
+            }
+            if (inimigos.empty() && faseAtual && faseAtual->getFase() > 0) {
+                vitoria = true;
+            }
+
+            if (!vitoria && !derrota) {
+                if (jogador1) jogador1->mover();
+                if (jogador2) jogador2->mover();
+
+                for (auto* inimigo : inimigos) {
+                    if (inimigo) inimigo->mover();
+                }
+                for (auto* inimigo : inimigos) {
+                    if (Lancador* pLancador = dynamic_cast<Lancador*>(inimigo)) {
                         pLancador->atacar(jogador1, jogador2, 0.016f, pGG->getView(), pGC, pListaEnts);
                     }
+                }
 
-                    if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEnt)) {
-                        if (pInimigo->getVida() > 0) {
-                            num_inimigos_vivos++;
+                Elemento<Entidade>* pElementoProj = pListaEnts->getPrimeiro();
+                while (pElementoProj) {
+                    if (Projetil* pProj = dynamic_cast<Projetil*>(pElementoProj->getInfo())) {
+                        if (pProj->getestaAtivo()) {
+                            pProj->executar();
                         }
                     }
+                    pElementoProj = pElementoProj->getProx();
+                }
 
+                Elemento<Entidade>* pElementoObs = pListaEnts->getPrimeiro();
+                while (pElementoObs) {
+                    if (Obstaculo* pObs = dynamic_cast<Obstaculo*>(pElementoObs->getInfo())) {
+                        pObs->atualizarFisica();
+                    }
+                    pElementoObs = pElementoObs->getProx();
+                }
+
+                pGC->executar();
+
+                // Remove entidades que precisam ser destru�das
+                std::vector<Entidade*> aRemover;
+                Elemento<Entidade>* pEl = pListaEnts->getPrimeiro();
+                while (pEl) {
+                    Entidade* pEnt = pEl->getInfo();
                     bool remover = false;
                     if (Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEnt)) {
                         if (pInimigo->getVida() <= 0) remover = true;
                     }
-                    if (Projetil* pProj = dynamic_cast<Projetil*>(pEnt)) {
+                    else if (Projetil* pProj = dynamic_cast<Projetil*>(pEnt)) {
                         if (!pProj->getestaAtivo()) remover = true;
                     }
-                    if (Jogador* pJogador = dynamic_cast<Jogador*>(pEnt)) {
-                        if (pJogador->getVida() <= 0) {
-                            remover = true;
-                            if (pJogador == jogador1) {
-                                corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
-                                corpoMorto1.setTexture(&texturaJogador1Morto);
-                                corpoMorto1.setPosition(jogador1->getPosicao());
-                                jogador1EstaMorto = true;
-                                jogador1 = nullptr; 
-                            }
-                            else if (pJogador == jogador2) {
-                                corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
-                                corpoMorto2.setTexture(&texturaJogador2Morto);
-                                corpoMorto2.setPosition(jogador2->getPosicao());
-                                jogador2EstaMorto = true;
-                                jogador2 = nullptr; 
-                            }
-                        }
-                    }
-
-                    if (remover) {
-                        pGC->removeEntidade(pEnt);
-                        pListaEnts->remover(pEnt);
-						delete pEnt;
-                    }
+                    if (remover) aRemover.push_back(pEnt);
+                    pEl = pEl->getProx();
                 }
-                pEl = pProx;
-            }
 
-            pGC->executar(); 
-
-            if (num_inimigos_vivos == 0 && faseAtual->getFase() > 0) {
-                vitoria = true;
-            }
-            if (!jogador1 && !jogador2) {
-                derrota = true;
+                for (auto pEnt : aRemover) {
+                    pGC->removeEntidade(pEnt);
+                    pListaEnts->remover(pEnt);
+                    delete pEnt;
+                }
             }
         } 
 
-        pGG->clear();
+
 
         sf::Vector2f mediaCamera(1920.f, 350.f);
-        if (jogador1 && jogador2) mediaCamera = (jogador1->getPosicao() + jogador2->getPosicao()) / 2.f;
-        else if (jogador1) mediaCamera = jogador1->getPosicao();
-        else if (jogador2) mediaCamera = jogador2->getPosicao();
+        if (jogador1 && jogador2) {
+            mediaCamera = (jogador1->getRetangulo().getPosition() + jogador2->getRetangulo().getPosition()) / 2.f;
+        }
+        else if (jogador1) {
+            mediaCamera = jogador1->getRetangulo().getPosition();
+        }
+        else if (jogador2) {
+            mediaCamera = jogador2->getRetangulo().getPosition();
+        }
         pGG->centralizarCamera(mediaCamera, 3840.f, 700.f);
 
+        pGG->clear();
         pGG->desenhaFundo();
         pGG->desenhaChao();
 
+        // Desenha todas as entidades da lista
         Elemento<Entidade>* pAux = pListaEnts->getPrimeiro();
         while (pAux) {
-            if (pAux->getInfo()) pAux->getInfo()->desenhar();
+            if (pAux->getInfo()) {
+                pAux->getInfo()->desenhar();
+            }
             pAux = pAux->getProx();
         }
 
-        if (jogador1EstaMorto) pGG->desenha(corpoMorto1);
-        if (jogador2EstaMorto) pGG->desenha(corpoMorto2);
+        if (jogador1EstaMorto) {
+            pGG->desenha(corpoMorto1);
+        }
+        if (jogador2EstaMorto) {
+            pGG->desenha(corpoMorto2);
+        }
+
+        if (jogador1) jogador1->desenhar();
+        if (jogador2) jogador2->desenhar();
 
         pGG->atualizarBarraVida(jogador1 ? jogador1->getVida() : 0, 150, 1);
         pGG->atualizarBarraVida(jogador2 ? jogador2->getVida() : 0, 150, 2);
-        pGG->desenharBV(numJogadores);
+        pGG->desenharBV(2);
 
-        if (vitoria || derrota) desenharTelaFinal();
-        else if (jogoPausado) desenharMenuPausa();
+        if (vitoria || derrota) {
+            desenharTelaFinal();
+        }
+        else if (jogoPausado) {
+            desenharMenuPausa(); 
+        }
 
         pGG->mostrar();
     }
@@ -277,13 +318,12 @@ void Jogo::rodarSave() {
 
     arquivo.open("arquivo_jogador.txt");
     if (arquivo.is_open()) {
-        std::getline(arquivo, linha); 
         if (getline(arquivo, linha) && jogador1) {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
-            int nVidas, vida, ataque, id_j;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            int nVidas, vida, ataque, id_j, pontos;
+            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
             jogador1->setVida(vida);
             jogador1->setPosicao(x, y);
             pListaEnts->incluir(jogador1);
@@ -293,8 +333,8 @@ void Jogo::rodarSave() {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
-            int nVidas, vida, ataque, id_j;
-            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+            int nVidas, vida, ataque, id_j, pontos;
+            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
             jogador2->setVida(vida);
             jogador2->setPosicao(x, y);
             pListaEnts->incluir(jogador2);
@@ -451,8 +491,8 @@ void Jogo::setFaseAtual(int fase, bool carregarJogo) {
     }
 }
 void Jogo::inicializarMenuPausa() {
-    if (!fonteBotao.loadFromFile("fonteMenu.ttf")) {
-        std::cerr << "Erro ao carregar fonteMenu.ttf para o menu de pausa." << std::endl;
+    if (!fonteBotao.loadFromFile("fonteMenu.TTF")) {
+        std::cerr << "Erro ao carregar fonteMenu.TTF para o menu de pausa." << std::endl;
         return;
     }
 
@@ -535,10 +575,6 @@ void Jogo::processarEventosMenuPausa(sf::Event& evento) {
                 std::ofstream arqAguas("arquivo_agua.txt", std::ios::trunc);
                 std::ofstream arqEspinhos("arquivo_espinho.txt", std::ios::trunc);
                 std::ofstream arqProjeteis("arquivo_projetil.txt", std::ios::trunc);
-                
-                if (arqJogadores.is_open()) {
-                    arqJogadores << numJogadores << std::endl;
-                }
 
                 Elemento<Entidade>* pElemento = faseAtual->getListaEntidades()->getPrimeiro();
                 while (pElemento != nullptr) {

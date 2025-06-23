@@ -50,13 +50,13 @@ void GerenciadorGrafico::centralizarCamera(const sf::Vector2f& centro, float bgW
 }
 void GerenciadorGrafico::iniciaChao(const std::string& caminho, float larguraMapa, float alturaChao) {
 	if (!texturaChao.loadFromFile(caminho)) {
-		std::cerr << "Erro ao carregar textura do chão." << std::endl;
+		std::cerr << "Erro ao carregar textura do chï¿½o." << std::endl;
 	}
 	texturaChao.setRepeated(true);
 	chao.setTexture(&texturaChao);
 	chao.setSize(sf::Vector2f(larguraMapa, alturaChao));
 	chao.setTextureRect(sf::IntRect(0, 0, static_cast<int>(larguraMapa), static_cast<int>(alturaChao)));
-	chao.setPosition(0.f, 700.f - alturaChao); // Ajuste a posição conforme necessário
+	chao.setPosition(0.f, 700.f - alturaChao); // Ajuste a posiï¿½ï¿½o conforme necessï¿½rio
 }
 void GerenciadorGrafico::desenhaChao() {
 	window.draw(chao);
@@ -69,7 +69,7 @@ void GerenciadorGrafico::iniciaFundo(const std::string& caminho) {
 	spriteFundo.setPosition(0, 0);
 }
 void GerenciadorGrafico::inicializarBarraVida(int jgs) {
-    if (!fonteMenu.loadFromFile("fonteMenu.ttf")) {
+    if (!fonteMenu.loadFromFile("fonteMenu.TTF")) {
         std::cerr << "Erro ao carregar a fonte para a barra de vida." << std::endl;
         return;
     }

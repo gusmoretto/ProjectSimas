@@ -312,20 +312,15 @@ void Menu::executar() {
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
+        // Passe nomeJogador1 e nomeJogador2 para o Jogo, se quiser
         pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }
     else if (escolha == 3) { 
     }
     else if (escolha == 4) { 
-        int numJogadoresSalvos = 1; 
-        std::ifstream arqJogadores("arquivo_jogador.txt");
-        if (arqJogadores.is_open()) {
-            arqJogadores >> numJogadoresSalvos;
-            arqJogadores.close();
-        }
-
-        pJogo = new Jogo(numJogadoresSalvos, true);
+        pGG_Menu->fechar();
+        pJogo = new Jogo();
         pJogo->rodarSave(); 
     }
 }

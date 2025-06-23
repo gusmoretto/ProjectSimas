@@ -33,7 +33,7 @@ private:
     int numJogadores;
 
 public:
-    Jogo(int numJogadores = 1, int fase_inicial = 1);
+    Jogo(int numJogadores = 1);
     ~Jogo();
     void executar();
 	void setFaseAtual(int fase, bool carregarJogo);

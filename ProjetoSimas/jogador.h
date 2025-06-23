@@ -4,7 +4,6 @@
 class Jogador: public Personagem{
 private:
 	int pontos;
-	std::string nome; // <-- Adicione esta linha
 	float impulsoPulo;
 	bool olhandoDireita;
 	float velocidadeBase;
@@ -44,10 +43,5 @@ public:
 		return forcaMitico;
 	};
 	float getVelocidadeBase() const { return velocidadeBase; }
-	void adicionarPontos(int valor) { pontos += valor; }
-    int getPontos() const { return pontos; }
-    void setPontos(int valor) { pontos = valor; }
-    void setNome(const std::string& novoNome); // Apenas declaração
-    const std::string& getNome() const;        // Apenas declaração
 };
 

@@ -166,10 +166,6 @@ namespace Gerenciadores {
 					inim->tratarColisaoComJogador(jogador1, tipoColisao);
 
 					bool inimigoFoiMortoPorCima = (inim->getVida() <= 0 && vidaInimigoAntesColisao > 0 && tipoColisao == 1);
-
-					if (inimigoFoiMortoPorCima) {
-    jogador1->adicionarPontos(100); // ajuste o valor conforme desejar
-}
 					sf::FloatRect areaInimigo = inim->getRetangulo().getGlobalBounds();
 					sf::FloatRect areaJogador = jogador1->getRetangulo().getGlobalBounds();
 
