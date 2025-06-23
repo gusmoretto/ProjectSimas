@@ -192,3 +192,10 @@ void Jogador::setPontos(int p) {
 int Jogador::getPontos() const {
     return pontos;
 }
+void Jogador::setNome(const string& novoNome) {
+    this->nome = novoNome;
+}
+
+string Jogador::getNome() const {
+    return this->nome;
+}

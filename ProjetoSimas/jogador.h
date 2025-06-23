@@ -11,6 +11,7 @@ private:
 	int id_jogador;
 	static int cont_jogador;
 	float velocidadeHorizontal;
+	string nome;
 
 public:
 	Jogador();
@@ -45,4 +46,6 @@ public:
 	float getVelocidadeBase() const { return velocidadeBase; }
 	void setPontos(int p);
 	int getPontos() const;
+	void setNome(const string& novoNome);
+	string getNome() const;
 };
