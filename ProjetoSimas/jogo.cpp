@@ -349,58 +349,102 @@ void Jogo::rodarSave() {
 
     arquivo.open("arquivo_jogador.txt");
     if (arquivo.is_open()) {
-        std::string linha1;
-        if (getline(arquivo, linha1)) {
-            std::istringstream iss1(linha1);
-            float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
-            bool fMiticoAtivo, noChao, olhando;
-            int nVidas, vida, ataque, id_j, pontos;
-            iss1 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-
-            if (vida <= 0) {
-                jogador1EstaMorto = true;
-                corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
-                corpoMorto1.setTexture(&texturaJogador1Morto);
-                corpoMorto1.setPosition(x, y);
-                pGC->removeEntidade(jogador1);
-                pListaEnts->remover(jogador1);
-                delete jogador1;
-                jogador1 = nullptr;
-            }
-            else {
-                jogador1->setVida(vida);
-                jogador1->setPosicao(x, y);
-                jogador1->setPontos(pontos);
-                jogador1->setNumVidas(nVidas);
-            }
-        }
-        if (numJogadores == 2 && getline(arquivo, linha) && jogador2) {
+        if (getline(arquivo, linha)) {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
             iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
 
-            if (vida <= 0) {
-                jogador2EstaMorto = true;
-                corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
-                corpoMorto2.setTexture(&texturaJogador2Morto);
-                corpoMorto2.setPosition(x, y);
-                pGC->removeEntidade(jogador2);
-                pListaEnts->remover(jogador2);
-                delete jogador2;
-                jogador2 = nullptr;
+            // Verifica o ID para carregar no jogador correto
+            if (jogador1 && id_j == 0) { // Se o ID for 0, eh o jogador 1
+                if (vida <= 0) {
+                    jogador1EstaMorto = true;
+                    corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
+                    corpoMorto1.setTexture(&texturaJogador1Morto);
+                    corpoMorto1.setPosition(x, y);
+                    pGC->removeEntidade(jogador1);
+                    pListaEnts->remover(jogador1);
+                    delete jogador1;
+                    jogador1 = nullptr;
+                }
+                else {
+                    jogador1->setVida(vida);
+                    jogador1->setPosicao(x, y);
+                    jogador1->setPontos(pontos);
+                    jogador1->setNumVidas(nVidas);
+                }
             }
-            else {
-                jogador2->setVida(vida);
-                jogador2->setPosicao(x, y);
-                jogador2->setPontos(pontos);
-                jogador2->setNumVidas(nVidas);
+            else if (jogador2 && id_j == 1) { // Se o ID for 1, eh o jogador 2
+                if (vida <= 0) {
+                    jogador2EstaMorto = true;
+                    corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
+                    corpoMorto2.setTexture(&texturaJogador2Morto);
+                    corpoMorto2.setPosition(x, y);
+                    pGC->removeEntidade(jogador2);
+                    pListaEnts->remover(jogador2);
+                    delete jogador2;
+                    jogador2 = nullptr;
+                }
+                else {
+                    jogador2->setVida(vida);
+                    jogador2->setPosicao(x, y);
+                    jogador2->setPontos(pontos);
+                    jogador2->setNumVidas(nVidas);
+                }
+            }
+        }
+
+        // Se houver dois jogadores, carrega a segunda linha
+        if (numJogadores == 2 && getline(arquivo, linha)) {
+            std::istringstream iss(linha);
+            float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
+            bool fMiticoAtivo, noChao, olhando;
+            int nVidas, vida, ataque, id_j, pontos;
+            iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
+
+            // Verifica o ID novamente para o segundo jogador lido
+            if (jogador1 && id_j == 0) { // Se o ID for 0, eh o jogador 1
+                if (vida <= 0) {
+                    jogador1EstaMorto = true;
+                    corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
+                    corpoMorto1.setTexture(&texturaJogador1Morto);
+                    corpoMorto1.setPosition(x, y);
+                    pGC->removeEntidade(jogador1);
+                    pListaEnts->remover(jogador1);
+                    delete jogador1;
+                    jogador1 = nullptr;
+                }
+                else {
+                    jogador1->setVida(vida);
+                    jogador1->setPosicao(x, y);
+                    jogador1->setPontos(pontos);
+                    jogador1->setNumVidas(nVidas);
+                }
+            }
+            else if (jogador2 && id_j == 1) { // Se o ID for 1, eh o jogador 2
+                if (vida <= 0) {
+                    jogador2EstaMorto = true;
+                    corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
+                    corpoMorto2.setTexture(&texturaJogador2Morto);
+                    corpoMorto2.setPosition(x, y);
+                    pGC->removeEntidade(jogador2);
+                    pListaEnts->remover(jogador2);
+                    delete jogador2;
+                    jogador2 = nullptr;
+                }
+                else {
+                    jogador2->setVida(vida);
+                    jogador2->setPosicao(x, y);
+                    jogador2->setPontos(pontos);
+                    jogador2->setNumVidas(nVidas);
+                }
             }
         }
         arquivo.close();
     }
 
+    // O restante do carregamento (plataformas, inimigos, etc.) permanece igual
     arquivo.open("arquivo_plataforma.txt");
     if (arquivo.is_open()) {
         while (getline(arquivo, linha)) {
@@ -516,6 +560,7 @@ void Jogo::rodarSave() {
         }
         arquivo.close();
     }
+
     arquivo.open("arquivo_projetil.txt");
     if (arquivo.is_open()) {
         while (getline(arquivo, linha)) {
