@@ -142,7 +142,7 @@ void Jogador::mover() {
     retangulo.setPosition(pos);
 }
 void Jogador::desenhar() {
-    if (pGG) {
+    if (pGG && vida>0) {
         pGG->desenha(retangulo);
     }
 }

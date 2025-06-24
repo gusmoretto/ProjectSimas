@@ -189,31 +189,25 @@ void Jogo::executar() {
 
         if (!vitoria && !derrota && !jogoPausado) {
 
-            if (jogador1 && jogador1->getVida() <= 0) {
+            if (jogador1 && jogador1->getVida() <= 0 && !jogador1EstaMorto) {
                 atualizarRanking(jogador1->getNome(), jogador1->getPontos());
                 corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto1.setTexture(&texturaJogador1Morto);
                 corpoMorto1.setPosition(jogador1->getPosicao());
-                pGC->removeEntidade(jogador1);
-                pListaEnts->remover(jogador1);
-                delete jogador1;
-                jogador1 = nullptr;
-                jogador1EstaMorto = true;
+                pGC->removeEntidade(jogador1); 
+                jogador1EstaMorto = true;      
             }
-            if (jogador2 && jogador2->getVida() <= 0) {
+            if (jogador2 && jogador2->getVida() <= 0 && !jogador2EstaMorto) {
                 atualizarRanking(jogador2->getNome(), jogador2->getPontos());
                 corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
                 corpoMorto2.setTexture(&texturaJogador2Morto);
                 corpoMorto2.setPosition(jogador2->getPosicao());
                 pGC->removeEntidade(jogador2);
-                pListaEnts->remover(jogador2);
-                delete jogador2;
-                jogador2 = nullptr;
                 jogador2EstaMorto = true;
             }
 
-            if (!jogador1 && !jogador2) {
-                if (!derrota) { 
+            if ((numJogadores == 1 && jogador1EstaMorto) || (numJogadores == 2 && jogador1EstaMorto && jogador2EstaMorto)) {
+                if (!derrota) {
                     derrota = true;
                 }
             }
@@ -355,28 +349,54 @@ void Jogo::rodarSave() {
 
     arquivo.open("arquivo_jogador.txt");
     if (arquivo.is_open()) {
-        std::string linha1, linha2;
+        std::string linha1;
         if (getline(arquivo, linha1)) {
             std::istringstream iss1(linha1);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
             iss1 >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            jogador1->setVida(vida);
-            jogador1->setPosicao(x, y);
-            pListaEnts->incluir(jogador1);
-            pGC->inclueEntidade(jogador1);
+
+            if (vida <= 0) {
+                jogador1EstaMorto = true;
+                corpoMorto1.setSize(sf::Vector2f(64.f, 64.f));
+                corpoMorto1.setTexture(&texturaJogador1Morto);
+                corpoMorto1.setPosition(x, y);
+                pGC->removeEntidade(jogador1);
+                pListaEnts->remover(jogador1);
+                delete jogador1;
+                jogador1 = nullptr;
+            }
+            else {
+                jogador1->setVida(vida);
+                jogador1->setPosicao(x, y);
+                jogador1->setPontos(pontos);
+                jogador1->setNumVidas(nVidas);
+            }
         }
-        if (getline(arquivo, linha) && jogador2) {
+        if (numJogadores == 2 && getline(arquivo, linha) && jogador2) {
             std::istringstream iss(linha);
             float grav, fMitico, vel, pulo, velBase, puloBase, x, y;
             bool fMiticoAtivo, noChao, olhando;
             int nVidas, vida, ataque, id_j, pontos;
             iss >> grav >> fMitico >> fMiticoAtivo >> nVidas >> vida >> vel >> noChao >> ataque >> id_j >> pontos >> pulo >> olhando >> velBase >> puloBase >> x >> y;
-            jogador2->setVida(vida);
-            jogador2->setPosicao(x, y);
-            pListaEnts->incluir(jogador2);
-            pGC->inclueEntidade(jogador2);
+
+            if (vida <= 0) {
+                jogador2EstaMorto = true;
+                corpoMorto2.setSize(sf::Vector2f(64.f, 64.f));
+                corpoMorto2.setTexture(&texturaJogador2Morto);
+                corpoMorto2.setPosition(x, y);
+                pGC->removeEntidade(jogador2);
+                pListaEnts->remover(jogador2);
+                delete jogador2;
+                jogador2 = nullptr;
+            }
+            else {
+                jogador2->setVida(vida);
+                jogador2->setPosicao(x, y);
+                jogador2->setPontos(pontos);
+                jogador2->setNumVidas(nVidas);
+            }
         }
         arquivo.close();
     }
@@ -515,7 +535,6 @@ void Jogo::rodarSave() {
 
     executar();
 }
-
 void Jogo::setFaseAtual(int fase, bool carregarJogo) {
     if (faseAtual) {
         delete faseAtual;

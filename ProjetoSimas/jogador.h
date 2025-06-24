@@ -31,6 +31,7 @@ public:
 	void setVelocidadeHorizontal(float nvVelocidadeHorizontal);
 	float getVelocidadeHorizontal() const;
 	void setNoChao(bool NC);
+	void setNumVidas(int nvNumVidas) { num_vidas = nvNumVidas; };
 	bool getNochao();
 	void setPulo(float nvPulo) { impulsoPulo = nvPulo; };
 	float getPulo() const { return impulsoPulo; };
