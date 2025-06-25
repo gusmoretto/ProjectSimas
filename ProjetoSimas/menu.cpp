@@ -374,12 +374,19 @@ void Menu::executar() {
         int numJogadores = escolha;
         pGG_Menu->fechar();
         pJogo = new Jogo(numJogadores);
+        if (pJogo->getJogador1()) {
+            pJogo->getJogador1()->setNome(nomeJogador1);
+        }
+        if (pJogo->getJogador2()) {
+            pJogo->getJogador2()->setNome(nomeJogador2);
+        }
+
         pJogo->setFaseAtual(faseEscolhida, false);
         pJogo->executar();
     }
     else if (escolha == 3) {
-        mostrarTelaRanking(); 
-        escolha = -1; 
+        mostrarTelaRanking();
+        executar();
     }
     else if (escolha == 4) {
         pGG_Menu->fechar();
