@@ -44,4 +44,6 @@ public:
     void inicializarMenuPausa();
     void processarEventosMenuPausa(sf::Event& evento);
     void desenharMenuPausa();
+	Jogador* getJogador1() { if(jogador1)return jogador1; }
+    Jogador* getJogador2() { if (jogador2)return jogador2; else return nullptr; }
 };

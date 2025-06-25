@@ -383,21 +383,11 @@ void Menu::executar() {
     }
     else if (escolha == 4) {
         pGG_Menu->fechar();
-        int numJogadoresSalvos = 1; 
+        int numJogadoresSalvos = 1;
         std::ifstream arqJogo("arquivo_jogo.txt");
         if (arqJogo.is_open()) {
             arqJogo >> numJogadoresSalvos;
             arqJogo.close();
-        }
-        std::ofstream arqRanking("ranking.txt", std::ios::app);
-        if (arqRanking.is_open()) {
-            if (!nomeJogador1.empty()) {
-                arqRanking << nomeJogador1 << " 0" << std::endl;
-            }
-            if (numJogadoresSalvos == 2 && !nomeJogador2.empty()) {
-                arqRanking << nomeJogador2 << " 0" << std::endl;
-            }
-            arqRanking.close();
         }
         pJogo = new Jogo(numJogadoresSalvos);
         pJogo->rodarSave();
